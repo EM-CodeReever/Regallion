@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.blur-bg {
+    -webkit-backdrop-filter: blur(7px);
+    backdrop-filter: blur(7px);
+    }
+
+.wave-red{
+    background-image: url('/lw-fire.svg');
+    width:100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.wave-yellow{
+    background-image: url('/lw-yellow.svg');
+    width:100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    }
+
+.wave-blue{
+    background-image: url('/lw-blue.svg');
+    width:100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: top;
+    }
+    
+.wave-purple{
+    background-image: url('/sw-purple.svg');
+    width:100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: top;
+    }
