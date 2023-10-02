@@ -7,19 +7,19 @@
     <title>Register</title>
 </svelte:head>
 <section class="wave-blue h-screen flex items-center justify-center" data-theme="custom">
-    <div class="w-fit blur-bg bg-[#ffffff91] h-fit flex items-center flex-col space-y-5 px-5 py-10 custom-box-shadow rounded-xl relative">
+    <div class="w-full min-w-fit max-w-xl mx-3 blur-bg bg-[#ffffff91] h-fit flex items-center flex-col space-y-5 px-5 py-10 custom-box-shadow rounded-xl relative">
         <h1 class="text-center text-3xl font-bold text-black">Account Creation</h1>
         <p class="text-center font-semibold text-black">Enter your personal information</p>
 
-        <form class="grid gap-5 grid-cols-4 px-5 mt-10 max-w-xl" style="width: 50rem;">
+        <form class="grid gap-5 grid-cols-4 px-5 mt-10 w-full min-w-fit">
 
 
-            <input class="input solid info col-span-2" placeholder="First name" />
-            <input class="input solid info col-span-2" placeholder="Last name" />
-            <input class="input solid info col-span-4" placeholder="Email" />
+            <input class="input solid info col-span-full sm:col-span-2" placeholder="First name" />
+            <input class="input solid info col-span-full sm:col-span-2" placeholder="Last name" />
+            <input class="input solid info col-span-full sm:col-span-4" placeholder="Email" />
             <!-- <input class="input solid info col-span-3" placeholder="Choose Username" /> -->
 
-            <div class="input solid info col-span-3">
+            <div class="input solid info col-span-full sm:col-span-3">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
                   </svg>                  
@@ -60,7 +60,7 @@
                 {/if}
             </div>
 
-            <select class="select solid info col-span-1">
+            <select class="select solid info col-span-full sm:col-span-1">
                 <option selected disabled>Gender</option>
                 <option>Male</option>
                 <option>Female</option>
