@@ -16,7 +16,8 @@ export default {
             sunsetRed:'#FA7268',
             sunsetOrange:'#C62368',
             sunsetFire: '#d91607',
-            grapePurple: '#8c07d9'
+            grapePurple: '#8c07d9',
+            blankWhite: '#fffff6',
           },
         },
       ],
