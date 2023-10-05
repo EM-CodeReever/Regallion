@@ -21,11 +21,11 @@
             })
         }
         if(type === 'github'){
-            supabase.auth.signInWithOAuth({
+            await supabase.auth.signInWithOAuth({
                 provider: 'github',
                 options: {
                     redirectTo: `${location.origin}/auth/callback`,
-                }
+                },
             })
         }
     }

@@ -2,7 +2,7 @@
     import { goto } from "$app/navigation";
     import { onMount } from "svelte";
     import { cubicOut } from "svelte/easing";
-    import { draw, fly, blur } from "svelte/transition";
+    import { fly, blur } from "svelte/transition";
     import { inview } from 'svelte-inview';
     import type { ObserverEventDetails, ScrollDirection, Options } from 'svelte-inview';
 

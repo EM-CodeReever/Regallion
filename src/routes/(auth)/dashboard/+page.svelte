@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { goto } from '$app/navigation';
-    import { fade } from 'svelte/transition';
+    import { goto, invalidateAll } from '$app/navigation';
+    import { fade, fly } from 'svelte/transition';
     import type { PageData } from '../dashboard/$types';
     import type { LayoutData } from '../$types';
     import ChooseUsername  from '$components/ChooseUsername.svelte';
@@ -23,6 +23,13 @@
         quote = data.text;
         author = data.author;
         });
+
+        if(userProfile){
+        console.log('This is user profile:' + userProfile);
+        }else{
+            console.log('This is user profile null:' + userProfile);
+            completeProfileModal = true;
+        }
     })
 
     let username: string;
@@ -33,12 +40,7 @@
     let phone: string;
     let profileUpdateLoading = false;
     
-    if(userProfile){
-        console.log('This is user profile:' + userProfile);
-    }else{
-        console.log('This is user profile null:' + userProfile);
-        completeProfileModal = true;
-    }
+    
 
     
 </script>
@@ -103,14 +105,17 @@
   </div>
 
   <div>
+    {#if completeProfileModal}
     <label for="modal" class="modal-overlay show"></label>
     <!-- show class here will make modal visible -->
-    <form method="POST" action="?/updateProfile" class="modal w-full lg:w-fit flex flex-col gap-5 {completeProfileModal ? 'show' : ''}" use:enhance={()=>{
-        return ({result})=>{
+
+    <form in:fly={{delay:200, duration: 1500, y:300}} method="POST" action="?/updateProfile" class="modal w-full lg:w-fit flex flex-col gap-5 show" use:enhance={()=>{
+        return ({result,})=>{
             if(result){
                 profileUpdateLoading = false;
                 completeProfileModal = false;
                 toast.success('Successfully Updated Profile!')
+                invalidateAll()
             }
             // update({reset: true})
         }
@@ -148,6 +153,7 @@
         </button>
       </div>
     </form>
+    {/if}
   </div>
 
 
