@@ -1,21 +1,31 @@
 <script lang="ts">
     import { goto } from "$app/navigation";
+    export let data;
+    let { session, supabase,userProfile } = data;
+    $: ({ session, supabase,userProfile } = data);
     import "$styles";
 
+
     function toggleDrawer(name:string) {
-    let element = document.getElementById(`drawer-${name}`);
-    if (element?.classList.contains('show')) {
-        element?.classList.remove('show');
-    } else {
-        element?.classList.add('show');
+      let element = document.getElementById(`drawer-${name}`);
+      if (element?.classList.contains('show')) {
+          element?.classList.remove('show');
+      } else {
+          element?.classList.add('show');
+      }
     }
+
+    function logOut(){
+      supabase.auth.signOut();
+      goto("/");
     }
+
   </script>
 
   <section class="flex flex-col">
-    <nav class="blur-bg fixed px-3 w-full top-0 bg-[#ffffffc0] flex justify-between items-center h-20">
-        <div class="flex justify-center items-center p-5 hover:bg-[#]">
-            <button class="btn solid grapePurple" on:click={()=>{toggleDrawer('left')}}>
+    <nav class="blur-bg fixed px-3 w-full top-0 bg-[#ffffffc0] flex justify-between items-center h-20 z-50">
+        <div class="flex justify-center items-center py-5 px-1 hover:bg-[#]">
+            <button class="btn ghost bw" on:click={()=>{toggleDrawer('left')}}>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="black" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 5.25h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5" />
                   </svg> 
@@ -25,20 +35,24 @@
             <a href="/" class="italic font-extrabold text-3xl text-gray-800">Crestfallen</a>
         </div>
         <div class="p-5">
-            <div class="dropdown success">
+            <div class="dropdown bw">
             <button class="avatar ring success" tabindex="0">
-                <img alt="avatar" src="https://picsum.photos/id/64/200/200" />
+                <img alt="avatar" src="https://robohash.org/{userProfile?.username}" />
             </button>
             <div class="menu bottom-left" style="width: 20rem;">
-                <p class="subtitle text-center">Signed in as: <span class="font-bold">John Doe</span></p>
+                <p class="subtitle text-center">Signed in as: <span class="font-bold text-success-800">
+                  {userProfile?.username}
+                </span></p>
                 <div class="is-divider" role="separator"></div>
-                <a href="/main" class="item text-sm" tabindex="-1">Account settings</a>
-                <a href="/main" class="item text-sm" tabindex="-1">Logout</a>
+                <button class="item text-sm btn" tabindex="-1" on:click={()=>{goto('dashboard')}}>Dashboard</button>
+                <button class="item text-sm btn" tabindex="-1" on:click={()=>{goto('profile')}}>Profile</button>
+                <button class="item text-sm btn" tabindex="-1">Account settings</button>
+                <button class="item text-sm btn" tabindex="-1" on:click={()=>{logOut()}}>Logout</button>
               </div>
             </div>
         </div>
     </nav>
-    <div class=" wave-purple h-screen w-full py-24 px-5 flex justify-center items-center">
+    <div class=" wave-purple h-fit w-full pt-20  flex justify-center items-center">
         <slot />
     </div>
   </section>
@@ -49,7 +63,7 @@
     <div class="drawer left" id="drawer-left">
       <div class="content flex flex-col h-full">
         <label class="btn sm circle grapePurple solid absolute right-3 top-3" on:click={()=>{toggleDrawer('left')}}>✕</label>
-        <h2 class="text-xl text-white">My Stuff</h2>
+        <h2 class="text-xl text-white">Pages</h2>
         <div class="is-divider" role="separator"></div>
         <div class="grid grid-cols-2 gap-8 grid-flow-row w-72 mt-10 mx-auto">
           <div class="btn ghost w-32 h-32 grapePurple rounded-lg col-span-1 flex flex-col">

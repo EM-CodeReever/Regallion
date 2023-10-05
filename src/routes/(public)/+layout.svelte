@@ -21,7 +21,7 @@
             </li>
         </ul>
         <div class="hidden lg:flex items-center">
-            <button class="btn light bw" on:click={()=>{goto('login')}}>Open App</button>
+            <button class="btn light bw" on:click={()=>{goto('dashboard')}}>Open App</button>
         </div>
         <div class="flex justify-center items-center lg:hidden">
             
@@ -50,7 +50,8 @@
                           </svg>
                         Contact
                     </a>
-                    <button class="btn sm solid bw w-full" on:click={()=>{goto('login')}}>open app</button>
+                    <!-- for mobile... i repeat FOR MOBILE.... ELLIOT THIS BUTTON IS ONLY SEEN ON MOBILE -->
+                    <button class="btn sm solid bw w-full" on:click={()=>{goto('dashboard')}}>open app</button>
                   </div>
                 </div>
         </div>
