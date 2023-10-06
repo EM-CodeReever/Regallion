@@ -14,6 +14,8 @@
     let gameEnded = false
     let winner = ""
 
+    let touchStartY: any
+
     let playerScore = 0;
     let computerScore = 0;
 
@@ -66,16 +68,37 @@
                 }
                 const mouseY = event.clientY - canvas.getBoundingClientRect().top;
                 leftPaddleY = mouseY - paddleHeight / 2;
+            });
 
-                canvas.addEventListener("touchmove", (event) => {
-                event.preventDefault(); // Prevent scrolling or other default touch behavior
-                if (!paused) {
-                    const touch = event.touches[0];
-                    const mouseY = touch.clientY - canvas.getBoundingClientRect().top;
-                    leftPaddleY = mouseY - paddleHeight / 2;
+             // Variable to store the initial touch position
+
+            // Touchstart event
+            canvas.addEventListener("touchstart", (event) => {
+                if (!paused || !gameEnded) {
+                    touchStartY = event.touches[0].clientY;
                 }
             });
+
+            // Touchmove event
+            canvas.addEventListener("touchmove", (event) => {
+                event.preventDefault(); // Prevent scrolling or other default touch behavior
+                if (!paused || !gameEnded) {
+                    const touchY = event.touches[0].clientY;
+                    const deltaY = touchY - touchStartY;
+                    leftPaddleY += deltaY;
+
+                    // Ensure the paddle stays within the canvas boundaries
+                    leftPaddleY = Math.min(canvas.height - paddleHeight, Math.max(0, leftPaddleY));
+
+                    touchStartY = touchY; // Update the initial touch position
+                }
             });
+
+            // Touchend event
+            canvas.addEventListener("touchend", () => {
+                touchStartY = null; // Reset the initial touch position when the touch ends
+            });
+
 
             // Update paddle positions
             function movePaddles() {
