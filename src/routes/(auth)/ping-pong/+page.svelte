@@ -14,7 +14,7 @@
     let gameEnded = false
     let winner = ""
 
-    let touchStartY: any
+
 
     let playerScore = 0;
     let computerScore = 0;
@@ -29,7 +29,7 @@
     let centerBall = function (){}
 
     function startGame(){
-        
+        let touchStartY: any
         if(browser){
             // Define canvas element and its context
             const canvas = document.getElementById("pingPongCanvas") as HTMLCanvasElement;
@@ -74,24 +74,26 @@
 
             // Touchstart event
             canvas.addEventListener("touchstart", (event) => {
-                if (!paused || !gameEnded) {
-                    touchStartY = event.touches[0].clientY;
+                if(paused || gameEnded){
+                    return
                 }
+                touchStartY = event.touches[0].clientY;
             });
 
             // Touchmove event
             canvas.addEventListener("touchmove", (event) => {
+                console.log('called');
+                
                 event.preventDefault(); // Prevent scrolling or other default touch behavior
-                if (!paused || !gameEnded) {
-                    const touchY = event.touches[0].clientY;
-                    const deltaY = touchY - touchStartY;
-                    leftPaddleY += deltaY;
-
-                    // Ensure the paddle stays within the canvas boundaries
-                    leftPaddleY = Math.min(canvas.height - paddleHeight, Math.max(0, leftPaddleY));
-
-                    touchStartY = touchY; // Update the initial touch position
+                if(paused || gameEnded){
+                    return
                 }
+                const touchY = event.touches[0].clientY;
+                const deltaY = touchY - touchStartY;
+                leftPaddleY += deltaY;
+                // Ensure the paddle stays within the canvas boundaries
+                leftPaddleY = Math.min(canvas.height - paddleHeight, Math.max(0, leftPaddleY));
+                touchStartY = touchY; // Update the initial touch position   
             });
 
             // Touchend event
@@ -185,13 +187,11 @@
             function resetBall() {
                 centerBall();
                 pauseGame();
-                // hideBall();
                 scoreDisplay = true
                 setTimeout(()=>{
                 scoreDisplay = false
                 },2000)
                 setTimeout(() => {
-                    
                     resumeGame();
                 }, 2500);
                 
