@@ -3,8 +3,11 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"dev": "vite dev --host",
-		"build": "prisma generate && vite build",
+		"prisma:inline": "cp ./node_modules/.prisma/client/*.js ./node_modules/@prisma/client",
+		"prisma:migrate": "prisma migrate deploy && npm run prisma:inline",
+		"prisma:migrate:dev": "prisma migrate dev && npm run prisma:inline",
+		"dev": "vite dev",
+		"build": "prisma generate && npm run prisma:inline && vite build",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
