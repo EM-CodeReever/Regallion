@@ -1,5 +1,5 @@
 import type { PageServerLoad } from './$types';
-import { prisma } from '$lib/index';
+// import { prisma } from '$lib/index';
 
 
 export const load = (async ({locals:{getSession}}) => {
@@ -18,19 +18,20 @@ export const actions = { updateProfile: async ({ request }) => {
       const sessionUserEmail = formData.get('sessionUserEmail');
         console.log(firstName);
         
-      let profile = await prisma.profile.create({
-            data: {
-               auth_user_id: sessionUserId as string,
-               auth_email: sessionUserEmail as string,
-               avatar: '',
-               created_at: new Date(),
-               date_of_birth: new Date(dateOfBirth as string),
-               first_name: firstName as string,
-               gender: 'RNS',
-               last_name: lastName as string,
-               username: username as string,
-            },
-        });
+        let profile = firstName;
+      // let profile = await prisma.profile.create({
+      //       data: {
+      //          auth_user_id: sessionUserId as string,
+      //          auth_email: sessionUserEmail as string,
+      //          avatar: '',
+      //          created_at: new Date(),
+      //          date_of_birth: new Date(dateOfBirth as string),
+      //          first_name: firstName as string,
+      //          gender: 'RNS',
+      //          last_name: lastName as string,
+      //          username: username as string,
+      //       },
+      //   });
         if (profile) {
             console.log(profile);
         
