@@ -237,7 +237,8 @@
 
 <section class="flex flex-col space-y-5 justify-center items-center relative" style="height: calc(100vh - 5rem);">
     <!-- <button class="btn" on:click={()=>{ballColor = "#fff"}}>chanege cocl</button> -->
-    <div class="w-full flex justify-between px-10 items-center h-20 rounded-xl bg-[#ffffff79] blur-bg text-black">
+    <p class="text-lg mx-auto text-center p-3 ping-pong-breakpoint:tall:hidden">Ping pong game is not avaliable on screens widths smaller than 820px and screen heights smaller than 768px ... sorry.</p>
+    <div class="w-full justify-between px-10 items-center h-20 rounded-xl bg-[#ffffff79] blur-bg text-black hidden ping-pong-breakpoint:tall:flex">
         <p class="font-sans text-lg badge light info cornered">{userProfile?.username} - {playerScore}</p>
         {#if !paused || gameEnded}
         <button class="btn light bw" on:click={()=>{pauseGame()}}>
@@ -254,7 +255,7 @@
         {/if}
         <p class="font-sans text-lg badge light warn cornered">Computer - {computerScore}</p>
     </div>
-    <canvas id="pingPongCanvas" class="rounded-xl relative hidden ping-pong-breakpoint:flex" height="500" width="800">
+    <canvas id="pingPongCanvas" class="rounded-xl relative hidden ping-pong-breakpoint:tall:flex" height="500" width="800">
     </canvas>
 
     {#if scoreDisplay && !gameEnded}
@@ -263,13 +264,13 @@
     </div>
     {/if}
     {#if !gameStarted}
-    <button class="btn lg bw solid absolute mx-auto my-auto" on:click={()=>{
+    <button class="btn lg bw solid absolute mx-auto my-auto hidden ping-pong-breakpoint:tall:flex" on:click={()=>{
         startGame()
         gameStarted = true
     }}>Start Game</button>
     {/if}
     {#if gameEnded}
-    <div in:fly={{delay:0,duration:500,y:300,opacity:0}} class="z-50 text-7xl text-center font-bold flex flex-col space-y-5 justify-center items-center absolute mx-auto my-auto">
+    <div in:fly={{delay:0,duration:500,y:300,opacity:0}} class="z-50 text-7xl text-center font-bold flex flex-col space-y-5 justify-center items-center absolute mx-auto my-auto ping-pong-breakpoint:tall:flex">
         {winner} Wins! <br>
         {playerScore} - {computerScore}
         <button class="btn lg bw solid" on:click={()=>{
