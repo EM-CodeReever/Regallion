@@ -66,6 +66,15 @@
                 }
                 const mouseY = event.clientY - canvas.getBoundingClientRect().top;
                 leftPaddleY = mouseY - paddleHeight / 2;
+
+                canvas.addEventListener("touchmove", (event) => {
+                event.preventDefault(); // Prevent scrolling or other default touch behavior
+                if (!paused) {
+                    const touch = event.touches[0];
+                    const mouseY = touch.clientY - canvas.getBoundingClientRect().top;
+                    leftPaddleY = mouseY - paddleHeight / 2;
+                }
+            });
             });
 
             // Update paddle positions
