@@ -17,14 +17,14 @@
     // $: console.log(z.string().email().safeParse(email));
     
     const handleSignIn = async (type: 'email' | 'github') => {
-        loginProcessing = true
-        let {success} = z.string().email().safeParse(email)
-        if(!success){
-            errorText = "Please enter a valid email"
-            loginProcessing = false
-            return
-        }
         if(type === 'email'){
+            loginProcessing = true
+            let {success} = z.string().email().safeParse(email)
+            if(!success){
+                errorText = "Please enter a valid email"
+                loginProcessing = false
+                return
+            }
             const {error} = await supabase.auth.signInWithPassword({
                 email,
                 password,
