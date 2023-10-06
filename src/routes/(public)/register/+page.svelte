@@ -2,21 +2,48 @@
     import { fade, fly } from 'svelte/transition';
     import type { PageData } from './$types';
     export let data: PageData;
+    import z from 'zod';
     let next = false;
+    let email: string
+    let password: string
+    let confirmPassword: string
+    let errorText = ""
 
-    
+    function validate(){
+        let {success} = z.string().email().safeParse(email)
+        if(!success){
+            errorText = "Please enter a valid email"
+            return false
+        }
+        if(password !== confirmPassword){
+            errorText = "Passwords do not match"
+            return false
+        }
+        let {success: success2} = z.string().min(8).safeParse(password)
+        if(!success2){
+            errorText = "Password must be at least 8 characters long"
+            return false
+        }
+        return true
+    }
+
+
+
     let { supabase } = data
     $: ({ supabase } = data)
 
-    let email: string
-    let password: string
+    
 
     const handleSignUp = async (type: 'email' | 'github') => {
+        if(!validate()){
+            return
+        }
         if(type === 'email'){
             await supabase.auth.signUp({
                 email,
                 password,
             })
+            next = true
         }
         if(type === 'github'){
             await supabase.auth.signInWithOAuth({
@@ -41,19 +68,17 @@
         
         <form class="grid gap-5 grid-cols-4 px-5 mt-10 w-full min-w-fit">
             <button class="btn light bw flex-grow w-full col-span-full" on:click={()=>{handleSignUp('github')}}>Sign Up with Github</button>
-            <div class="divider info col-span-full">or</div>
+            <div class="divider info col-span-full text-black">or</div>
             <p class="text-center font-semibold text-black col-span-full">Sign up with Email</p>
-            <!-- <input class="input solid info col-span-full sm:col-span-2" placeholder="First name" bind:value={firstname} />
-            <input class="input solid info col-span-full sm:col-span-2" placeholder="Last name" bind:value={lastname}/> -->
             <input class="input solid info col-span-full" placeholder="Email" bind:value={email}/>
-            <input class="input solid info col-span-full" placeholder="Choose password" bind:value={password}/>
+            <input class="input solid info col-span-full md:col-span-2" type="password" placeholder="Choose password" bind:value={password}/>
+            <input class="input solid info col-span-full md:col-span-2" type="password" placeholder="Confirm password" bind:value={confirmPassword}/>
 
             <div class="flex col-span-4 justify-between items-center">
-                <p class="text-red-700 font-semibold">error message and stuff</p>
-                <button class="btn solid info col-span-1 justify-self-end" 
+                <p class="text-red-700 font-thin">{errorText}</p>
+                <button class="btn light info col-span-1 justify-self-end" 
                 on:click={()=>{
                     handleSignUp('email')
-                    next = true
                     }}>Submit</button>
             </div>
             

@@ -3,6 +3,9 @@ export default {
   content: ['./src/**/*.{html,js,svelte,ts}'],
   theme: {
     extend: {},
+    screens: {
+      'ping-pong-breakpoint': '820px',
+    },
   },
   plugins: [
     require('@sira-ui/tailwind')({

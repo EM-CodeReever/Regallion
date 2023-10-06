@@ -1,3 +1,10 @@
+<!--
+This component represents the dashboard page of the Crestfallen web app. 
+It imports various Svelte components and libraries, including navigation functions, transitions, and toast notifications. 
+It also fetches a random quote from an external API and displays it on the page. 
+If the user's profile is incomplete, a modal is displayed prompting them to complete their profile. 
+The component exports a PageData object containing Supabase session and user profile data.
+-->
 <script lang="ts">
     import { goto, invalidateAll } from '$app/navigation';
     import { fade, fly } from 'svelte/transition';
@@ -8,6 +15,7 @@
     import DateInput from '$components/DateInput.svelte';
     import toast, { Toaster } from 'svelte-french-toast';
     import { enhance } from '$app/forms';
+    import z from 'zod';
     export let data: PageData;
     let { supabase, session, userProfile } = data;
     $: ({ supabase, session, userProfile } = data)
@@ -29,14 +37,44 @@
             completeProfileModal = true;
         }
     })
-
-    let username: string;
-    let firstName: string;
-    let lastName: string;
+    let errorText = "";
+    let username = "";
+    let firstName = "";
+    let lastName = "";
     let dateOfBirth: Date;
-    let userGender: 'RNS';
-    let phone: string;
+    let userGender = "";
+    let phone = "";
     let profileUpdateLoading = false;
+    
+    
+    function validate(){
+        
+        
+        if(!z.string().min(1).safeParse(firstName).success || !z.string().min(1).safeParse(lastName).success){
+            errorText = 'Please enter a first and last name'
+            return false
+        }
+        if(!z.string().min(1).safeParse(username).success){
+            errorText = 'Please enter a username'
+            return false
+        }
+        if(!z.string().min(1).safeParse(userGender).success){
+            errorText = 'Please choose a gender option'
+            return false
+        }
+        if(!dateOfBirth){
+            errorText = 'Please enter a valid date of birth'
+            return false
+        }
+        if(!z.string().min(1).safeParse(phone).success){
+            errorText = 'Please enter a phone number'
+            return false
+        }
+
+        return true
+    }
+
+    
     
     
 
@@ -47,7 +85,7 @@
     <title>Dashboard</title>
 </svelte:head>
 <Toaster />
-<section class="w-full h-fit px-3 lg:px-36 pt-10 lg:pt-24 pb-6">
+<section class="w-full h-fit min-h-screen px-3 lg:px-36 pt-10 lg:pt-24 pb-6">
     <div class="flex justify-between items-center">
         <h1 class="text-3xl font-bold text-white">Dashboard</h1>
             <button class="btn light bw" on:click={()=>{aboutModal = !aboutModal}}>
@@ -55,16 +93,27 @@
             </button>
     </div>
     <div class="divider blankWhite" />
-    <div class="w-full h-fit flex flex-col lg:flex-row space-y-3 lg:space-y-0 lg:space-x-5 mt-5">
-        <div class="h-56 rounded-xl w-full bg-[#ffffffc0] blur-bg flex flex-col justify-center items-center text-gray-800">
-            <p class="text-2xl font-semibold">Total Projects Completed</p>
-            <p class="text-4xl font-bold">0</p>
+    <div class="w-full h-fit flex flex-col md:grid md:grid-cols-5 gap-4">
+        <div class="flex gap-4 md:hidden">
+            <div class="h-32 col-span-2 rounded-xl w-full bg-[#ffffffc0] blur-bg flex flex-col justify-center items-center text-gray-800">
+                <p class="text-center font-semibold">Total Projects Completed</p>
+                <p class="text-3xl xl:text-4xl font-bold">0</p>
+            </div>
+            <div class="h-32 col-span-2 rounded-xl w-full bg-[#ffffffc0] blur-bg flex flex-col justify-center items-center text-gray-800">
+                <img class="aspect-ratio w-16 rounded-full" src="https://robohash.org/{userProfile?.username}" alt="">
+                <!-- <p class="text-2xl font-semibold text-black">CF Social</p> -->
+                <a href="/profile" class="text-sm hover:underline font-bold text-purple-700">Go to Feed</a>
+            </div>
         </div>
-        <div class="h-56 rounded-xl w-full bg-[#ffffffc0] blur-bg flex flex-col justify-center items-center text-gray-800">
-            <p class="text-2xl font-semibold">Latest Project Completed</p>
+        <div class="h-56 col-span-3 rounded-xl w-full bg-[#ffffffc0] blur-bg flex flex-col justify-center items-center text-gray-800">
+            <p class="text-xl text-center font-semibold">Latest Project Completed</p>
             <a href="/profile" class="text-sm hover:underline font-bold text-purple-700">Some random project name</a>
         </div>
-        <div class="h-56 rounded-xl w-full bg-[#ffffffc0] blur-bg flex flex-col justify-center items-center">
+        <div class="h-56 col-span-1 rounded-xl w-full bg-[#ffffffc0] blur-bg md:flex flex-col justify-center items-center hidden text-gray-800">
+            <p class="text-center font-semibold">Total Projects Completed</p>
+            <p class="text-3xl xl:text-4xl font-bold">0</p>
+        </div>
+        <div class="h-56 col-span-1 rounded-xl w-full bg-[#ffffffc0] blur-bg md:flex flex-col justify-center items-center hidden">
             <img class="aspect-ratio w-16 rounded-full" src="https://robohash.org/{userProfile?.username}" alt="">
             <p class="text-2xl font-semibold text-black">CF Social</p>
             <a href="/profile" class="text-sm hover:underline font-bold text-purple-700">Go to Feed</a>
@@ -94,8 +143,7 @@
       <h2 class="text-xl text-center font-semibold">About Crestfallen</h2>
       <span>
         Hi, my name is <b> Elliot Morrison👋</b> <br><br> I wanted to make a web-app with Sveltekit, where I could play around with the features, UI libraries, design, and showcase some mini coding projects<br><br>... as well as other random ideas I'd want to implement. <br><br>This is the result of that desire. Looking to add more projects as time goes by. I hope you enjoy it.
-        </span
-      >
+        </span>
       <div class="flex justify-end">
         <button class="btn solid grapePurple "  on:click={()=>{aboutModal = !aboutModal}}>Ok cool 👍</button>
       </div>
@@ -107,7 +155,14 @@
     <label for="modal" class="modal-overlay show"></label>
     <!-- show class here will make modal visible -->
 
-    <form in:fly={{delay:200, duration: 1500, y:300}} method="POST" action="?/updateProfile" class="modal w-full lg:w-fit flex flex-col gap-5 show" use:enhance={()=>{
+    <form in:fly={{delay:200, duration: 1500, y:300}} method="POST" action="?/updateProfile" class="modal w-full lg:w-fit flex flex-col gap-5 show" use:enhance={({cancel})=>{
+        
+        if(!validate()){
+            profileUpdateLoading = false;
+            cancel()
+            return
+        }
+        
         return ({result,})=>{
             if(result){
                 profileUpdateLoading = false;
@@ -140,7 +195,7 @@
         
       </div>
       <div class="flex justify-between items-center">
-        <p class="text-red-600 text-sm ml-2">Errors go here when validated</p>
+        <p class="text-red-600 text-sm ml-2">{errorText}</p>
         <button class="btn solid grapePurple {profileUpdateLoading? 'is-loading' : ''}" type="submit" on:click={()=>{profileUpdateLoading = !profileUpdateLoading}}>
             {#if !profileUpdateLoading}
             Done 👌

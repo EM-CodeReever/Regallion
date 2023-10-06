@@ -63,7 +63,7 @@
     <div class="drawer left" id="drawer-left">
       <div class="content flex flex-col h-full">
         <label class="btn sm circle grapePurple solid absolute right-3 top-3" on:click={()=>{toggleDrawer('left')}}>✕</label>
-        <h2 class="text-xl text-white">Pages</h2>
+        <h2 class="text-xl text-white">Projects</h2>
         <div class="is-divider" role="separator"></div>
         <div class="grid grid-cols-2 gap-8 grid-flow-row w-72 mt-10 mx-auto">
           <div class="btn ghost w-32 h-32 grapePurple rounded-lg col-span-1 flex flex-col">

@@ -2,25 +2,36 @@
     import { goto } from '$app/navigation';
     import type { PageData } from './$types';
     export let data: PageData;
+    import z from 'zod';
     let { supabase } = data
     $: ({ supabase } = data)
     let email: string
     let password: string
-
+    let loginProcessing = false
+    let errorText = ""
 
     supabase.auth.getSession().then((session) => {
         console.log(session);
         
     })
-
+    // $: console.log(z.string().email().safeParse(email));
+    
     const handleSignIn = async (type: 'email' | 'github') => {
+        loginProcessing = true
+        let {success} = z.string().email().safeParse(email)
+        if(!success){
+            errorText = "Please enter a valid email"
+            loginProcessing = false
+            return
+        }
         if(type === 'email'){
             const {error} = await supabase.auth.signInWithPassword({
                 email,
                 password,
             })
             if(error){
-                console.log(error)
+                errorText = error.message
+                loginProcessing = false
             }else{
                 goto('/dashboard')
             }
@@ -50,7 +61,7 @@
         <!-- change this span to a form in the future -->
         <span class="flex flex-col space-y-7 px-5 mt-10 w-full">
             <div class="input info solid">
-                <div style="color: #FA7268;">Username</div>
+                <div style="color: #FA7268;">Email</div>
                 <div class="is-divider" style="background-color: #FA7268;" />
                 <input class="text-[#FA7268]" bind:value={email} />
                 <svg
@@ -76,8 +87,10 @@
                 >
                 </svg>
             </div>
-
-            <button class="btn sunsetFire solid ml-auto" on:click={()=>{handleSignIn('email')}}>Login</button>
+            <div class="flex justify-between items-center">
+                <p class="text-red-600 text-sm font-thin">{errorText}</p>
+                <button class="btn sunsetFire solid ml-auto {loginProcessing? 'is-loading' : ''}" on:click={()=>{handleSignIn('email')}}>Login</button>
+            </div>
         </span>
     </div>
 </section>

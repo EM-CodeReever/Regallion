@@ -17,23 +17,24 @@ export const actions = { updateProfile: async ({ request }) => {
       const sessionUserId = formData.get('sessionUserId');
       const sessionUserEmail = formData.get('sessionUserEmail');
         
-      let profile = await prisma.profile.create({
-            data: {
-               auth_user_id: sessionUserId as string,
-               auth_email: sessionUserEmail as string,
-               avatar: '',
-               created_at: new Date(),
-               date_of_birth: new Date(dateOfBirth as string),
-               first_name: firstName as string,
-               gender: gender as string,
-               last_name: lastName as string,
-               username: username as string,
-            },
-        });
-        if (profile) {
-            return { success: true };
-        }else{
-            return { success: false };
-        }
+      // let profile = await prisma.profile.create({
+      //       data: {
+      //          auth_user_id: sessionUserId as string,
+      //          auth_email: sessionUserEmail as string,
+      //          avatar: '',
+      //          created_at: new Date(),
+      //          date_of_birth: new Date(dateOfBirth as string),
+      //          first_name: firstName as string,
+      //          gender: gender as string,
+      //          last_name: lastName as string,
+      //          username: username as string,
+      //       },
+      //   });
+      //   if (profile) {
+      //       return { success: true };
+      //   }else{
+      //       return { success: false };
+      //   }
+      return { success: true };
     },
   };
