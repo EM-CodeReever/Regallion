@@ -1,6 +1,6 @@
 import type { PageServerLoad } from './$types';
 import { prisma } from '$lib/index';
-import type { gender } from '@prisma/client';
+
 
 export const load = (async ({locals:{getSession}}) => {
     return {};
@@ -26,7 +26,7 @@ export const actions = { updateProfile: async ({ request }) => {
                created_at: new Date(),
                date_of_birth: new Date(dateOfBirth as string),
                first_name: firstName as string,
-               gender: gender as gender,
+               gender: 'RNS',
                last_name: lastName as string,
                username: username as string,
             },

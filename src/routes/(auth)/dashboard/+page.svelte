@@ -6,7 +6,7 @@
     import ChooseUsername  from '$components/ChooseUsername.svelte';
     import { onMount } from 'svelte';
     import LabelledInput from '$components/LabelledInput.svelte';
-    import { gender } from '@prisma/client';
+    import { Gender } from '$lib';
     import DateInput from '$components/DateInput.svelte';
     import toast, { Toaster } from 'svelte-french-toast';
     import { enhance } from '$app/forms';
@@ -36,7 +36,7 @@
     let firstName: string;
     let lastName: string;
     let dateOfBirth: Date;
-    let userGender: gender;
+    let userGender: 'RNS';
     let phone: string;
     let profileUpdateLoading = false;
     
@@ -134,9 +134,9 @@
         <ChooseUsername name="username" bind:username />
         <select bind:value={userGender} name="gender" class="select solid grapePurple col-span-full sm:col-span-1">
             <option selected disabled>Gender</option>
-            <option value={gender.MALE}>Male</option>
-            <option value={gender.FEMALE}>Female</option>
-            <option value={gender.RNS}>Rather not say</option>
+            <option value={Gender.MALE}>Male</option>
+            <option value={Gender.FEMALE}>Female</option>
+            <option value={Gender.RNS}>Rather not say</option>
         </select>
         <DateInput name="dateOfBirth" label="Date of Birth" bind:data={dateOfBirth} />
         <LabelledInput placeholder="Enter phone number" name="phoneNumber" label="📞" bind:data={phone} />
