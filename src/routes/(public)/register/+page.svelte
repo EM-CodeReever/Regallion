@@ -1,9 +1,7 @@
 <script lang="ts">
-    import { goto } from '$app/navigation';
     import { fade, fly } from 'svelte/transition';
     import type { PageData } from './$types';
     export let data: PageData;
-    let loading = false;
     let next = false;
 
     

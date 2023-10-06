@@ -1,7 +1,6 @@
 <script lang="ts">
         import type { PageData } from './$types';
         export let data: PageData;
-        import { type Profile } from '@prisma/client';
         let { supabase, session,userProfile } = data;
 
 </script>
