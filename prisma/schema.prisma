@@ -285,7 +285,7 @@ model Profile {
   id            BigInt    @id(map: "User_pkey") @default(autoincrement())
   auth_user_id  String?   @db.Uuid
   date_of_birth DateTime? @db.Date
-  gender        gender?
+  gender        String?   @default("") @db.VarChar
   auth_email    String?   @db.VarChar
   users         users?    @relation(fields: [auth_user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
