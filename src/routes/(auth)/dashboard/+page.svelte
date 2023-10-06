@@ -2,11 +2,9 @@
     import { goto, invalidateAll } from '$app/navigation';
     import { fade, fly } from 'svelte/transition';
     import type { PageData } from '../dashboard/$types';
-    import type { LayoutData } from '../$types';
     import ChooseUsername  from '$components/ChooseUsername.svelte';
     import { onMount } from 'svelte';
     import LabelledInput from '$components/LabelledInput.svelte';
-    // import { Gender } from '$lib';
     import DateInput from '$components/DateInput.svelte';
     import toast, { Toaster } from 'svelte-french-toast';
     import { enhance } from '$app/forms';
@@ -67,8 +65,7 @@
             <a href="/profile" class="text-sm hover:underline font-bold text-purple-700">Some random project name</a>
         </div>
         <div class="h-56 rounded-xl w-full bg-[#ffffffc0] blur-bg flex flex-col justify-center items-center">
-            <!-- <img class="aspect-ratio w-16 rounded-full" src="https://robohash.org/{userProfile?.username}" alt=""> -->
-            <img class="aspect-ratio w-16 rounded-full" src="https://robohash.org/cope" alt="">
+            <img class="aspect-ratio w-16 rounded-full" src="https://robohash.org/{userProfile?.username}" alt="">
             <p class="text-2xl font-semibold text-black">CF Social</p>
             <a href="/profile" class="text-sm hover:underline font-bold text-purple-700">Go to Feed</a>
         </div>
@@ -121,7 +118,6 @@
             // update({reset: true})
         }
     }}>
-      <!-- <button class="absolute right-4 top-3" on:click={()=>{completeProfileModal = !completeProfileModal}}>✕</button> -->
       <h2 class="text-xl text-center font-semibold">Complete your profile</h2>
       <p class="semibold">Before you can explore the rest of the app, please add some additional data to complete your profile</p>
       <div class="grid grid-cols-4 grid-flow-row gap-4 lg:gap-8">
