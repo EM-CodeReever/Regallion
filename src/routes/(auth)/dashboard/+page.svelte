@@ -67,7 +67,8 @@
             <a href="/profile" class="text-sm hover:underline font-bold text-purple-700">Some random project name</a>
         </div>
         <div class="h-56 rounded-xl w-full bg-[#ffffffc0] blur-bg flex flex-col justify-center items-center">
-            <img class="aspect-ratio w-16 rounded-full" src="https://robohash.org/{userProfile?.username}" alt="">
+            <!-- <img class="aspect-ratio w-16 rounded-full" src="https://robohash.org/{userProfile?.username}" alt=""> -->
+            <img class="aspect-ratio w-16 rounded-full" src="https://robohash.org/cope" alt="">
             <p class="text-2xl font-semibold text-black">CF Social</p>
             <a href="/profile" class="text-sm hover:underline font-bold text-purple-700">Go to Feed</a>
         </div>

@@ -37,11 +37,13 @@
         <div class="p-5">
             <div class="dropdown bw">
             <button class="avatar ring success" tabindex="0">
-                <img alt="avatar" src="https://robohash.org/{userProfile?.username}" />
+                <!-- <img alt="avatar" src="https://robohash.org/{userProfile?.username}" /> -->
+                <img alt="avatar" src="https://robohash.org/cope" />
             </button>
             <div class="menu bottom-left" style="width: 20rem;">
                 <p class="subtitle text-center">Signed in as: <span class="font-bold text-success-800">
-                  {userProfile?.username}
+                  <!-- {userProfile?.username} -->
+                  im coping
                 </span></p>
                 <div class="is-divider" role="separator"></div>
                 <button class="item text-sm btn" tabindex="-1" on:click={()=>{goto('dashboard')}}>Dashboard</button>
