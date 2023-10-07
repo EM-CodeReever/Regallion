@@ -36,7 +36,7 @@
         </div>
         <div class="p-5">
             <div class="dropdown bw">
-            <button class="avatar ring success" tabindex="0">
+            <button class="avatar ring-1" tabindex="0">
                 <img alt="avatar" src="https://robohash.org/{userProfile?.username}" />
             </button>
             <div class="menu bottom-left" style="width: 20rem;">
@@ -46,13 +46,13 @@
                 <div class="is-divider" role="separator"></div>
                 <button class="item text-sm btn" tabindex="-1" on:click={()=>{goto('dashboard')}}>Dashboard</button>
                 <button class="item text-sm btn" tabindex="-1" on:click={()=>{goto('profile')}}>Profile</button>
-                <button class="item text-sm btn" tabindex="-1">Account settings</button>
+                <button class="item text-sm btn" tabindex="-1" on:click={()=>{goto('account-settings')}}>Account Settings</button>
                 <button class="item text-sm btn" tabindex="-1" on:click={()=>{logOut()}}>Logout</button>
               </div>
             </div>
         </div>
     </nav>
-    <div class=" wave-purple h-fit w-full pt-20  flex justify-center items-center">
+    <div class=" wave-purple h-fit w-full pt-20 flex justify-center items-center">
         <slot />
     </div>
   </section>
