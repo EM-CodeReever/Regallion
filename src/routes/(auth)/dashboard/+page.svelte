@@ -107,16 +107,16 @@ The component exports a PageData object containing Supabase session and user pro
         </div>
         <div class="h-56 col-span-3 rounded-xl w-full bg-[#ffffffc0] blur-bg flex flex-col justify-center items-center text-gray-800">
             <p class="text-xl text-center font-semibold">Latest Project Completed</p>
-            <a href="/profile" class="text-sm hover:underline font-bold text-purple-700">Some random project name</a>
+            <a href="/ping-pong" class="text-sm hover:underline font-bold text-purple-700">Ping Pong Game</a>
         </div>
         <div class="h-56 col-span-1 rounded-xl w-full bg-[#ffffffc0] blur-bg md:flex flex-col justify-center items-center hidden text-gray-800">
             <p class="text-center font-semibold">Total Projects Completed</p>
-            <p class="text-3xl xl:text-4xl font-bold">0</p>
+            <p class="text-3xl xl:text-4xl font-bold">2</p>
         </div>
         <div class="h-56 col-span-1 rounded-xl w-full bg-[#ffffffc0] blur-bg md:flex flex-col justify-center items-center hidden">
-            <img class="aspect-ratio w-16 rounded-full" src="https://robohash.org/{userProfile?.username}" alt="">
-            <p class="text-2xl font-semibold text-black">CF Social</p>
-            <a href="/profile" class="text-sm hover:underline font-bold text-purple-700">Go to Feed</a>
+            <img class="aspect-ratio w-16" src="/cf_social_logo.png" alt="">
+            <p class="text-2xl italic font-extrabold underline text-black">Cf Social</p>
+            <a href="/profile" class="text-sm hover:underline font-bold text-purple-700">Coming Soon</a>
         </div>
     </div>
     <div class="flex justify-center items-center w-full h-72">
