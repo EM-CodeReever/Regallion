@@ -22,8 +22,8 @@ export const actions = { sendContactMail: async ({ request }) => {
 
     const transporter = nodemailer.createTransport({
         host,
-        port: 587,
-        secure: false,
+        port: 465,
+        secure: true,
         requireTLS: true,
         auth: {
         user: sender,
