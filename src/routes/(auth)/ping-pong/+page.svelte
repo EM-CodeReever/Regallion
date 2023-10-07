@@ -2,19 +2,41 @@
     import { browser } from '$app/environment';
     import { fly } from 'svelte/transition';
     import type { PageData } from './$types';
+
+    
     //ball speed 20 and ball size 8 and paddle speed 10 is hard mode
     //ball speed 10 and ball size 10 and paddle speed 5 is easy mode
     export let data: PageData;
     let { userProfile } = data
-
-    let ballColor = "#fff" 
+    let showOptionsModal = false
+    let colorChoice = "#ffffff"
+    let chosenBallSpeed = 10;
+    let chosenBallSize = 10;
+    let chosenPaddleSpeed = 5;
+    let choosenDifficulty: "easy" | "hard" | "unfair" = "easy";
     let paused = false;
     let scoreDisplay = false
     let gameStarted = false
     let gameEnded = false
     let winner = ""
+    let pointsToWin = 3
 
-
+    function setDifficulty(type: 'easy' | 'hard'| 'unfair'){
+        if(type === 'easy'){
+                chosenBallSpeed = 10
+                chosenBallSize = 10
+                chosenPaddleSpeed = 5
+            }else if(type === 'hard'){
+                chosenBallSpeed = 20
+                chosenBallSize = 8
+                chosenPaddleSpeed = 10
+            }else if(type === 'unfair'){
+                chosenBallSpeed = 21
+                chosenBallSize = 8
+                chosenPaddleSpeed = 50
+            }
+        showOptionsModal = !showOptionsModal
+    }
 
     let playerScore = 0;
     let computerScore = 0;
@@ -27,6 +49,7 @@
     let pauseGame = function (){}
     let resumeGame = function (){}
     let centerBall = function (){}
+    
 
     function startGame(){
         let touchStartY: any
@@ -40,14 +63,14 @@
             const paddleHeight = 100;
             let leftPaddleY = canvas.height / 2 - paddleHeight / 2;
             let rightPaddleY = canvas.height / 2 - paddleHeight / 2;
-            const paddleSpeed = 10;
+            let paddleSpeed = chosenPaddleSpeed;
 
             // Ball properties
-            const ballSize = 8;
+            let ballSize = chosenBallSize;
             let ballX = canvas.width / 2;
             let ballY = canvas.height / 2;
-            let ballSpeedX = 20;
-            let ballSpeedY = 20;
+            let ballSpeedX = chosenBallSpeed;
+            let ballSpeedY = chosenBallSpeed;
 
             // Scores
             playerScore = 0;
@@ -70,7 +93,7 @@
                 leftPaddleY = mouseY - paddleHeight / 2;
             });
 
-             // Variable to store the initial touch position
+            // Variable to store the initial touch position
 
             // Touchstart event
             canvas.addEventListener("touchstart", (event) => {
@@ -144,7 +167,7 @@
                     // Ball went past the left paddle
                     if(!gameEnded){
                         computerScore++;
-                        if(computerScore >= 3){
+                        if(computerScore >= pointsToWin){
                             gameEnded = true
                             hideBall()
                             pauseGame()
@@ -157,7 +180,7 @@
                 } else if (ballX > canvas.width) {
                     // Ball went past the right paddle
                     playerScore++;
-                    if(playerScore == 3){
+                    if(playerScore == pointsToWin){
                         gameEnded = true
                         hideBall()
                         pauseGame()
@@ -202,8 +225,8 @@
                 paused = true
             }
             resumeGame = () => {
-                ballSpeedX = 20;
-                ballSpeedY = 20;
+                ballSpeedX = chosenBallSpeed;
+                ballSpeedY = chosenBallSpeed;
                 paused = false
             }
             // Draw the canvas
@@ -212,7 +235,7 @@
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
                 // Draw paddles
-                ctx.fillStyle = ballColor;
+                ctx.fillStyle = colorChoice;
                 ctx.fillRect(0, leftPaddleY, paddleWidth, paddleHeight);
                 ctx.fillRect(canvas.width - paddleWidth, rightPaddleY, paddleWidth, paddleHeight);
 
@@ -222,7 +245,7 @@
                 ctx.fill();
 
             }
-
+            
             // Start the game loop
             gameLoop();
             }
@@ -236,10 +259,10 @@
 </svelte:head>
 
 <section class="flex flex-col space-y-5 justify-center items-center relative" style="height: calc(100vh - 5rem);">
-    <!-- <button class="btn" on:click={()=>{ballColor = "#fff"}}>chanege cocl</button> -->
+    <button class="btn bw light" disabled={!gameEnded && gameStarted}  on:click={()=>{showOptionsModal = !showOptionsModal}}>Options</button>
     <p class="text-lg mx-auto text-center p-3 ping-pong-breakpoint:tall:hidden">Ping pong game is not avaliable on screens widths smaller than 820px and screen heights smaller than 768px ... sorry.</p>
-    <div class="w-full justify-between px-10 items-center h-20 rounded-xl bg-[#ffffff79] blur-bg text-black hidden ping-pong-breakpoint:tall:flex">
-        <p class="font-sans text-lg badge light info cornered">{userProfile?.username} - {playerScore}</p>
+    <div class="w-full justify-between space-x-10 px-10 items-center h-20 rounded-xl bg-[#ffffff79] blur-bg text-black hidden ping-pong-breakpoint:tall:flex">
+        <p class="font-sans text-lg badge light info cornered w-full">{userProfile?.username} - {playerScore}</p>
         {#if !paused || gameEnded}
         <button class="btn light bw" on:click={()=>{pauseGame()}}>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -253,7 +276,7 @@
               </svg>                          
         </button>
         {/if}
-        <p class="font-sans text-lg badge light warn cornered">Computer - {computerScore}</p>
+        <p class="font-sans text-lg badge light warn cornered w-full">Computer - {computerScore}</p>
     </div>
     <canvas id="pingPongCanvas" class="rounded-xl relative hidden ping-pong-breakpoint:tall:flex" height="500" width="800">
     </canvas>
@@ -284,6 +307,46 @@
 
     {/if}
 </section>
+
+    <div>
+    <!-- remove `modal-overlay` element will make modal opened without overlay -->
+    <label class="modal-overlay"></label>
+    <!-- show class here will make modal visible -->
+    <div class="modal flex flex-col gap-5 w-full max-w-lg {showOptionsModal ? 'show' : ''}">
+      <!-- <button class="absolute btn light bw right-4 top-3">✕</button> -->
+      <h2 class="text-xl font-semibold text-center">Game Options</h2>
+        
+        <div class="flex w-full justify-between items-center p-3">
+            <label for="difficulty">Difficulty</label>
+            <select bind:value={choosenDifficulty} name="difficulty" id="difficulty" class="input grapePurple solid w-48">
+                <option value="easy">Easy</option>
+                <option value="hard">Hard</option>
+                <option value="unfair">Unfair</option>
+            </select>
+        </div>
+        <div class="flex w-full justify-between items-center p-3">
+            <label for="ballColor">Ball Color</label>
+            <input bind:value={colorChoice} type="color" name="ballColor" class="input h-10 grapePurple solid w-48" >
+        </div>
+        <div class="flex justify-between items-center p-3">
+            <label for="pointsToWin">Points to Win</label>
+            <select bind:value={pointsToWin} name="pointsToWin" id="pointsToWin" class="input grapePurple solid w-48">
+                <option value="1">1</option>
+                <option value="3">3</option>
+                <option value="5">5</option>
+                <option value="7">7</option>
+                <option value="10">10</option>
+            </select>
+        </div>
+        
+          <div class="flex gap-3">
+        <button class="btn light bw flex-1" on:click={()=>{showOptionsModal = !showOptionsModal}}>Cancel</button>
+        <button class="btn solid grapePurple flex-1" on:click={()=>{setDifficulty(choosenDifficulty)}}>Save</button>
+      </div>
+    </div>
+  </div>
+
+
 <style>
     canvas {
     background-color: #111;
