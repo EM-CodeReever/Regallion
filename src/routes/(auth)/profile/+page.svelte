@@ -46,14 +46,15 @@
                 </div>
                 <div class="divider text-xl">Posts</div>
                 <div class="w-full h-fit flex flex-col justify-center items-center space-y-5 p-10 ">
-                    <div class="h-96 w-full max-w-2xl flex-none flex-grow bg-slate-500 rounded-xl mt-10"></div>
+                    No posts yet
+                    <!-- <div class="h-96 w-full max-w-2xl flex-none flex-grow bg-slate-500 rounded-xl mt-10"></div>
                     <div class="divider"></div>
                     <div class="h-96 w-full max-w-2xl flex-none flex-grow bg-slate-500 rounded-xl mt-10"></div>
                     <div class="divider"></div>
                     <div class="h-96 w-full max-w-2xl flex-none flex-grow bg-slate-500 rounded-xl mt-10"></div>
                     <div class="divider"></div>
                     <div class="h-96 w-full max-w-2xl flex-none flex-grow bg-slate-500 rounded-xl mt-10"></div>
-                    <div class="divider"></div>
+                    <div class="divider"></div> -->
 
                 </div>
 
