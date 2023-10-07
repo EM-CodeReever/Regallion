@@ -2,17 +2,16 @@
     import { browser } from '$app/environment';
     import { fly } from 'svelte/transition';
     import type { PageData } from './$types';
-
-    
-    //ball speed 20 and ball size 8 and paddle speed 10 is hard mode
-    //ball speed 10 and ball size 10 and paddle speed 5 is easy mode
     export let data: PageData;
     let { userProfile } = data
+
     let showOptionsModal = false
-    let colorChoice = "#ffffff"
-    let chosenBallSpeed = 10;
+    let playerPaddleColor = "#0091FF"
+    let computerPaddleColor = "#F76808"
+    let chosenBallColor = "#ffffff"
+    let chosenBallSpeed = 14;
     let chosenBallSize = 10;
-    let chosenPaddleSpeed = 5;
+    let chosenPaddleSpeed = 4;
     let choosenDifficulty: "easy" | "hard" | "unfair" = "easy";
     let paused = false;
     let scoreDisplay = false
@@ -23,9 +22,9 @@
 
     function setDifficulty(type: 'easy' | 'hard'| 'unfair'){
         if(type === 'easy'){
-                chosenBallSpeed = 10
+                chosenBallSpeed = 14
                 chosenBallSize = 10
-                chosenPaddleSpeed = 5
+                chosenPaddleSpeed = 4
             }else if(type === 'hard'){
                 chosenBallSpeed = 20
                 chosenBallSize = 8
@@ -59,8 +58,8 @@
             const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 
             // Paddle properties
-            const paddleWidth = 10;
-            const paddleHeight = 100;
+            const paddleWidth = 15;
+            const paddleHeight = 150;
             let leftPaddleY = canvas.height / 2 - paddleHeight / 2;
             let rightPaddleY = canvas.height / 2 - paddleHeight / 2;
             let paddleSpeed = chosenPaddleSpeed;
@@ -235,11 +234,33 @@
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
                 // Draw paddles
-                ctx.fillStyle = colorChoice;
-                ctx.fillRect(0, leftPaddleY, paddleWidth, paddleHeight);
-                ctx.fillRect(canvas.width - paddleWidth, rightPaddleY, paddleWidth, paddleHeight);
+                // ctx.fillStyle = colorChoice;
+                // ctx.fillRect(0, leftPaddleY, paddleWidth, paddleHeight);
+                // ctx.fillRect(canvas.width - paddleWidth, rightPaddleY, paddleWidth, paddleHeight);
+
+                ctx.fillStyle = playerPaddleColor; // Paddle color
+                ctx.beginPath();
+                ctx.moveTo(0, leftPaddleY);
+                ctx.arcTo(0, leftPaddleY, paddleWidth / 2, leftPaddleY + paddleHeight, 0); // Adjust the radius as needed
+                ctx.arcTo(0, leftPaddleY + paddleHeight, paddleWidth, leftPaddleY + paddleHeight, 0); // Adjust the radius as needed
+                ctx.arcTo(paddleWidth / 1.75, leftPaddleY + paddleHeight, paddleWidth, leftPaddleY, 10); // Adjust the radius as needed
+                ctx.arcTo(paddleWidth / 1.75, leftPaddleY, paddleWidth / 2, leftPaddleY, 10); // Adjust the radius as needed
+                ctx.closePath();
+                ctx.fill();
+
+                // Draw the right paddle with rounded corners
+                ctx.fillStyle = computerPaddleColor; // Paddle color
+                ctx.beginPath();
+                ctx.moveTo(canvas.width, rightPaddleY);
+                ctx.arcTo(canvas.width - paddleWidth / 1.75, rightPaddleY, canvas.width - paddleWidth / 2, rightPaddleY + paddleHeight, 10); // Adjust the radius as needed
+                ctx.arcTo(canvas.width - paddleWidth / 1.75, rightPaddleY + paddleHeight, canvas.width, rightPaddleY + paddleHeight, 10); // Adjust the radius as needed
+                ctx.arcTo(canvas.width, rightPaddleY + paddleHeight, canvas.width, rightPaddleY, 10); // Adjust the radius as needed
+                ctx.arcTo(canvas.width, rightPaddleY, canvas.width - paddleWidth / 2, rightPaddleY, 0); // Adjust the radius as needed
+                ctx.closePath();
+                ctx.fill();
 
                 // Draw the ball
+                ctx.fillStyle = chosenBallColor;
                 ctx.beginPath();
                 ctx.arc(ballX, ballY, ballSize, 0, Math.PI * 2);
                 ctx.fill();
@@ -325,8 +346,16 @@
             </select>
         </div>
         <div class="flex w-full justify-between items-center p-3">
-            <label for="ballColor">Ball Color</label>
-            <input bind:value={colorChoice} type="color" name="ballColor" class="input h-10 grapePurple solid w-48" >
+            <label for="playerPaddleColor">Player paddle color</label>
+            <input bind:value={playerPaddleColor} type="color" name="ballColor" class="input h-10 grapePurple solid w-48" >
+        </div>
+        <div class="flex w-full justify-between items-center p-3">
+            <label for="computerPaddleColor">Computer paddle Color</label>
+            <input bind:value={computerPaddleColor} type="color" name="ballColor" class="input h-10 grapePurple solid w-48" >
+        </div>
+        <div class="flex w-full justify-between items-center p-3">
+            <label for="chosenBallColor">Ball Color</label>
+            <input bind:value={chosenBallColor} type="color" name="ballColor" class="input h-10 grapePurple solid w-48" >
         </div>
         <div class="flex justify-between items-center p-3">
             <label for="pointsToWin">Points to Win</label>
