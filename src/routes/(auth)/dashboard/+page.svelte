@@ -163,7 +163,7 @@ The component exports a PageData object containing Supabase session and user pro
             return
         }
         
-        return ({result,})=>{
+        return ({result})=>{
             if(result){
                 profileUpdateLoading = false;
                 completeProfileModal = false;
