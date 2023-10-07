@@ -24,7 +24,7 @@ export const actions = { sendContactMail: async ({ request }) => {
         host,
         port: 465,
         secure: true,
-        requireTLS: true,
+        // requireTLS: true,
         auth: {
         user: sender,
         pass: PUBLIC_HOSTINGER_EMAIL_PASSWORD,
