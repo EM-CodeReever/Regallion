@@ -94,13 +94,3 @@
         </span>
     </div>
 </section>
-
-<style>
-    .custom-box-shadow{
-        box-shadow: 6px 6px 30px 0 rgba(0,0,0,0.3);
-    }
-    .blur-bg {
-    -webkit-backdrop-filter: blur(7px);
-    backdrop-filter: blur(7px);
-    }
-  </style>

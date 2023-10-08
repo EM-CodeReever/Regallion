@@ -21,10 +21,12 @@ The component exports a PageData object containing Supabase session and user pro
     $: ({ supabase, session, userProfile } = data)
     let aboutModal = false;
     let completeProfileModal = false;
+    let showContent = false;
     let quote = "";
     let author = "";
     let quotePromise: Promise<any>;
     onMount(()=>{
+        showContent = true;
         quotePromise = fetch('https://stoic-quotes.com/api/quote').then(res => res.json()).then(data => {
         quote = data.text;
         author = data.author;
@@ -45,7 +47,6 @@ The component exports a PageData object containing Supabase session and user pro
     let userGender = "";
     let phone = "";
     let profileUpdateLoading = false;
-    
     
     function validate(){
         
@@ -85,48 +86,50 @@ The component exports a PageData object containing Supabase session and user pro
     <title>Dashboard</title>
 </svelte:head>
 <Toaster />
-<section class="w-full h-fit min-h-screen px-3 lg:px-36 pt-10 lg:pt-24 pb-6">
+<section class="wave-lightsun w-full h-fit min-h-screen px-3 lg:px-36 pt-36 lg:pt-44 pb-6">
     <div class="flex justify-between items-center">
-        <h1 class="text-3xl font-bold text-white">Dashboard</h1>
+        <h1 class="text-3xl font-bold text-gray-800">Dashboard</h1>
             <button class="btn light bw" on:click={()=>{aboutModal = !aboutModal}}>
             About Crestfallen
             </button>
     </div>
     <div class="divider blankWhite" />
     <div class="w-full h-fit flex flex-col md:grid md:grid-cols-5 gap-4">
-        <div class="flex gap-4 md:hidden">
-            <div class="h-32 col-span-2 rounded-xl w-full bg-[#ffffffc0] blur-bg flex flex-col justify-center items-center text-gray-800">
+        {#if showContent}
+        <div class="flex gap-4 md:hidden" in:fly={{duration:1000,y:400,opacity:0,delay:0}}>
+            <div class="h-32 col-span-2 rounded-xl w-full bg-[#ffffffc0] blur-bg custom-box-shadow flex flex-col justify-center items-center text-gray-800">
                 <p class="text-center font-semibold">Total Projects Completed</p>
                 <p class="text-3xl xl:text-4xl font-bold">0</p>
             </div>
             <div class="h-32 col-span-2 rounded-xl w-full bg-[#ffffffc0] blur-bg flex flex-col justify-center items-center text-gray-800">
                 <img class="aspect-ratio w-16 rounded-full" src="https://robohash.org/{userProfile?.username}" alt="">
                 <!-- <p class="text-2xl font-semibold text-black">CF Social</p> -->
-                <a href="/profile" class="text-sm hover:underline font-bold text-purple-700">Go to Feed</a>
+                <a href="/profile" class="text-sm hover:underline font-bold text-orange-600">Coming Soon</a>
             </div>
         </div>
-        <div class="h-56 col-span-3 rounded-xl w-full bg-[#ffffffc0] blur-bg flex flex-col justify-center items-center text-gray-800">
+        <div in:fly={{duration:1000,y:200,opacity:0,delay:0}} class="h-56 col-span-3 rounded-xl w-full bg-[#ffffffc0] blur-bg custom-box-shadow flex flex-col justify-center items-center text-gray-800">
             <p class="text-xl text-center font-semibold">Latest Project Completed</p>
-            <a href="/ping-pong" class="text-sm hover:underline font-bold text-purple-700">Ping Pong Game</a>
+            <a href="/ping-pong" class="text-sm hover:underline font-bold text-orange-600 ">Ping Pong Game</a>
         </div>
-        <div class="h-56 col-span-1 rounded-xl w-full bg-[#ffffffc0] blur-bg md:flex flex-col justify-center items-center hidden text-gray-800">
+        <div in:fly={{duration:1000,y:200,opacity:0,delay:200}} class="h-56 col-span-1 rounded-xl w-full bg-[#ffffffc0] blur-bg custom-box-shadow md:flex flex-col justify-center items-center hidden text-gray-800">
             <p class="text-center font-semibold">Total Projects Completed</p>
-            <p class="text-3xl xl:text-4xl font-bold">2</p>
+            <p class="text-3xl xl:text-4xl text-orange-600 font-bold">2</p>
         </div>
-        <div class="h-56 col-span-1 rounded-xl w-full bg-[#ffffffc0] blur-bg md:flex flex-col justify-center items-center hidden">
+        <div in:fly={{duration:1000,y:200,opacity:0,delay:400}} class="h-56 col-span-1 rounded-xl w-full bg-[#ffffffc0] blur-bg custom-box-shadow md:flex flex-col justify-center items-center hidden">
             <img class="aspect-ratio w-16" src="/cf_social_logo.png" alt="">
             <p class="text-2xl italic font-extrabold underline text-black">Cf Social</p>
-            <a href="/profile" class="text-sm hover:underline font-bold text-purple-700">Coming Soon</a>
+            <a href="/profile" class="text-sm hover:underline font-bold text-orange-600">Coming Soon</a>
         </div>
+        {/if}
     </div>
     <div class="flex justify-center items-center w-full h-72">
         {#await quotePromise}
-        <div class="loader bw">
+        <div class="loader bw light">
             <div class="bar-bounce" />
         </div>
         {:then quotePromise} 
-        <p class="text-xl text-center w-fit" in:fade={{duration: 500}}>
-            {quote}
+        <p class="text-xl text-gray-800 font-semibold text-center w-fit" in:fade={{duration: 500,delay:1000}}>
+            "{quote}"
             <i>- {author}</i>
         </p>
         {/await}
@@ -145,7 +148,7 @@ The component exports a PageData object containing Supabase session and user pro
         Hi, my name is <b> Elliot Morrison👋</b> <br><br> I wanted to make a web-app with Sveltekit, where I could play around with the features, UI libraries, design, and showcase some mini coding projects<br><br>... as well as other random ideas I'd want to implement. <br><br>This is the result of that desire. Looking to add more projects as time goes by. I hope you enjoy it.
         </span>
       <div class="flex justify-end">
-        <button class="btn solid grapePurple "  on:click={()=>{aboutModal = !aboutModal}}>Ok cool 👍</button>
+        <button class="btn solid sunsetFire "  on:click={()=>{aboutModal = !aboutModal}}>Ok cool 👍</button>
       </div>
     </div>
   </div>
