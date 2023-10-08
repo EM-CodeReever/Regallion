@@ -1,5 +1,6 @@
 <script lang="ts">
-        import type { PageData } from './$types';
+        import Badge from '$components/Badge.svelte';
+import type { PageData } from './$types';
         export let data: PageData;
         let { supabase, session,userProfile } = data;
 
@@ -39,8 +40,11 @@
             </div>
             <div>
                 <div class="flex justify-center lg:justify-end p-5 lg:pl-56 h-fit ">
-                    <div class="bg-gray-900 rounded-xl w-full max-w-2xl h-14 flex justify-center items-center text-gray-300">
+                    <div class="bg-gray-900 rounded-xl w-full max-w-2xl h-fit flex justify-start space-x-2 p-2 items-center text-gray-300">
                         No badges yet
+                        <!-- <Badge bgColor="bg-gray-200" type="new-user" />
+                        <Badge bgColor="bg-gray-200" type="initial-ping-pong" />
+                        <Badge bgColor="bg-gray-200" type="ping-pong-master" /> -->
                     </div>
                     
                 </div>
