@@ -52,7 +52,7 @@
             </div>
         </div>
     </nav>
-    <div class=" wave-purple h-fit w-full pt-20 flex justify-center items-center">
+    <div class="h-fit w-full flex justify-center items-center">
         <slot />
     </div>
   </section>
@@ -62,7 +62,7 @@
     <label class="drawer-overlay" on:click={()=>{toggleDrawer('left')}}></label>
     <div class="drawer left" id="drawer-left">
       <div class="content flex flex-col h-full">
-        <label class="btn sm circle grapePurple solid absolute right-3 top-3" on:click={()=>{toggleDrawer('left')}}>✕</label>
+        <label class="btn sm circle bw solid absolute right-3 top-3" on:click={()=>{toggleDrawer('left')}}>✕</label>
         <h2 class="text-xl text-white">Projects</h2>
         <div class="is-divider" role="separator"></div>
         <div class="grid grid-cols-2 gap-8 grid-flow-row w-72 mt-10 mx-auto">
