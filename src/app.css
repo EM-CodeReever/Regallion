@@ -45,3 +45,21 @@
     background-size: cover;
     background-position: top;
 }
+.wave-darksun{
+    background-image: url('/bs-darksun.svg');
+    width:100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: top;
+}
+.wave-lightsun{
+    background-image: url('/lw-lightsun.svg');
+    width:100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: top;
+}
+
+.custom-box-shadow{
+    box-shadow: 6px 6px 30px 0 rgba(0,0,0,0.3);
+}
