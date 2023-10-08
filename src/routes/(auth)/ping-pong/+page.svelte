@@ -330,7 +330,7 @@
         resetScore()
         centerBall()
         startGame()
-    }}>Restart Game</button>
+    }}>New Game</button>
     <button class="btn lg grapePurple solid w-40" disabled={!gameEnded && gameStarted}  on:click={()=>{showOptionsModal = !showOptionsModal}}>Options</button>
     </div>
 

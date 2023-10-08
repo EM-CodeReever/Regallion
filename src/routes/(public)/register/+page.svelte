@@ -62,7 +62,7 @@
 <section class="wave-blue h-screen flex px-5 items-center justify-center">
     <!-- initail box -->
     {#if !next}
-    <div out:fade={{ duration : 300}} class="sm:w-full max-w-xl mx-5 blur-bg bg-[#ffffff91] h-fit flex items-center flex-col space-y-5 px-5 py-10 custom-box-shadow rounded-xl absolute">
+    <div out:fade={{ duration : 300}} class="w-full max-w-xl blur-bg bg-[#ffffff91] h-fit flex items-center flex-col space-y-5 px-3 py-10 custom-box-shadow rounded-xl">
         <h1 class="text-center text-3xl font-bold text-black">Account Creation</h1>
         
         

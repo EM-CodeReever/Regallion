@@ -88,7 +88,7 @@
                 </svg>
             </div>
             <div class="flex justify-between items-center">
-                <p class="text-red-600 text-sm font-thin">{errorText}</p>
+                <p class="text-red-600 text-sm ">{errorText}</p>
                 <button class="btn sunsetFire solid ml-auto {loginProcessing? 'is-loading' : ''}" on:click={()=>{handleSignIn('email')}}>Login</button>
             </div>
         </span>
