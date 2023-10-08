@@ -75,7 +75,7 @@
             <input class="input solid info col-span-full md:col-span-2" type="password" placeholder="Confirm password" bind:value={confirmPassword}/>
 
             <div class="flex col-span-4 justify-between items-center">
-                <p class="text-red-700 font-thin">{errorText}</p>
+                <p class="text-red-700">{errorText}</p>
                 <button class="btn light info col-span-1 justify-self-end" 
                 on:click={()=>{
                     handleSignUp('email')
