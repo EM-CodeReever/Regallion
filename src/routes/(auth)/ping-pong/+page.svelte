@@ -279,10 +279,9 @@
     <title>Ping Pong</title>
 </svelte:head>
 
-<section class="flex flex-col space-y-5 justify-center items-center relative" style="height: calc(100vh - 5rem);">
-    <button class="btn bw light" disabled={!gameEnded && gameStarted}  on:click={()=>{showOptionsModal = !showOptionsModal}}>Options</button>
+<section class="flex flex-col space-y-5 justify-center items-center relative wave-purple h-screen">
     <p class="text-lg mx-auto text-center p-3 ping-pong-breakpoint:tall:hidden">Ping pong game is not avaliable on screens widths smaller than 820px and screen heights smaller than 768px ... sorry.</p>
-    <div class="w-full justify-between space-x-10 px-10 items-center h-20 rounded-xl bg-[#ffffff79] blur-bg text-black hidden ping-pong-breakpoint:tall:flex">
+    <div class="w-full max-w-3xl justify-between space-x-10 px-10 items-center h-20 rounded-xl bg-[#ffffff79] blur-bg text-black hidden ping-pong-breakpoint:tall:flex">
         <p class="font-sans text-lg badge light info cornered w-full">{userProfile?.username} - {playerScore}</p>
         {#if !paused || gameEnded}
         <button class="btn light bw" on:click={()=>{pauseGame()}}>
@@ -308,22 +307,31 @@
     </div>
     {/if}
     {#if !gameStarted}
-    <button class="btn lg bw solid absolute mx-auto my-auto hidden ping-pong-breakpoint:tall:flex" on:click={()=>{
-        startGame()
-        gameStarted = true
-    }}>Start Game</button>
+    <div in:fly={{delay:0,duration:500,y:300,opacity:0}} class="z-50 text-center font-bold flex-col space-y-5 justify-center items-center absolute mx-auto my-auto hidden ping-pong-breakpoint:tall:flex">
+        <h1 class="text-7xl text-center font-bold">
+            PING PONG!
+        </h1>
+            <span class="text-center font-bold">Use your mouse or touch to move the paddle</span>
+        <button class="btn lg bw solid w-40" on:click={()=>{
+            startGame()
+            gameStarted = true
+        }}>Start Game</button>
+        <button class="btn lg grapePurple solid w-40" disabled={!gameEnded && gameStarted}  on:click={()=>{showOptionsModal = !showOptionsModal}}>Options</button>
+        <!-- <span class="text-center font-semibold text-sm">By EM-CodeReever</span> -->
+    </div>
     {/if}
     {#if gameEnded}
-    <div in:fly={{delay:0,duration:500,y:300,opacity:0}} class="z-50 text-7xl text-center font-bold flex flex-col space-y-5 justify-center items-center absolute mx-auto my-auto ping-pong-breakpoint:tall:flex">
+    <div in:fly={{delay:0,duration:500,y:300,opacity:0}} class="z-50 text-7xl text-center font-bold flex-col space-y-5 justify-center items-center absolute mx-auto my-auto hidden ping-pong-breakpoint:tall:flex">
         {winner} Wins! <br>
         {playerScore} - {computerScore}
-        <button class="btn lg bw solid" on:click={()=>{
+        <button class="btn lg bw solid w-40" on:click={()=>{
         gameEnded = false
         paused = false
         resetScore()
         centerBall()
         startGame()
     }}>Restart Game</button>
+    <button class="btn lg grapePurple solid w-40" disabled={!gameEnded && gameStarted}  on:click={()=>{showOptionsModal = !showOptionsModal}}>Options</button>
     </div>
 
     {/if}
@@ -333,33 +341,33 @@
     <!-- remove `modal-overlay` element will make modal opened without overlay -->
     <label class="modal-overlay"></label>
     <!-- show class here will make modal visible -->
-    <div class="modal flex flex-col gap-5 w-full max-w-lg {showOptionsModal ? 'show' : ''}">
+    <div class="modal bg-gray-900 text-gray-200 flex flex-col gap-3 w-full max-w-lg {showOptionsModal ? 'show' : ''}">
       <!-- <button class="absolute btn light bw right-4 top-3">✕</button> -->
-      <h2 class="text-xl font-semibold text-center">Game Options</h2>
+      <h2 class="text-xl font-semibold text-center mb-5">Game Options</h2>
         
-        <div class="flex w-full justify-between items-center p-3">
+        <div class="flex w-full justify-between items-center">
             <label for="difficulty">Difficulty</label>
-            <select bind:value={choosenDifficulty} name="difficulty" id="difficulty" class="input grapePurple solid w-48">
+            <select bind:value={choosenDifficulty} name="difficulty" id="difficulty" class="input bw solid w-48">
                 <option value="easy">Easy</option>
                 <option value="hard">Hard</option>
                 <option value="unfair">Unfair</option>
             </select>
         </div>
-        <div class="flex w-full justify-between items-center p-3">
+        <div class="flex w-full justify-between items-center">
             <label for="playerPaddleColor">Player paddle color</label>
-            <input bind:value={playerPaddleColor} type="color" name="ballColor" class="input h-10 grapePurple solid w-48" >
+            <input bind:value={playerPaddleColor} type="color" name="ballColor" class="input h-10 bw solid w-48" >
         </div>
-        <div class="flex w-full justify-between items-center p-3">
-            <label for="computerPaddleColor">Computer paddle Color</label>
-            <input bind:value={computerPaddleColor} type="color" name="ballColor" class="input h-10 grapePurple solid w-48" >
+        <div class="flex w-full justify-between items-center">
+            <label for="computerPaddleColor">Computer paddle color</label>
+            <input bind:value={computerPaddleColor} type="color" name="ballColor" class="input h-10 bw solid w-48" >
         </div>
-        <div class="flex w-full justify-between items-center p-3">
-            <label for="chosenBallColor">Ball Color</label>
-            <input bind:value={chosenBallColor} type="color" name="ballColor" class="input h-10 grapePurple solid w-48" >
+        <div class="flex w-full justify-between items-center">
+            <label for="chosenBallColor">Ball color</label>
+            <input bind:value={chosenBallColor} type="color" name="ballColor" class="input h-10 bw solid w-48" >
         </div>
-        <div class="flex justify-between items-center p-3">
-            <label for="pointsToWin">Points to Win</label>
-            <select bind:value={pointsToWin} name="pointsToWin" id="pointsToWin" class="input grapePurple solid w-48">
+        <div class="flex justify-between items-center">
+            <label for="pointsToWin">Points to win</label>
+            <select bind:value={pointsToWin} name="pointsToWin" id="pointsToWin" class="input bw solid w-48">
                 <option value="1">1</option>
                 <option value="3">3</option>
                 <option value="5">5</option>
@@ -368,8 +376,8 @@
             </select>
         </div>
         
-          <div class="flex gap-3">
-        <button class="btn light bw flex-1" on:click={()=>{showOptionsModal = !showOptionsModal}}>Cancel</button>
+          <div class="flex gap-3 mt-5">
+        <button class="btn solid bw flex-1" on:click={()=>{showOptionsModal = !showOptionsModal}}>Cancel</button>
         <button class="btn solid grapePurple flex-1" on:click={()=>{setDifficulty(choosenDifficulty)}}>Save</button>
       </div>
     </div>
