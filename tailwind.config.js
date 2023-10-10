@@ -20,7 +20,7 @@ export default {
 
       '2xl': '1536px',
       // => @media (min-width: 1536px) { ... }
-      'tall': { 'raw': '(min-height: 760px)' },
+      'tall': { 'raw': '(min-height: 500px)' },
     },
     extend: {},
 
