@@ -35,10 +35,10 @@
     
 
     const handleSignUp = async (type: 'email' | 'github') => {
-        if(!validate()){
-            return
-        }
         if(type === 'email'){
+            if(!validate()){
+            return
+            }
             await supabase.auth.signUp({
                 email,
                 password,
