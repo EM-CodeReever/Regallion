@@ -4,6 +4,6 @@
     export let data: PageData;
 </script>
 
-<section class="w-full wave-yellow h-screen flex justify-center items-center">
+<section class="w-full wave-darksun h-screen flex justify-center items-center">
 
 </section>
