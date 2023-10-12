@@ -2,6 +2,7 @@
 	import { browser } from "$app/environment";
 	import { fly } from "svelte/transition";
 	import type { PageData } from "./$types";
+	import Fullscreen from "svelte-fullscreen";
 	export let data: PageData;
 	let { userProfile } = data;
 
@@ -335,6 +336,7 @@
 	bind:innerHeight={screenSizeHeight}
 />
 
+<Fullscreen let:onRequest let:onExit>
 <section
 	class="flex flex-col justify-center items-center pt-16 relative wave-purple h-screen"
 >
@@ -449,7 +451,7 @@
 	{/if}
 	<canvas
 		id="pingPongCanvas"
-		class="ping-pong-breakpoint:tall:rounded-xl ping-pong-breakpoint:tall:relative ping-pong-breakpoint:tall:mt-36 absolute top-0 z-50 portrait:hidden"
+		class="ping-pong-breakpoint:tall:rounded-xl ping-pong-breakpoint:tall:relative ping-pong-breakpoint:tall:mt-10 absolute top-0 z-50 portrait:hidden"
 		height={screenSizeHeight < 680 || screenSizeWidth < 820
 			? screenSizeHeight
 			: 500}
@@ -484,6 +486,7 @@
 				class="btn lg bw solid w-40"
 				on:click={() => {
 					startGame();
+					onRequest();
 					gameStarted = true;
 				}}>Start Game</button
 			>
@@ -499,7 +502,7 @@
 	{#if gameEnded}
 		<div
 			in:fly={{ delay: 0, duration: 500, y: 300, opacity: 0 }}
-			class="z-50 text-7xl text-center font-bold flex-col space-y-5 justify-center items-center absolute mx-auto my-auto flex"
+			class="z-50 text-7xl text-center font-bold flex-col space-y-5 justify-center items-center absolute mx-auto my-auto flex portrait:hidden"
 		>
 			{winner} Wins! <br />
 			{playerScore} - {computerScore}
@@ -523,7 +526,7 @@
 		</div>
 	{/if}
 </section>
-
+</Fullscreen>
 <div>
 	<!-- remove `modal-overlay` element will make modal opened without overlay -->
 	<label class="modal-overlay" />

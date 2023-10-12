@@ -31,6 +31,7 @@
 		"nodemailer": "^6.9.5",
 		"prisma": "^5.4.1",
 		"svelte-french-toast": "^1.2.0",
+		"svelte-fullscreen": "^2.0.0",
 		"svelte-inview": "^4.0.1",
 		"zod": "^3.22.4"
 	}
