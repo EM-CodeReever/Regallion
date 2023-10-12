@@ -450,10 +450,10 @@
 	<canvas
 		id="pingPongCanvas"
 		class="ping-pong-breakpoint:tall:rounded-xl ping-pong-breakpoint:tall:relative ping-pong-breakpoint:tall:mt-36 absolute top-0 z-50 portrait:hidden"
-		height={screenSizeHeight < 680 && screenSizeWidth < 820
+		height={screenSizeHeight < 680 || screenSizeWidth < 820
 			? screenSizeHeight
 			: 500}
-		width={screenSizeHeight < 680 && screenSizeWidth < 820
+		width={screenSizeHeight < 680 || screenSizeWidth < 820
 			? screenSizeWidth
 			: 800}
 	/>
