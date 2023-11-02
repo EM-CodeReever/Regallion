@@ -48,7 +48,7 @@
 	<title>Login</title>
 </svelte:head>
 <section
-	class="wave-red h-fit min-h-screen flex items-center justify-center w-full"
+	class="bg-platinum-300 h-fit min-h-screen flex items-center justify-center w-full"
 	data-theme="custom"
 >
 	<div
