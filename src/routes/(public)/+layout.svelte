@@ -4,24 +4,25 @@
   </script>
   
 
-  <nav class="blur-bg fixed w-full top-0 bg-[#ffffffc0] px-3 flex justify-center h-20 z-50" >
+  <nav class="blur-bg fixed w-full top-0 bg-oxfordBlue-300 px-3 flex justify-center h-20 z-50" >
     <div class="w-full max-w-6xl h-full flex justify-between">
-        <div class="flex items-center underline pl-2 lg:p-0">
-            <a href="/" class="italic font-extrabold text-2xl lg:text-3xl text-gray-800">Crestfallen</a>
+        <div class="flex space-x-2 items-center pl-2 lg:p-0">
+            <img src="/favicon.ico" alt="Regal logo" class="w-9 h-9">
+            <a href="/" class=" font-extrabold text-2xl lg:text-2xl text-gray-200">Regallion</a>
         </div>
-        <ul class="hidden lg:flex text-gray-800">
-            <li class="h-full flex items-center px-5 duration-300 hover:text-indigo-600">
+        <ul class="hidden lg:flex text-gray-200">
+            <li class="h-full flex items-center px-5 duration-300 hover:text-[#FAC311]">
                 <a href="/" class="font-bold">Home</a>
             </li>
-            <li class="h-full flex items-center px-5 marker:duration-300 hover:text-indigo-600">
+            <li class="h-full flex items-center px-5 marker:duration-300 hover:text-[#FAC311]">
                 <a href="/about" class="font-bold">About</a>
             </li>
-            <li class="h-full flex items-center px-5 duration-300 hover:text-indigo-600">
+            <li class="h-full flex items-center px-5 duration-300 hover:text-[#FAC311]">
                 <a href="/contact" class="font-bold">Contact</a>
             </li>
         </ul>
         <div class="hidden lg:flex items-center">
-            <button class="btn light bw" on:click={()=>{goto('dashboard')}}>Open App</button>
+            <button class="btn solid orangeWeb" on:click={()=>{goto('dashboard')}}>Open App</button>
         </div>
         <div class="flex justify-center items-center lg:hidden">
             
@@ -51,7 +52,7 @@
                         Contact
                     </a>
                     <!-- for mobile... i repeat FOR MOBILE.... ELLIOT THIS BUTTON IS ONLY SEEN ON MOBILE -->
-                    <button class="btn sm solid bw w-full" on:click={()=>{goto('dashboard')}}>open app</button>
+                    <button class="btn sm solid oxfordBlue w-full" on:click={()=>{goto('dashboard')}}>open app</button>
                   </div>
                 </div>
         </div>

@@ -48,22 +48,26 @@
 	<title>Login</title>
 </svelte:head>
 <section
+<<<<<<< HEAD
 	class="bg-platinum-300 h-fit min-h-screen flex items-center justify-center w-full"
+=======
+	class="bg-platinum-900 h-fit min-h-screen flex items-center justify-center w-full"
+>>>>>>> 5f2efee8c8b5f04050ffde831f5c99a0e702bde7
 	data-theme="custom"
 >
 	<div
-		class="w-full min-w-fit max-w-xl blur-bg bg-[#ffffff91] h-fit flex items-center flex-col space-y-5 my-32 mx-5 pt-10 pb-5 custom-box-shadow rounded-xl"
+		class="w-full min-w-fit max-w-xl h-fit flex items-center flex-col space-y-5 my-32 mx-5 pt-10 pb-5 rounded-xl"
 	>
-		<h1 class="text-center text-3xl font-bold text-black">Login</h1>
+		<h1 class="text-center text-3xl font-bold text-black">Log in to your account</h1>
 		<div class="w-full px-5">
 			<button
-				class="btn light bw flex-grow w-full"
+				class="btn solid orangeWeb flex-grow w-full"
 				on:click={() => {
 					githubSignIn();
 				}}>Continue with Github</button
 			>
 		</div>
-		<div class="divider px-5">or</div>
+		<div class="divider px-5 text-black">or</div>
 		<p class="text-center font-semibold text-black">
 			Enter your account credentials and login
 		</p>
@@ -75,12 +79,12 @@
 			}}
 		>
 			<div class="input info solid">
-				<div style="color: #FA7268;">Email</div>
+				<div style="color: #E5E5E5;">Email</div>
 				<div
 					class="is-divider"
-					style="background-color: #FA7268;"
+					style="background-color: #E5E5E5;"
 				/>
-				<input class="text-[#FA7268]" bind:value={email} />
+				<input class="text-[#E5E5E5]" bind:value={email} />
 				<svg
 					width="15"
 					height="15"
@@ -91,14 +95,14 @@
 			</div>
 
 			<div class="input info solid">
-				<div style="color: #FA7268;">Password</div>
+				<div style="color: #E5E5E5;">Password</div>
 				<div
 					class="is-divider"
-					style="background-color: #FA7268;"
+					style="background-color: #E5E5E5;"
 				/>
 				<input
 					type="password"
-					style="color: #FA7268;"
+					style="color: #E5E5E5;"
 					bind:value={password}
 				/>
 				<svg
@@ -112,7 +116,7 @@
 			<div class="flex justify-between items-center">
 				<p class="text-red-600 text-sm">{errorText}</p>
 				<button
-					class="btn sunsetFire solid ml-auto {loginProcessing
+					class="btn orangeWeb solid ml-auto {loginProcessing
 						? 'is-loading'
 						: ''}">Login</button
 				>

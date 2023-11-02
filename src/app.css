@@ -7,8 +7,22 @@
     backdrop-filter: blur(7px);
     }
 
-.wave-red{
-    background-image: url('/lw-fire.svg');
+.smokey-blue{
+    background-image: url('/smokey-blue.svg');
+    width:100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+.smokey-blue-inverse{
+    background-image: url('/smokey-blue-inverse.svg');
+    width:100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+.navy-gold{
+    background-image: url('/navy-gold.svg');
     width:100%;
     background-repeat: no-repeat;
     background-size: cover;
