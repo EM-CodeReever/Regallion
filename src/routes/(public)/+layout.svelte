@@ -4,7 +4,7 @@
   </script>
   
 
-  <nav class="blur-bg fixed w-full top-0 bg-oxfordBlue-300 px-3 flex justify-center h-20 z-50" >
+  <nav class="blur-bg fixed w-full top-0 bg-[#14213D] px-3 flex justify-center h-20 z-50" >
     <div class="w-full max-w-6xl h-full flex justify-between">
         <div class="flex space-x-2 items-center pl-2 lg:p-0">
             <img src="/favicon.ico" alt="Regal logo" class="w-9 h-9">
@@ -27,8 +27,8 @@
         <div class="flex justify-center items-center lg:hidden">
             
             <div class="dropdown bw">
-                <button class="btn ghost bw">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="black" class="w-6 h-6">
+                <button class="btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="white" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                       </svg>                  
                 </button>
