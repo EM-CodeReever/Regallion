@@ -86,14 +86,14 @@ The component exports a PageData object containing Supabase session and user pro
     <title>Dashboard</title>
 </svelte:head>
 <Toaster />
-<section class="wave-lightsun w-full h-fit min-h-screen px-3 lg:px-36 pt-36 lg:pt-44 pb-6">
+<section class="smokey-blue-inverse pt-10 w-full h-fit min-h-screen px-3 lg:px-36 pt-36 lg:pt-44 pb-6">
     <div class="flex justify-between items-center">
-        <h1 class="text-3xl font-bold text-gray-800">Dashboard</h1>
-            <button class="btn light bw" on:click={()=>{aboutModal = !aboutModal}}>
+        <h1 class="text-3xl font-bold text-gray-200">Dashboard</h1>
+            <button class="btn solid orangeWeb" on:click={()=>{aboutModal = !aboutModal}}>
             About Crestfallen
             </button>
     </div>
-    <div class="divider blankWhite" />
+    <div class="divider platinum" />
     <div class="w-full h-fit flex flex-col md:grid md:grid-cols-5 gap-4">
         {#if showContent}
         <div class="flex gap-4 md:hidden" in:fly={{duration:1000,y:400,opacity:0,delay:0}}>
@@ -104,21 +104,21 @@ The component exports a PageData object containing Supabase session and user pro
             <div class="h-32 col-span-2 rounded-xl w-full bg-[#ffffffc0] blur-bg flex flex-col justify-center items-center text-gray-800">
                 <img class="aspect-ratio w-16 rounded-full" src="https://robohash.org/{userProfile?.username}" alt="">
                 <!-- <p class="text-2xl font-semibold text-black">CF Social</p> -->
-                <a href="/profile" class="text-sm hover:underline font-bold text-orange-600">Coming Soon</a>
+                <a href="/profile" class="text-sm hover:underline font-bold text-[#14213D]">Coming Soon</a>
             </div>
         </div>
         <div in:fly={{duration:1000,y:200,opacity:0,delay:0}} class="h-56 col-span-3 rounded-xl w-full bg-[#ffffffc0] blur-bg custom-box-shadow flex flex-col justify-center items-center text-gray-800">
             <p class="text-xl text-center font-semibold">Latest Project Completed</p>
-            <a href="/ping-pong" class="text-sm hover:underline font-bold text-orange-600 ">Ping Pong Game</a>
+            <a href="/ping-pong" class="text-sm hover:underline font-bold text-[#14213D] ">Ping Pong Game</a>
         </div>
         <div in:fly={{duration:1000,y:200,opacity:0,delay:200}} class="h-56 col-span-1 rounded-xl w-full bg-[#ffffffc0] blur-bg custom-box-shadow md:flex flex-col justify-center items-center hidden text-gray-800">
             <p class="text-center font-semibold">Total Projects Completed</p>
-            <p class="text-3xl xl:text-4xl text-orange-600 font-bold">2</p>
+            <p class="text-3xl xl:text-4xl text-[#14213D] font-bold">2</p>
         </div>
         <div in:fly={{duration:1000,y:200,opacity:0,delay:400}} class="h-56 col-span-1 rounded-xl w-full bg-[#ffffffc0] blur-bg custom-box-shadow md:flex flex-col justify-center items-center hidden">
-            <img class="aspect-ratio w-16" src="/cf_social_logo.png" alt="">
-            <p class="text-2xl italic font-extrabold underline text-black">Cf Social</p>
-            <a href="/profile" class="text-sm hover:underline font-bold text-orange-600">Coming Soon</a>
+            <!-- <img class="aspect-ratio w-16" src="/favicon.ico" alt=""> -->
+            <p class="text-2xl italic font-extrabold text-black">Regpost</p>
+            <a href="/profile" class="text-sm hover:underline font-bold text-[#14213D]">Coming Soon</a>
         </div>
         {/if}
     </div>
@@ -128,7 +128,7 @@ The component exports a PageData object containing Supabase session and user pro
             <div class="bar-bounce" />
         </div>
         {:then quotePromise} 
-        <p class="text-xl text-gray-800 font-semibold text-center w-fit" in:fade={{duration: 500,delay:1000}}>
+        <p class="text-xl font-semibold text-center w-fit" in:fade={{duration: 500,delay:1000}}>
             "{quote}"
             <i>- {author}</i>
         </p>
@@ -148,7 +148,7 @@ The component exports a PageData object containing Supabase session and user pro
         Hi, my name is <b> Elliot Morrison👋</b> <br><br> I wanted to make a web-app with Sveltekit, where I could play around with the features, UI libraries, design, and showcase some mini coding projects<br><br>... as well as other random ideas I'd want to implement. <br><br>This is the result of that desire. Looking to add more projects as time goes by. I hope you enjoy it.
         </span>
       <div class="flex justify-end">
-        <button class="btn solid sunsetFire "  on:click={()=>{aboutModal = !aboutModal}}>Ok cool 👍</button>
+        <button class="btn solid oxfordBlue"  on:click={()=>{aboutModal = !aboutModal}}>Ok cool 👍</button>
       </div>
     </div>
   </div>
@@ -187,7 +187,7 @@ The component exports a PageData object containing Supabase session and user pro
         <LabelledInput placeholder="Enter first name" name="firstName" label="" bind:data={firstName} />
         <LabelledInput placeholder="Enter last name" name="lastName" label="" bind:data={lastName} />
         <ChooseUsername name="username" bind:username />
-        <select bind:value={userGender} name="gender" class="select solid grapePurple col-span-full sm:col-span-1">
+        <select bind:value={userGender} name="gender" class="select solid oxfordBlue col-span-full sm:col-span-1">
             <option selected disabled>Gender</option>
             <option value="MALE">Male</option>
             <option value="FEMALE">Female</option>
@@ -199,7 +199,7 @@ The component exports a PageData object containing Supabase session and user pro
       </div>
       <div class="flex justify-between items-center">
         <p class="text-red-600 text-sm ml-2">{errorText}</p>
-        <button class="btn solid grapePurple {profileUpdateLoading? 'is-loading' : ''}" type="submit" on:click={()=>{profileUpdateLoading = !profileUpdateLoading}}>
+        <button class="btn solid oxfordBlue {profileUpdateLoading? 'is-loading' : ''}" type="submit" on:click={()=>{profileUpdateLoading = !profileUpdateLoading}}>
             {#if !profileUpdateLoading}
             Done 👌
             {:else}

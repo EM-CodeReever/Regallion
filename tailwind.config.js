@@ -22,23 +22,28 @@ export default {
       // => @media (min-width: 1536px) { ... }
       'tall': { 'raw': '(min-height: 500px)' },
     },
+    // colors: {
+    //   night: '#141414',
+    //   oxfordBlue: '#14213D',
+    //   orangeWeb: '#FCA311',
+    //   platinum: '#E5E5E5',
+    // },
     extend: {},
 
   },
   plugins: [
     require('@sira-ui/tailwind')({
-      // excludedThemes: ['light'],
+      //Color Pallette https://coolors.co/141414-14213d-fca311-e5e5e5
       themes: [
         {
-          name: 'custom',
+          name: 'Regal-Pallette',
           colorScheme: 'dark',
           prefersColorScheme: true,
           colors: {
-            sunsetRed:'#FA7268',
-            sunsetOrange:'#C62368',
-            sunsetFire: '#d91607',
-            grapePurple: '#8c07d9',
-            blankWhite: '#fffff6',
+            night: '#141414',
+            oxfordBlue: '#14213D',
+            orangeWeb: '#FCA311',
+            platinum: '#E5E5E5',
           },
         },
       ],

@@ -5,9 +5,9 @@
     export let placeholder:string = "";
 
 </script>
-<div class="input grapePurple solid col-span-full sm:col-span-2">
-    <div style="color: #e5e7ebbb;" class="">{label}</div>
-    <div class="is-divider" style="background-color: #8c07d9;" />
+<div class="input oxfordBlue solid col-span-full sm:col-span-2">
+    <div style="color: #E5E5E5;" class="">{label}</div>
+    <div class="is-divider" style="background-color: #14213D;" />
     <input {name} {placeholder} type="text" bind:value={data} />
     <svg
         width="15"
