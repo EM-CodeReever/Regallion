@@ -23,16 +23,17 @@
   </script>
 
   <section class="flex flex-col">
-    <nav class="blur-bg fixed px-3 w-full top-0 bg-[#ffffffc0] flex justify-between items-center h-20 z-50">
+    <nav class="blur-bg fixed px-3 w-full top-0 bg-transparent flex justify-between items-center h-20 z-50">
         <div class="flex justify-center items-center py-5 px-1 hover:bg-[#]">
-            <button class="btn ghost bw" on:click={()=>{toggleDrawer('left')}}>
+            <button class="btn" on:click={()=>{toggleDrawer('left')}}>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="black" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 5.25h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5" />
                   </svg> 
             </button>             
         </div>
-        <div class="flex items-center underline">
-            <a href="/" class="italic font-extrabold text-3xl text-gray-800">Crestfallen</a>
+        <div class="flex space-x-2 items-center">
+          <img src="/favicon.ico" alt="Regal logo" class="w-9 h-9">
+          <a href="/" class=" font-extrabold text-2xl lg:text-2xl text-oxfordBlue-200">Regallion</a>
         </div>
         <div class="p-5">
             <div class="dropdown bw">
