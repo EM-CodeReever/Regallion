@@ -25,10 +25,10 @@
 <svelte:head>
     <title>Home</title>
 </svelte:head>
-<section class="w-full dusk-waves text-gray-200" style="height: 48rem;">
+<section class="w-full dusk-waves text-gray-200 h-screen">
 
 {#if show}
-<div class="flex  space-y-8 pt-40 justify-start items-center flex-col h-full" in:fly={{duration:1000,y:500,opacity:.3,easing:cubicOut}}>
+<div class="flex  space-y-8  justify-center items-center flex-col h-full" in:fly={{duration:1000,y:500,opacity:.3,easing:cubicOut}}>
     <h1 class="font-bold xl:text-5xl text-3xl">Continue Scrolling Down!</h1>
     <p class="px-5 max-w-lg text-center text-sm lg:text-base">"Adversity reveals the true character of a person, for it is in facing life's challenges with courage, wisdom, and resilience that we truly find our inner strength and virtue. Embrace hardship as an opportunity to grow and learn, for it is through adversity that we become the masters of our own destiny." - Epictetus</p>
     <span class="flex space-x-3">
