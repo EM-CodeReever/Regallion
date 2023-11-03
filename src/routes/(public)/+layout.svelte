@@ -4,7 +4,7 @@
   </script>
   
   <!-- bg-[#14213D] -->
-  <nav class="blur-bg fixed w-full top-0 bg-platinum-200 px-3 flex justify-center h-20 z-50" >
+  <nav class=" fixed w-full top-0 bg-[#121420] px-3 flex justify-center h-20 z-50" >
     <div class="w-full max-w-6xl h-full flex justify-between">
         <div class="flex space-x-2 items-center pl-2 lg:p-0">
             <img src="/favicon.ico" alt="Regal logo" class="w-9 h-9">
@@ -22,7 +22,7 @@
             </li>
         </ul>
         <div class="hidden lg:flex items-center">
-            <button class="btn solid orangeWeb" on:click={()=>{goto('dashboard')}}>Open App</button>
+            <button class="btn solid orangeWeb text-black" on:click={()=>{goto('dashboard')}}>Open App</button>
         </div>
         <div class="flex justify-center items-center lg:hidden">
             

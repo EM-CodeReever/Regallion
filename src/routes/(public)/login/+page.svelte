@@ -48,13 +48,13 @@
 	<title>Login</title>
 </svelte:head>
 <section
-	class="bg-gray-200 h-fit min-h-screen flex items-center justify-center w-full"
+	class="gunmetal-waves h-fit min-h-screen flex items-center justify-center w-full"
 	data-theme="custom"
 >
 	<div
 		class="w-full min-w-fit max-w-xl h-fit flex items-center flex-col space-y-5 my-32 mx-5 pt-10 pb-5 rounded-xl"
 	>
-		<h1 class="text-center text-3xl font-bold text-black">Log in to your account</h1>
+		<h1 class="text-center text-3xl font-bold text-gray-200">Log in to your account</h1>
 		<div class="w-full px-5">
 			<button
 				class="btn solid orangeWeb flex-grow w-full"
@@ -63,8 +63,8 @@
 				}}>Continue with Github</button
 			>
 		</div>
-		<div class="divider px-5 text-black">or</div>
-		<p class="text-center font-semibold text-black">
+		<div class="divider px-5 night">or</div>
+		<p class="text-center font-semibold text-gray-200">
 			Enter your account credentials and login
 		</p>
 		<form
@@ -74,8 +74,8 @@
 				emailSignIn();
 			}}
 		>
-			<div class="input info solid">
-				<div style="color: #E5E5E5;">Email</div>
+			<div class="input gunMetal solid">
+				<div style="color: #E5E5E5;" class="select-none">Email</div>
 				<div
 					class="is-divider"
 					style="background-color: #E5E5E5;"
@@ -90,8 +90,8 @@
 				/>
 			</div>
 
-			<div class="input info solid">
-				<div style="color: #E5E5E5;">Password</div>
+			<div class="input gunMetal solid">
+				<div style="color: #E5E5E5;" class="select-none">Password</div>
 				<div
 					class="is-divider"
 					style="background-color: #E5E5E5;"

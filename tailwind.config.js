@@ -34,13 +34,18 @@ export default {
   plugins: [
     require('@sira-ui/tailwind')({
       //Color Pallette https://coolors.co/141414-14213d-fca311-e5e5e5
+      // https://coolors.co/403f4c-2c2b3c-1b2432-121420-b76d68
       themes: [
         {
           name: 'Regal-Pallette',
           colorScheme: 'dark',
           prefersColorScheme: true,
           colors: {
-            night: '#141414',
+            indieRed: '#B76D68',
+            richBlack: '#121420',
+            gunMetal: '#1B2432',
+            raisinBlack: '#2C2B3C',
+            onyx: '#403F4C',
             oxfordBlue: '#14213D',
             orangeWeb: '#FCA311',
             platinum: '#E5E5E5',

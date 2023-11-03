@@ -25,7 +25,7 @@
     <title>Contact</title>
 </svelte:head>
 <Toaster />
-<section class="smokey-blue min-h-screen h-fit flex flex-col items-center space-y-10 justify-center px-5 pb-20 pt-32 text-gray-200">
+<section class="dusk-waves min-h-screen h-fit flex flex-col items-center space-y-10 justify-center px-5 pb-20 pt-32 text-gray-200">
     {#if showHeading}
     <h1 class="text-4xl text-center font-bold" in:fade={{duration:1000}}>Contact Me</h1>
     <p class="max-w-3xl text-center px-5" in:fade={{duration:1000}}>

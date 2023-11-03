@@ -23,7 +23,7 @@
   </script>
 
   <section class="flex flex-col">
-    <nav class="blur-bg fixed px-3 w-full top-0 bg-transparent flex justify-between items-center h-20 z-50">
+    <nav class="blur-bg fixed px-3 w-full top-0 bg-transparent flex justify-between items-center h-16 z-50">
         <div class="flex justify-center items-center py-5 px-1 hover:bg-[#]">
             <button class="btn" on:click={()=>{toggleDrawer('left')}}>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="black" class="w-6 h-6">
@@ -33,7 +33,7 @@
         </div>
         <div class="flex space-x-2 items-center">
           <img src="/favicon.ico" alt="Regal logo" class="w-9 h-9">
-          <a href="/" class=" font-extrabold text-2xl lg:text-2xl text-oxfordBlue-200">Regallion</a>
+          <a href="/" class=" font-extrabold text-2xl lg:text-2xl text-richBlack-200">Regallion</a>
         </div>
         <div class="p-5">
             <div class="dropdown bw">

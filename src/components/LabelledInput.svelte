@@ -5,8 +5,8 @@
     export let placeholder:string = "";
 
 </script>
-<div class="input oxfordBlue solid col-span-full sm:col-span-2">
-    <div style="color: #E5E5E5;" class="">{label}</div>
+<div class="input oxfordBlue solid col-span-full sm:col-span-2 select-none">
+    <div style="color: #E5E5E5;" class="select-none">{label}</div>
     <div class="is-divider" style="background-color: #14213D;" />
     <input {name} {placeholder} type="text" bind:value={data} />
     <svg
