@@ -3,8 +3,8 @@
     import "$styles";
   </script>
   
-
-  <nav class="blur-bg fixed w-full top-0 bg-[#14213D] px-3 flex justify-center h-20 z-50" >
+  <!-- bg-[#14213D] -->
+  <nav class="blur-bg fixed w-full top-0 bg-platinum-200 px-3 flex justify-center h-20 z-50" >
     <div class="w-full max-w-6xl h-full flex justify-between">
         <div class="flex space-x-2 items-center pl-2 lg:p-0">
             <img src="/favicon.ico" alt="Regal logo" class="w-9 h-9">
