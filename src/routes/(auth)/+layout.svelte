@@ -32,8 +32,8 @@
             </button>             
         </div>
         <div class="flex space-x-2 items-center">
-          <img src="/favicon.ico" alt="Regal logo" class="w-9 h-9">
-          <a href="/" class=" font-extrabold text-2xl lg:text-2xl text-richBlack-200">Regallion</a>
+          <img src="/favicon.ico" alt="Regal logo" class="w-9 h-9 hidden sm:flex">
+          <a href="/" class="bg-richBlack-200 px-2 py-1 rounded-md font-extrabold text-2xl lg:text-2xl text-gray-200">Regallion</a>
         </div>
         <div class="p-5">
             <div class="dropdown bw">

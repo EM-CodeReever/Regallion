@@ -99,7 +99,7 @@ The component exports a PageData object containing Supabase session and user pro
         <div class="flex gap-4 md:hidden" in:fly={{duration:1000,y:400,opacity:0,delay:0}}>
             <div class="h-32 col-span-2 rounded-xl w-full bg-[#ffffffc0] blur-bg custom-box-shadow flex flex-col justify-center items-center text-gray-800">
                 <p class="text-center font-semibold">Total Projects Completed</p>
-                <p class="text-3xl xl:text-4xl font-bold">0</p>
+                <p class="text-3xl xl:text-4xl font-bold text-[#b76d68]">2</p>
             </div>
             <div class="h-32 col-span-2 rounded-xl w-full bg-[#ffffffc0] blur-bg flex flex-col justify-center items-center text-gray-800">
                 <img class="aspect-ratio w-16 rounded-full" src="https://robohash.org/{userProfile?.username}" alt="">

@@ -3,6 +3,9 @@ export default {
   content: ['./src/**/*.{html,js,svelte,ts}'],
   theme: {
     screens: {
+      'xs': '360px',
+      // => @media (min-width: 320px) { ... }
+
       'sm': '640px',
       // => @media (min-width: 640px) { ... }
 
