@@ -148,7 +148,7 @@ The component exports a PageData object containing Supabase session and user pro
         Hi, my name is <b> Elliot Morrison👋</b> <br><br> I wanted to make a web-app with Sveltekit, where I could play around with the features, UI libraries, design, and showcase some mini coding projects<br><br>... as well as other random ideas I'd want to implement. <br><br>This is the result of that desire. Looking to add more projects as time goes by. I hope you enjoy it.
         </span>
       <div class="flex justify-end">
-        <button class="btn solid indieRed"  on:click={()=>{aboutModal = !aboutModal}}>Ok cool 👍</button>
+        <button class="btn solid orangeWeb"  on:click={()=>{aboutModal = !aboutModal}}>Ok</button>
       </div>
     </div>
   </div>

@@ -14,17 +14,21 @@
         let {success} = z.string().email().safeParse(email)
         if(!success){
             errorText = "Please enter a valid email"
+            registerProcessing = false
             return false
         }
         if(password !== confirmPassword){
             errorText = "Passwords do not match"
+            registerProcessing = false
             return false
         }
         let {success: success2} = z.string().min(8).safeParse(password)
         if(!success2){
             errorText = "Password must be at least 8 characters long"
+            registerProcessing = false
             return false
         }
+        registerProcessing = false
         return true
     }
 
