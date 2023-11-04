@@ -6,6 +6,7 @@
     let next = false;
     let email: string
     let password: string
+    let registerProcessing = false
     let confirmPassword: string
     let errorText = ""
 
@@ -35,6 +36,7 @@
     
 
     const handleSignUp = async (type: 'email' | 'github') => {
+        registerProcessing = true
         if(type === 'email'){
             if(!validate()){
             return
@@ -44,6 +46,7 @@
                 password,
             })
             next = true
+            registerProcessing = false
         }
         if(type === 'github'){
             await supabase.auth.signInWithOAuth({
@@ -59,24 +62,26 @@
     <title>Register</title>
 </svelte:head>
 
-<section class="wave-blue h-screen flex px-5 items-center justify-center">
+<section class="gunmetal-waves h-screen flex px-5 items-center justify-center">
     <!-- initail box -->
     {#if !next}
-    <div out:fade={{ duration : 300}} class="w-full max-w-xl blur-bg bg-[#ffffff91] h-fit flex items-center flex-col space-y-5 px-3 py-10 custom-box-shadow rounded-xl">
-        <h1 class="text-center text-3xl font-bold text-black">Account Creation</h1>
+    <div class="w-full max-w-xl h-fit flex items-center flex-col space-y-5 px-3 py-10">
+        <h1 class="text-center text-3xl font-bold text-gray-200 mb-5">Account Creation</h1>
         
         
         <form class="grid gap-5 grid-cols-4 px-5 mt-10 w-full min-w-fit">
-            <button class="btn light bw flex-grow w-full col-span-full" on:click={()=>{handleSignUp('github')}}>Sign Up with Github</button>
-            <div class="divider info col-span-full text-black">or</div>
-            <p class="text-center font-semibold text-black col-span-full">Sign up with Email</p>
+            <button class="btn solid orangeWeb flex-grow w-full col-span-full" on:click={()=>{handleSignUp('github')}}>Sign Up with Github</button>
+            <div class="divider info col-span-full text-gray-200">or</div>
+            <p class="text-center font-semibold text-gray-200 col-span-full">Sign up with Email</p>
             <input class="input solid info col-span-full" placeholder="Email" bind:value={email}/>
             <input class="input solid info col-span-full md:col-span-2" type="password" placeholder="Choose password" bind:value={password}/>
             <input class="input solid info col-span-full md:col-span-2" type="password" placeholder="Confirm password" bind:value={confirmPassword}/>
 
             <div class="flex col-span-4 justify-between items-center">
                 <p class="text-red-700">{errorText}</p>
-                <button class="btn light info col-span-1 justify-self-end" 
+                <button class="btn orangeWeb solid col-span-1 justify-self-end {registerProcessing
+                    ? 'is-loading'
+                    : ''}"
                 on:click={()=>{
                     handleSignUp('email')
                     }}>Submit</button>
@@ -87,9 +92,12 @@
     {/if}
     {#if next}
     <!-- next box -->
-    <div in:fly={{y: -500, opacity : 1, duration : 500 , delay : 500}} class="sm:w-full min-w-fit max-w-xl mx-3 blur-bg bg-[#ffffff91] h-fit flex items-center flex-col space-y-5 px-5 py-10 custom-box-shadow rounded-xl relative">
-        <h1 class="text-center text-3xl font-bold text-black">Verify your account</h1>
-        <p class="font-semibold text-center sm:w-96 text-black"> 
+    <div in:fade={{ duration : 300, delay : 300 }} class="sm:w-full min-w-fit max-w-xl mx-3 h-fit flex items-center flex-col space-y-2 px-5 py-10 relative">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-16 h-16">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
+          </svg>          
+        <h1 class="text-center text-3xl font-bold text-gray-200 m-0">Verify your account</h1>
+        <p class="font-semibold text-center sm:w-96 text-gray-200"> 
             Check your email for a link to complete your registration. you may close ths tab upon successfull verification
         </p>
         </div>
