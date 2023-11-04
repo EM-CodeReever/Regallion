@@ -25,12 +25,6 @@ export default {
       // => @media (min-width: 1536px) { ... }
       'tall': { 'raw': '(min-height: 500px)' },
     },
-    // colors: {
-    //   night: '#141414',
-    //   oxfordBlue: '#14213D',
-    //   orangeWeb: '#FCA311',
-    //   platinum: '#E5E5E5',
-    // },
     extend: {},
 
   },

@@ -7,41 +7,6 @@
     backdrop-filter: blur(7px);
     }
 
-.smokey-blue{
-    background-image: url('/smokey-blue.svg');
-    width:100%;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-}
-.smokey-blue-inverse{
-    background-image: url('/smokey-blue-inverse.svg');
-    width:100%;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-}
-.dark-smokey-blue{
-    background-image: url('/dark-smokey-blue.svg');
-    width:100%;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-}
-.dark-smokey-blue-inverse{
-    background-image: url('/dark-smokey-blue-inverse.svg');
-    width:100%;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-}
-.navy-gold{
-    background-image: url('/navy-gold.svg');
-    width:100%;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-}
 .dusk-waves{
     background-image: url('/dusk-waves.svg');
     width:100%;
@@ -58,6 +23,13 @@
 }
 .gunmetal-waves{
     background-image: url('/gunmetal-waves.svg');
+    width:100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+.dusk-waves-blue-inverse{
+    background-image: url('/dusk-waves-blue-inverse.svg');
     width:100%;
     background-repeat: no-repeat;
     background-size: cover;

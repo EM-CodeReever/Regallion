@@ -122,7 +122,7 @@ The component exports a PageData object containing Supabase session and user pro
         </div>
         {/if}
     </div>
-    <div class="flex justify-center items-center w-full h-72">
+    <div class="flex justify-center items-center w-full h-fit mt-20">
         {#await quotePromise}
         <div class="loader bw light">
             <div class="bar-bounce" />

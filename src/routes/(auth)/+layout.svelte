@@ -24,9 +24,9 @@
 
   <section class="flex flex-col">
     <nav class="blur-bg fixed px-3 w-full top-0 bg-transparent flex justify-between items-center h-16 z-50">
-        <div class="flex justify-center items-center py-5 px-1 hover:bg-[#]">
+        <div class="flex justify-center items-center py-5 px-1">
             <button class="btn" on:click={()=>{toggleDrawer('left')}}>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="black" class="w-6 h-6">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#e5e5e5" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 5.25h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5" />
                   </svg> 
             </button>             

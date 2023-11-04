@@ -287,12 +287,12 @@
 </svelte:head>
 
 <section class="flex flex-col space-y-5 justify-center items-center pt-16 relative dusk-waves-inverse h-screen">
-    <!-- <div class="text-lg mx-auto text-center p-3 flex flex-col justify-center items-center">
+    <div class="text-lg mx-auto text-center p-3 flex flex-col justify-center items-center ping-pong-breakpoint:tall:hidden">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.0" stroke="currentColor" class="w-24 h-24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437l1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008z" />
           </svg>          
-        Ping pong game is under construction, come back later</div> -->
-    <div class="w-full justify-between space-x-10 px-10 items-center h-20 rounded-xl bg-[#ffffff79] blur-bg text-black  mx-auto z-50 flex" style="max-width: 800px;">
+        Ping pong game is unvailaible on this screen size</div>
+    <div class="w-full justify-between space-x-10 px-10 items-center h-20 rounded-xl bg-[#ffffff79] blur-bg text-black  mx-auto z-50 hidden  ping-pong-breakpoint:tall:flex" style="max-width: 800px;">
         <p class="font-sans text-lg badge light info cornered w-full">{userProfile?.username} - {playerScore}</p>
         {#if !paused || gameEnded}
         <button class="btn light bw" on:click={()=>{pauseGame()}}>
@@ -309,16 +309,16 @@
         {/if}
         <p class="font-sans text-lg badge light warn cornered w-full">Computer - {computerScore}</p>
     </div>
-    <canvas id="pingPongCanvas" class="rounded-xl canvas-aspect-ratio relative mt-36 flex" height="500" width="800" >
+    <canvas id="pingPongCanvas" class="rounded-xl canvas-aspect-ratio relative mt-36 hidden ping-pong-breakpoint:tall:flex" height="500" width="800" >
     </canvas>
 
     {#if scoreDisplay && !gameEnded}
-    <div transition:fly={{delay:0,duration:500,y:300,opacity:0}} class="z-50 text-7xl text-center font-bold flex justify-center items-center absolute mx-auto my-auto">
+    <div transition:fly={{delay:0,duration:500,y:300,opacity:0}} class="z-50 text-7xl text-center font-bold justify-center items-center absolute mx-auto my-auto hidden ping-pong-breakpoint:tall:flex">
         {playerScore} - {computerScore}
     </div>
     {/if}
     {#if !gameStarted}
-    <div in:fly={{delay:0,duration:500,y:300,opacity:0}} class="z-50 text-center font-bold flex-col space-y-5 justify-center items-center absolute mx-auto my-auto flex">
+    <div in:fly={{delay:0,duration:500,y:300,opacity:0}} class="z-50 text-center font-bold flex-col space-y-5 justify-center items-center absolute mx-auto my-auto hidden ping-pong-breakpoint:tall:flex">
         <h1 class="text-7xl text-center font-bold">
             PING PONG!
         </h1>
@@ -331,7 +331,7 @@
     </div>
     {/if}
     {#if gameEnded}
-    <div in:fly={{delay:0,duration:500,y:300,opacity:0}} class="z-50 text-7xl text-center font-bold flex-col space-y-5 justify-center items-center absolute mx-auto my-auto flex">
+    <div in:fly={{delay:0,duration:500,y:300,opacity:0}} class="z-50 text-7xl text-center font-bold flex-col space-y-5 justify-center items-center absolute mx-auto my-auto hidden ping-pong-breakpoint:tall:flex">
         {winner} Wins! <br>
         {playerScore} - {computerScore}
         <button class="btn lg bw solid w-40" on:click={()=>{
@@ -351,7 +351,7 @@
     <!-- remove `modal-overlay` element will make modal opened without overlay -->
     <label class="modal-overlay"></label>
     <!-- show class here will make modal visible -->
-    <div class="modal bg-gray-900 text-gray-200 flex flex-col gap-3 w-full max-w-lg {showOptionsModal ? 'show' : ''}">
+    <div class="modal bg-gray-900 text-gray-200 flex-col gap-3 w-full max-w-lg hidden ping-pong-breakpoint:tall:flex{showOptionsModal ? 'show' : ''}">
       <!-- <button class="absolute btn light bw right-4 top-3">✕</button> -->
       <h2 class="text-xl font-semibold text-center mb-5">Game Options</h2>
         
