@@ -51,3 +51,19 @@
 </nav>
   <slot />
 
+<footer class="h-fit w-full bg-gunMetal-400 text-sm flex p-4 justify-between">
+    
+    <span>
+        Regallion &copy; 2023
+    </span>
+    <!-- <span class="space-x-3">
+        <a href="/about" class="link">About</a>
+        <a href="/contact" class="link">Contact</a>
+        <a href="/register" class="link">Signup</a>
+    </span> -->
+    <span>
+        <a href="https://elliotmorrisonbusiness.com/" target="_blank" class="link text-sm text-gray-400">Elliot Morrison Business</a>
+    </span>
+    
+    
+</footer>

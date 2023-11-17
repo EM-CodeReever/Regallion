@@ -21,6 +21,8 @@
   let sectionOneINVIEW = false;
   let sectionTwoINVIEW = false;
 
+  let fruitEmojiArray = ['🍎', '🍊', '🍋', '🍌', '🍉', '🍇', '🍓', '🍒', '🍑', '🥭', '🍍', '🥥', '🥝', '🍅', '🍆', '🥑', '🥦', '🥬', '🥒', '🌽', '🥕']
+
   let show = false;
   onMount(() => {
     show = true;
@@ -106,8 +108,11 @@
                   <p class="text-sm max-w-sm">Simple Ping pong game, built using HTML Canvas. Grab a paddle and hit the ball back and forth until it scores. Doesn't work on mobile  </p>
                   <button class="btn sm bw light ml-auto sm:m-0">Check it out</button>
                 </span>
-                <div class="rounded-lg w-96 h-72 bg-gray-900 aspect-video sm:flex hidden">
-                  
+                <div class="rounded-lg w-96 h-72 bg-gray-900 aspect-video sm:flex hidden relative justify-center">
+                  <span class="text-3xl mt-3 font-bold text-indieRed-900">0 - 0</span>
+                  <span class="w-4 rounded-md h-24 bg-indieRed-900 absolute left-3 bottom-5"></span>
+                  <div class="w-4 h-4 bg-indieRed-900 rounded-full absolute top-1/2 right-1/2"></div>
+                  <span class="w-4 rounded-md h-24 bg-indieRed-900 absolute right-3 top-5"></span>
                 </div>
             </SplideSlide>
             <SplideSlide class="flex justify-center items-center space-x-5 p-3">
@@ -116,8 +121,14 @@
                 <p class="text-sm max-w-sm"> Memory cards is a game of cards, that can be flipped over and matched. If a match is found, the cards stay flipped, if not, they will turn back. The game continues until all cards are flipped.</p>
                 <button class="btn sm bw light ml-auto sm:m-0">Check it out</button>
               </span>
-              <div class="rounded-lg w-96 h-72 bg-gray-900 aspect-video sm:flex hidden">
-                
+              <div class="rounded-lg w-96 h-72 aspect-video sm:flex justify-center hidden p-3">
+                <div class="aspect-square w-72  max-w-sm border-2 border-gray-900 rounded-md grid grid-cols-5 grid-rows-5 gap-3 p-3">
+                  {#each Array(25) as _, i}
+                  <div class="w-full h-full bg-gray-900 rounded-md cursor-pointer hover:bg-gray-700 hover:border-gray-200 hover:border-2 flex justify-center items-center">
+                      <p>{fruitEmojiArray[Math.floor(Math.random()*fruitEmojiArray.length)]}</p>
+                  </div>
+                  {/each}
+              </div>
               </div>
           </SplideSlide>
           <SplideSlide class="flex justify-center items-center space-x-5 p-3">
@@ -126,8 +137,26 @@
               <p class="text-sm max-w-sm">A basic social media platform for posting, and communicating with other users. Has all the typical social stuff, user profiles, posts and</p>
               <button class="btn sm bw light ml-auto sm:m-0">Check it out</button>
             </span>
-            <div class="rounded-lg w-96 h-72 bg-gray-900 aspect-video sm:flex hidden">
-              
+            <div class="rounded-lg w-96 h-72 bg-gray-900 aspect-video sm:flex flex-col hidden">
+              <div class="flex justify-between items-center px-4 w-full p-3">
+                <div>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#B76D68" class="w-6 h-6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 5.25h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5" />
+                </svg> 
+               </div>
+                <div class="w-24 h-6 bg-indieRed-900 rounded-md "></div>
+                <div class="avatar bg-indieRed-900"></div>
+              </div>
+              <div class="w-full h-full bg-indieRed-900 border-2 border-gray-900 rounded-b-lg relative">
+                <div class="w-36 h-6 rounded-xl absolute right-4 top-5 bg-gray-900"></div>
+                <div class="w-20 h-6 rounded-xl absolute left-4 top-11 bg-gray-900"></div>
+                <div class="w-40 h-6 rounded-xl absolute left-4 top-20 bg-gray-900"></div>
+                <div class="flex justify-center items-center w-24 h-24 rounded-xl absolute right-4 top-24 bg-gray-900">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#B76D68" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                  </svg>                  
+                </div>
+              </div>
             </div>
         </SplideSlide>
         </SplideTrack>
@@ -194,13 +223,6 @@
         <SiraUi />
       </div>
     </div>
-    <p
-      in:blur={{ amount: 10, duration: 1000, delay: 1000 }}
-      class="lg:text-3xl absolute bottom-14 text-lg px-5 text-gray-200 font-bold text-center"
-    >
-      "This is the end of the homepage 😁" <br /> -
-      <span class="italic text-sm lg:text-xl">Elliot Morrison</span>
-    </p>
   {/if}
 </section>
 
