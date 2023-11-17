@@ -1,6 +1,7 @@
 <script lang="ts">
     import type { PageData } from './$types';
-    
+
+    let fruitEmojiArray = ['🍎', '🍊', '🍋', '🍌', '🍉', '🍇', '🍓', '🍒', '🍑', '🥭', '🍍', '🥥', '🥝', '🍅', '🍆', '🥑', '🥦', '🥬', '🥒', '🌶', '🌽', '🥕']
     export let data: PageData;
 </script>
 
@@ -27,7 +28,9 @@
         </div>
         <div class="aspect-square w-80 sm:w-96 max-w-sm bg-orangeWeb-800 rounded-md grid grid-cols-5 grid-rows-5 gap-3 p-3">
             {#each Array(25) as _, i}
-            <div class="w-full h-full bg-gray-900 rounded-md cursor-pointer hover:bg-gray-700 hover:border-gray-200 hover:border-2"></div>
+            <div class="w-full h-full bg-gray-900 rounded-md cursor-pointer hover:bg-gray-700 hover:border-gray-200 hover:border-2 flex justify-center items-center">
+                <p>{fruitEmojiArray[Math.floor(Math.random()*fruitEmojiArray.length)]}</p>
+            </div>
             {/each}
          
         </div>
