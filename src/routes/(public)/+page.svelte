@@ -84,9 +84,9 @@
   {#if sectionOneINVIEW}
     <p
       in:fly={{ duration: 1000, y: 500, opacity: 0.3, easing: cubicOut }}
-      class="lg:text-3xl text-lg px-5 text-gray-900 font-bold text-center"
+      class="lg:text-4xl text-2xl px-5 text-gray-900 font-bold text-center"
     >
-      Welcome to Regallion, have a look around
+      Regallion Project Showcase
     </p>
     <Splide options={ {
       rewind  : true,
@@ -101,13 +101,10 @@
       <div style="position: relative">
         <SplideTrack >
             <SplideSlide class="flex justify-center items-center">
-               <div class="bg-black h-full max-w-3xl w-full rounded"></div>
             </SplideSlide>
             <SplideSlide class="flex justify-center items-center">
-              <div class="bg-black h-full max-w-3xl w-full rounded"></div>
            </SplideSlide>
            <SplideSlide class="flex justify-center items-center">
-            <div class="bg-black h-full max-w-3xl w-full rounded"></div>
          </SplideSlide>
         </SplideTrack>
       </div>
@@ -135,41 +132,41 @@
 >
   {#if sectionTwoINVIEW}
     <p
-      in:fly={{ duration: 2000, y: -100, opacity: 0.3, easing: cubicOut }}
+      in:fly={{ duration: 2000, y: 100, opacity: 0.3, easing: cubicOut }}
       class="lg:text-3xl text-lg px-5 font-bold text-center "
     >
       Tools used to build this website
     </p>
     <p
-      in:fly={{ duration: 2000, y: -100, opacity: 0.3, easing: cubicOut }}
-      class="text-gray-200 max-w-3xl text-center"
+      in:fly={{ duration: 2000, y: 100, opacity: 0.3, easing: cubicOut }}
+      class="text-gray-200 max-w-3xl text-center mx-3"
     >
      Svelte is cool, Tailwind is super-cool, Typescript is cool, Supabase is cool, but I will always say haikei is a slept on background design tool. Sira UI is cool too, a bit weird to use but cool.
 
     </p>
     <div class="md:flex md:justify-between gap-y-5 xs:gap-y-10 grid grid-rows-2 grid-cols-3 w-full max-w-3xl">
       <!-- svelte logo -->
-      <div class="hover:scale-125 duration-100 flex justify-center items-center cursor-pointer" in:fly={{duration:800,opacity:.2,y:200,easing:cubicOut}}>
+      <div class="md:hover:scale-125 duration-100 flex justify-center items-center cursor-pointer" in:fly={{duration:800,opacity:0,y:200,easing:cubicOut}}>
         <Svelte />
       </div>
       <!-- tailwind logo -->
-      <div class="hover:scale-125 duration-100 flex justify-center items-center cursor-pointer"  in:fly={{duration:800,opacity:.2,y:200,easing:cubicOut,delay:100}}>
+      <div class="md:hover:scale-125 duration-100 flex justify-center items-center cursor-pointer"  in:fly={{duration:800,opacity:0,y:200,easing:cubicOut,delay:100}}>
         <Tailwind />
       </div>
       <!-- typeScript logo -->
-      <div class="hover:scale-125 duration-100 flex justify-center items-center cursor-pointer" in:fly={{duration:800,opacity:.2,y:200,easing:cubicOut,delay:200}}>
+      <div class="md:hover:scale-125 duration-100 flex justify-center items-center cursor-pointer" in:fly={{duration:800,opacity:0,y:200,easing:cubicOut,delay:200}}>
         <Typescript />
       </div>
       <!-- supabase logo -->
-      <div class="hover:scale-125 duration-100 flex justify-center items-center cursor-pointer" in:fly={{duration:800,opacity:.2,y:200,easing:cubicOut,delay:300}}>
+      <div class="md:hover:scale-125 duration-100 flex justify-center items-center cursor-pointer" in:fly={{duration:800,opacity:0,y:200,easing:cubicOut,delay:300}}>
         <Supabase />
       </div>
       <!-- haikei logo -->
-      <div class="hover:scale-125 duration-100 flex justify-center items-center cursor-pointer" in:fly={{duration:800,opacity:.2,y:200,easing:cubicOut,delay:400}}>
+      <div class="md:hover:scale-125 duration-100 flex justify-center items-center cursor-pointer" in:fly={{duration:800,opacity:0,y:200,easing:cubicOut,delay:400}}>
         <Haikei />
       </div>
       <!-- Sira ui logo -->
-      <div class="hover:scale-125 duration-100 flex justify-center items-center cursor-pointer" in:fly={{duration:800,opacity:.2,y:200,easing:cubicOut,delay:500}}>
+      <div class="md:hover:scale-125 duration-100 flex justify-center items-center cursor-pointer" in:fly={{duration:800,opacity:0,y:200,easing:cubicOut,delay:500}}>
         <SiraUi />
       </div>
     </div>
