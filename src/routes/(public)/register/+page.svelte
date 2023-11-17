@@ -69,7 +69,7 @@
 <section class="gunmetal-waves h-screen flex px-5 items-center justify-center">
     <!-- initail box -->
     {#if !next}
-    <div class="w-full max-w-xl h-fit flex items-center flex-col space-y-5 px-3 py-10">
+    <div class="w-full max-w-xl h-fit flex items-center flex-col space-y-5 px-3 pt-40 pb-10">
         <h1 class="text-center text-3xl font-bold text-gray-200 mb-5">Account Creation</h1>
         
         
