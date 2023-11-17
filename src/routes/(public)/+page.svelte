@@ -77,14 +77,14 @@
   on:inview_change={({ detail }) => {
     sectionOneINVIEW = detail.inView;
   }}
-  class="w-full flex flex-col space-y-5 justify-center items-center bg-[#B76D68]"
+  class="w-full flex flex-col space-y-5 justify-center items-center bg-[#B76D68] text-gray-900"
   style="height: 30rem;"
   data-theme="custom"
 >
   {#if sectionOneINVIEW}
     <p
       in:fly={{ duration: 1000, y: 500, opacity: 0.3, easing: cubicOut }}
-      class="lg:text-4xl text-2xl px-5 text-gray-900 font-bold text-center"
+      class="lg:text-4xl text-2xl px-5 font-bold text-center"
     >
       Regallion Project Showcase
     </p>
@@ -97,15 +97,39 @@
       height  : '22rem',
       // width   : '100%',
 
-    } } hasTrack={ false } class="bg-indieRed-900 rounded-lg p-5 w-full max-w-4xl m-5">
+    } } hasTrack={ false } class="bg-indieRed-900 rounded-lg p-1 w-full max-w-4xl m-5">
       <div style="position: relative">
         <SplideTrack >
-            <SplideSlide class="flex justify-center items-center">
+            <SplideSlide class="flex justify-center items-center space-x-5 p-3">
+                <span class="flex flex-col space-y-2">
+                  <p class="text-2xl font-bold">Ping-Pong</p>
+                  <p class="text-sm max-w-sm">Simple Ping pong game, built using HTML Canvas. Grab a paddle and hit the ball back and forth until it scores. Doesn't work on mobile  </p>
+                  <button class="btn sm bw light ml-auto sm:m-0">Check it out</button>
+                </span>
+                <div class="rounded-lg w-96 h-72 bg-gray-900 aspect-video sm:flex hidden">
+                  
+                </div>
             </SplideSlide>
-            <SplideSlide class="flex justify-center items-center">
-           </SplideSlide>
-           <SplideSlide class="flex justify-center items-center">
-         </SplideSlide>
+            <SplideSlide class="flex justify-center items-center space-x-5 p-3">
+              <span class="flex flex-col space-y-2">
+                <p class="text-2xl font-bold">Memory card</p>
+                <p class="text-sm max-w-sm"> Memory cards is a game of cards, that can be flipped over and matched. If a match is found, the cards stay flipped, if not, they will turn back. The game continues until all cards are flipped.</p>
+                <button class="btn sm bw light ml-auto sm:m-0">Check it out</button>
+              </span>
+              <div class="rounded-lg w-96 h-72 bg-gray-900 aspect-video sm:flex hidden">
+                
+              </div>
+          </SplideSlide>
+          <SplideSlide class="flex justify-center items-center space-x-5 p-3">
+            <span class="flex flex-col space-y-2">
+              <p class="text-2xl font-bold">Regpost</p>
+              <p class="text-sm max-w-sm">A basic social media platform for posting, and communicating with other users. Has all the typical social stuff, user profiles, posts and</p>
+              <button class="btn sm bw light ml-auto sm:m-0">Check it out</button>
+            </span>
+            <div class="rounded-lg w-96 h-72 bg-gray-900 aspect-video sm:flex hidden">
+              
+            </div>
+        </SplideSlide>
         </SplideTrack>
       </div>
   
@@ -126,7 +150,7 @@
   on:inview_change={({ detail }) => {
     sectionTwoINVIEW = detail.inView;
   }}
-  class="w-full dusk-waves-inverse flex flex-col space-y-16 justify-center items-center relative"
+  class="w-full dusk-waves-inverse flex flex-col space-y-10 justify-center items-center relative"
   style="height: 60rem;"
   data-theme="custom"
 >
@@ -179,3 +203,9 @@
     </p>
   {/if}
 </section>
+
+<style>
+  .splide__progress__bar{
+    background-color: #000;
+  }
+</style>
