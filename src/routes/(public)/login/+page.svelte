@@ -49,7 +49,6 @@
 </svelte:head>
 <section
 	class="gunmetal-waves h-fit min-h-screen flex items-center justify-center w-full"
-	data-theme="custom"
 >
 	<div
 		class="w-full min-w-fit max-w-xl h-fit flex items-center flex-col space-y-5 my-32 mx-5 pt-10 pb-5 rounded-xl"
@@ -63,7 +62,7 @@
 				}}>Continue with Github</button
 			>
 		</div>
-		<div class="divider px-5 bw">or</div>
+		<div class="divider px-5 info">or</div>
 		<p class="text-center font-semibold text-gray-200">
 			Enter your account credentials and login
 		</p>
