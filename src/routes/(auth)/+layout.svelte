@@ -33,7 +33,7 @@
         </div>
         <div class="flex space-x-2 items-center">
           <img src="/favicon.ico" alt="Regal logo" class="w-9 h-9 hidden sm:flex">
-          <a href="/" class="bg-richBlack-200 px-2 py-1 rounded-md font-extrabold text-2xl lg:text-2xl text-gray-200">Regallion</a>
+          <a href="/dashboard" class="bg-richBlack-200 px-2 py-1 rounded-md font-extrabold text-2xl lg:text-2xl text-gray-200">Regallion</a>
         </div>
         <div class="p-5">
             <div class="dropdown bw">
@@ -45,7 +45,7 @@
                   {userProfile?.username}
                 </span></p>
                 <div class="is-divider" role="separator"></div>
-                <button class="item text-sm btn" tabindex="-1" on:click={()=>{goto('dashboard')}}>Dashboard</button>
+                <button class="item text-sm btn" tabindex="-1" on:click={()=>{goto('/')}}>Homepage</button>
                 <button class="item text-sm btn" tabindex="-1" on:click={()=>{goto('profile')}}>Profile</button>
                 <button class="item text-sm btn" tabindex="-1" on:click={()=>{goto('account-settings')}}>Account Settings</button>
                 <button class="item text-sm btn" tabindex="-1" on:click={()=>{logOut()}}>Logout</button>
