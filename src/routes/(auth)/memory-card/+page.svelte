@@ -197,7 +197,11 @@
         </div>
       </span>
       <div class="flex gap-3">
-        <button class="btn solid orangeWeb w-full" on:click={()=>{showEndModal = false}}>New Game</button>
+        <button class="btn solid orangeWeb w-full" on:click={()=>{
+            showEndModal = false
+            endGame()
+            start = false
+            }}>Play Again</button>
       </div>
     </div>
   </div>
