@@ -126,7 +126,7 @@
             
         </div>
         {#if start}
-        <div class="aspect-square w-80 sm:w-96 max-w-sm bg-orangeWeb-800 rounded-md grid grid-cols-6 grid-rows-6 gap-3 p-3">
+        <div class="aspect-square w-80 sm:w-96 max-w-sm bg-orangeWeb-800 rounded-md grid grid-cols-6 grid-rows-6 gap-1 lg:gap-3 p-3">
             {#if display}
             {#each randomFruitEmojiObject as fruit}
             <div class="w-full h-full bg-gray-900 rounded-md cursor-pointer hover:bg-gray-700 hover:border-gray-200 hover:border-2 flex justify-center items-center" in:fade|global={{duration:300}}>
