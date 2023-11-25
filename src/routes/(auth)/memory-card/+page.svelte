@@ -67,6 +67,10 @@
             seconds: 0
         }
         randomFruitEmojiObject = shuffleArray(fruitEmojiObject)
+        randomFruitEmojiObject.forEach((fruit)=>{
+            fruit.hidden = true
+            fruit.matched = false
+        })
 
     }
     function scoreCalculation(){
