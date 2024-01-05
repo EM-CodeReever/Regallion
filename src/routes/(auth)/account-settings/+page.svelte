@@ -4,7 +4,7 @@
     let { supabase, session, userProfile } = data;
 </script>
 
-<section class="text-white flex flex-col justify-center dusk-waves-inverse items-center w-full px-4 py-16 h-screen">
+<section class="text-white flex flex-col justify-center items-center w-full px-4 py-16">
     <h1 class="text-4xl font-bold mb-24 text-gray-200">Account Settings</h1>
     <div class="w-full max-w-3xl py-12 px-5 md:px-16 text-gray-800 flex flex-col  h-96 rounded-xl blur-bg bg-[#ffffffc0] custom-box-shadow">
         <div class="bg-[#E5E5F7]  flex justify-center items-center rounded-full aspect-square w-36 mx-auto absolute -top-20" style="left: calc(50% - 4.5rem);">
