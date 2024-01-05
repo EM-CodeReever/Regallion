@@ -10,10 +10,10 @@ import type { PageData } from './$types';
         <title>Profile</title>
 </svelte:head>
  
-<section class="w-full bg-gradient-to-b from-gray-900 to-gray-600 bg-gradient-to-r min-h-screen flex justify-center   pt-28 lg:px-28 lg:space-x-8">
+<section class="w-full flex justify-center lg:px-28 lg:space-x-8">
 
         <div class="flex flex-col w-full max-w-fit h-fit justify-center space-y-3 ">
-            <div class="w-full h-fit flex flex-col items-center justify-center rounded-xl space-y-3">
+            <div class="w-full h-fit flex flex-col items-center justify-center rounded-xl space-y-3 p-3 bg-oxfordBlue-300">
                 <img class="mt-0 w-24 z-10  left-5 bg-gray-700 aspect-square border object-cover rounded-full " src="https://robohash.org/{userProfile?.username}" alt="User Avatar">
                     <div class="flex flex-col items-center w-full h-fit space-y-3">
                         <div class="flex flex-col justify-center items-center w-full">
@@ -38,7 +38,7 @@ import type { PageData } from './$types';
             </div>
             <div>
                 <div class="flex justify-center h-fit w-full max-w-xl">
-                    <div class="bg-[#000000aa] rounded-xl w-fit h-fit grid grid-cols-6 grid-rows-6 gap-3 p-3 text-gray-300">
+                    <div class="bg-[#000000aa] rounded-xl w-full h-fit grid grid-cols-6 grid-rows-6 gap-3 p-3 text-gray-300">
                         
                         <Badge bgColor="bg-orangeWeb-800" type="new-user" />
                         <Badge bgColor="bg-gray-600" type="initial-ping-pong" />
@@ -55,7 +55,5 @@ import type { PageData } from './$types';
 </section>
 
 <style>
-    body{
-        background-color: rgb(16, 78, 202);
-    }
+
 </style>
