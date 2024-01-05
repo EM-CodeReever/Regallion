@@ -5,6 +5,8 @@ export default {
     screens: {
       'xs': '360px',
       // => @media (min-width: 320px) { ... }
+      'screen-400': '400px',
+      'screen-500': '500px',
 
       'sm': '640px',
       // => @media (min-width: 640px) { ... }
@@ -14,6 +16,7 @@ export default {
 
       'ping-pong-breakpoint': '820px',
       // => @media (min-width: 820px) { ... }
+      'screen-800': '800px',
 
       'lg': '1024px',
       // => @media (min-width: 1024px) { ... }
