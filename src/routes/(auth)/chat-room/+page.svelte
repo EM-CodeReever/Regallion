@@ -9,10 +9,10 @@
 <svelte:head>
     <title>Regalore - Chat Room</title>
 </svelte:head>
-<section class="w-full bg-gradient-to-b from-gray-900 to-gray-600 bg-gradient-to-r min-h-screen flex flex-col justify-center space-y-16">
+<section class="w-full flex flex-col justify-center space-y-16">
     <span class="flex flex-col items-center space-y-3 ">
         <h1 class="text-7xl font-semibold">Regalore</h1>
-        <p >Welcome to the chat room</p>
+        <p >Welcome to the chat room (coming soon)</p>
     </span>
     <div class="flex flex-col justify-center items-center space-y-3 w-full">
         <button class="btn flex-grow w-full max-w-md solid orangeWeb">Join Global Chat</button>
