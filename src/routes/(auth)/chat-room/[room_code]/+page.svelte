@@ -40,8 +40,8 @@
     <title>Regalore - [{roomCode}]</title>
 </svelte:head>
 
-<section class="w-full bg-gradient-to-b from-gray-900 to-gray-600 bg-gradient-to-r min-h-screen flex flex-col items-center relative">
-    <div class="h-14 mt-24 max-w-4xl w-full flex justify-between bg-[#000000aa] rounded-lg rounded-b-none py-3 items-center px-16">
+<section class="w-full h-fit flex flex-col items-center relative">
+    <div class="h-14 mt-10 max-w-4xl w-full flex justify-between bg-[#000000aa] rounded-lg rounded-b-none py-3 items-center px-16">
         <p>Room code: {roomCode}</p>
         <div class="divider vertical"></div>
         <p>Room name: {roomCode}</p>
