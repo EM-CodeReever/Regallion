@@ -2,10 +2,11 @@
     import { browser } from '$app/environment';
     import { fly } from 'svelte/transition';
     import type { PageData } from './$types';
+    import LabelledInput from '$components/LabelledInput.svelte';
     export let data: PageData;
     let { userProfile } = data
 
-    let gameMode: "singleplayer" | "multiplayer" = "singleplayer" 
+    let gameMode: "singleplayer" | "multiplayer-local" | "multiplayer-online" = "singleplayer" 
     let isPlayerOne = false // if multiplayer, this will be determined by socket , made who created the game, even have the option to choose
     
     $: userPaddleControl = isPlayerOne ? "leftPaddleY" : "rightPaddleY" as "leftPaddleY" | "rightPaddleY"
@@ -17,8 +18,11 @@
     // being player one or two determines which side paddle user controls
 
     let showOptionsModal = false
-    let playerPaddleColor = "#0091FF"
-    let computerPaddleColor = "#F76808"
+    let showMultiplayerOptionsModal = false
+    let MultiplayerP1Name = ""
+    let MultiplayerP2Name = ""
+    let p1PaddleColor = "#0039a6"
+    let p2PaddleColor = "#D2122E"
     let chosenBallColor = "#ffffff"
     let chosenBallSpeed = 14;
     let chosenBallSize = 10;
@@ -31,6 +35,7 @@
     let winner = ""
     let pointsToWin = 3
     let canvasWidth = 800
+    let position: "left" | "right" = "left"
 
     function setDifficulty(type: 'easy' | 'hard'| 'unfair'){
         if(type === 'easy'){
@@ -82,7 +87,13 @@
    
             let paddleSpeed = chosenPaddleSpeed;
 
-           
+           if(position === "left"){
+               paddleControl.leftPaddleY = canvas.height / 2 - paddleHeight / 2
+               paddleControl.rightPaddleY = canvas.height / 2 - paddleHeight / 2
+              }else if(position === "right"){
+                paddleControl.leftPaddleY = canvas.height / 2 - paddleHeight / 2
+                paddleControl.rightPaddleY = canvas.height / 2 - paddleHeight / 2
+              }
 
 
             // Ball properties
@@ -279,7 +290,7 @@
                 // ctx.fillRect(0, leftPaddleY, paddleWidth, paddleHeight);
                 // ctx.fillRect(canvas.width - paddleWidth, rightPaddleY, paddleWidth, paddleHeight);
 
-                ctx.fillStyle = playerPaddleColor; // Paddle color
+                ctx.fillStyle = p1PaddleColor; // Paddle color
                 ctx.beginPath();
                 ctx.moveTo(0, paddleControl.leftPaddleY);
                 ctx.arcTo(0, paddleControl.leftPaddleY, paddleWidth / 2, paddleControl.leftPaddleY + paddleHeight, 0); // Adjust the radius as needed
@@ -290,7 +301,7 @@
                 ctx.fill();
 
                 // Draw the right paddle with rounded corners
-                ctx.fillStyle = computerPaddleColor; // Paddle color
+                ctx.fillStyle = p2PaddleColor; // Paddle color
                 ctx.beginPath();
                 ctx.moveTo(canvas.width, paddleControl.rightPaddleY);
                 ctx.arcTo(canvas.width - paddleWidth / 1.75, paddleControl.rightPaddleY, canvas.width - paddleWidth / 2, paddleControl.rightPaddleY + paddleHeight, 10); // Adjust the radius as needed
@@ -327,7 +338,27 @@
           </svg>          
         Ping pong game is unvailaible on this screen size</div>
     <div class="w-full justify-between space-x-10 px-10 items-center h-20 rounded-xl bg-[#ffffff79] blur-bg text-black  mx-auto z-50 hidden  ping-pong-breakpoint:tall:flex" style="max-width: 800px;">
-        <p class="font-sans text-lg badge light info cornered w-full">{userProfile?.username} - {player1Score}</p>
+        {#if gameMode === "singleplayer" || gameMode === "multiplayer-online"}
+        <p class="font-sans text-lg badge light info cornered w-full">
+            {#if position === "left"}
+            <span>
+                {userProfile?.username}
+            </span>
+            {:else if position === "right"}
+            Computer
+            {/if}
+            
+            {#if gameStarted}
+            <span class="ml-5">{player1Score}</span>
+            {/if}
+        </p>
+        {:else if gameMode === "multiplayer-local"}
+        <p class="font-sans text-lg badge light info cornered w-full">{MultiplayerP1Name} 
+            {#if gameStarted}
+            <span class="ml-5">{player1Score}</span>
+            {/if}
+        </p>
+        {/if}
         {#if !paused || gameEnded}
         <button class="btn light bw" on:click={()=>{pauseGame()}}>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -341,7 +372,26 @@
               </svg>                          
         </button>
         {/if}
-        <p class="font-sans text-lg badge light warn cornered w-full">Computer - {player2Score}</p>
+        {#if gameMode === "singleplayer"}
+        <p class="font-sans text-lg badge light danger cornered w-full">
+            {#if position === "right"}
+            <span>
+                {userProfile?.username}
+            </span>
+            {:else if position === "left"}
+            Computer
+            {/if}
+            {#if gameStarted}
+            <span class="ml-5">{player2Score}</span>
+            {/if}
+        </p>
+        {:else if gameMode === "multiplayer-local" || gameMode === "multiplayer-online" }
+        <p class="font-sans text-lg badge light danger cornered w-full">{MultiplayerP2Name} 
+            {#if gameStarted}
+            <span class="ml-5">{player2Score}</span>
+            {/if}
+        </p>
+        {/if}
     </div>
     <canvas id="pingPongCanvas" class="rounded-xl canvas-aspect-ratio relative mt-10 hidden ping-pong-breakpoint:tall:flex" height="500" width="800" >
     </canvas>
@@ -357,25 +407,45 @@
             PING PONG!
         </h1>
             <span class="text-center font-bold">Use your mouse or touch to move the paddle</span>
-        <button class="btn lg bw solid w-40" on:click={()=>{
-            startGame()
-            gameStarted = true
-        }}>Start Game</button>
-        <button class="btn lg grapePurple solid w-40" disabled={!gameEnded && gameStarted}  on:click={()=>{showOptionsModal = !showOptionsModal}}>Options</button>
+        <button class="btn lg success light w-40" on:click={()=>{
+            showOptionsModal = !showOptionsModal
+
+        }}>Singleplayer</button>
+        <!-- <button class="btn lg indigo light w-40" on:click={()=>{
+            gameMode = "multiplayer"
+            showMultiplayerOptionsModal = !showMultiplayerOptionsModal}}>
+            Multiplayer
+        </button> -->
+        <div class="dropdown success">
+            <label class="btn lg indigo light w-40" tabindex="0">Multiplayer</label>
+            <div class="menu right w-52">
+              <button class="item text-sm w-48"
+              on:click={()=>{
+                gameMode = "multiplayer-local"
+                showMultiplayerOptionsModal = !showMultiplayerOptionsModal}}>Local Versus
+                <svg width="28px" height="28px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12.75 6V3.75H11.25V6L9 6C6.10051 6 3.75 8.3505 3.75 11.25V17.909C3.75 19.2019 4.7981 20.25 6.09099 20.25C6.71186 20.25 7.3073 20.0034 7.74632 19.5643L10.8107 16.5H13.1893L16.2537 19.5643C16.6927 20.0034 17.2881 20.25 17.909 20.25C19.2019 20.25 20.25 19.2019 20.25 17.909V11.25C20.25 8.3505 17.8995 6 15 6L12.75 6ZM18.75 11.25C18.75 9.17893 17.0711 7.5 15 7.5L9 7.5C6.92893 7.5 5.25 9.17893 5.25 11.25V17.909C5.25 18.3735 5.62652 18.75 6.09099 18.75C6.31403 18.75 6.52794 18.6614 6.68566 18.5037L10.1893 15H13.8107L17.3143 18.5037C17.4721 18.6614 17.686 18.75 17.909 18.75C18.3735 18.75 18.75 18.3735 18.75 17.909V11.25ZM6.75 12.75V11.25H8.25V9.75H9.75V11.25H11.25V12.75H9.75V14.25H8.25V12.75H6.75ZM15 10.875C15 11.4963 14.4963 12 13.875 12C13.2537 12 12.75 11.4963 12.75 10.875C12.75 10.2537 13.2537 9.75 13.875 9.75C14.4963 9.75 15 10.2537 15 10.875ZM16.125 14.25C16.7463 14.25 17.25 13.7463 17.25 13.125C17.25 12.5037 16.7463 12 16.125 12C15.5037 12 15 12.5037 15 13.125C15 13.7463 15.5037 14.25 16.125 14.25Z" fill="currentColor"></path> </g></svg>
+              </button>
+              <button class="item text-sm"on:click={()=>{
+                gameMode = "multiplayer-online"
+                }}>Online H-2-H
+                <svg width="28px" height="28px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M1.5 6.5C1.5 3.46243 3.96243 1 7 1C10.0376 1 12.5 3.46243 12.5 6.5C12.5 9.53757 10.0376 12 7 12C3.96243 12 1.5 9.53757 1.5 6.5Z" fill="#0039a6"></path> <path d="M14.4999 6.5C14.4999 8.00034 14.0593 9.39779 13.3005 10.57C14.2774 11.4585 15.5754 12 16.9999 12C20.0375 12 22.4999 9.53757 22.4999 6.5C22.4999 3.46243 20.0375 1 16.9999 1C15.5754 1 14.2774 1.54153 13.3005 2.42996C14.0593 3.60221 14.4999 4.99966 14.4999 6.5Z" fill="#FF033E"></path> <path d="M0 18C0 15.7909 1.79086 14 4 14H10C12.2091 14 14 15.7909 14 18V22C14 22.5523 13.5523 23 13 23H1C0.447716 23 0 22.5523 0 22V18Z" fill="#0039a6"></path> <path d="M16 18V23H23C23.5522 23 24 22.5523 24 22V18C24 15.7909 22.2091 14 20 14H14.4722C15.4222 15.0615 16 16.4633 16 18Z" fill="#FF033E"></path> </g></svg>
+              </button>
+            </div>
+          </div>
     </div>
     {/if}
     {#if gameEnded}
     <div in:fly={{delay:0,duration:500,y:300,opacity:0}} class="z-50 text-7xl text-center font-bold flex-col space-y-5 justify-center items-center absolute mx-auto my-auto hidden ping-pong-breakpoint:tall:flex">
         {winner} Wins! <br>
         {player1Score} - {player2Score}
-        <button class="btn lg bw solid w-40" on:click={()=>{
+        <button class="btn lg success light w-40" on:click={()=>{
         gameEnded = false
         paused = false
         resetScore()
         centerBall()
         startGame()
-    }}>New Game</button>
-    <button class="btn lg grapePurple solid w-40" disabled={!gameEnded && gameStarted}  on:click={()=>{showOptionsModal = !showOptionsModal}}>Options</button>
+    }}>Replay</button>
+    <button class="btn lg info light w-40" on:click={()=>{gameEnded = false, gameStarted = false}}>Menu</button>
     </div>
 
     {/if}
@@ -383,12 +453,12 @@
 
     <div>
     <!-- remove `modal-overlay` element will make modal opened without overlay -->
-    <label class="modal-overlay"></label>
+    <label class="modal-overlay show"></label>
     <!-- show class here will make modal visible -->
-    <div class="modal bg-gray-900 text-gray-200 flex-col gap-3 w-full max-w-lg hidden ping-pong-breakpoint:tall:flex{showOptionsModal ? 'show' : ''}">
+    <div class="modal bg-gray-800 text-gray-200 flex-col gap-3 w-full max-w-lg flex {showOptionsModal ? 'show' : 'hidden'}">
       <!-- <button class="absolute btn light bw right-4 top-3">✕</button> -->
       <h2 class="text-xl font-semibold text-center mb-5">Game Options</h2>
-        
+      
         <div class="flex w-full justify-between items-center">
             <label for="difficulty">Difficulty</label>
             <select bind:value={choosenDifficulty} name="difficulty" id="difficulty" class="input bw solid w-48">
@@ -397,13 +467,22 @@
                 <option value="unfair">Unfair</option>
             </select>
         </div>
+
         <div class="flex w-full justify-between items-center">
-            <label for="playerPaddleColor">Player paddle color</label>
-            <input bind:value={playerPaddleColor} type="color" name="ballColor" class="input h-10 bw solid w-48" >
+            <label for="difficulty">Player paddle positon</label>
+            <select bind:value={position} name="position" id="position" class="input bw solid w-48">
+                <option value="left">Left</option>
+                <option value="right">Right</option>
+            </select>
+            </div>
+
+        <div class="flex w-full justify-between items-center">
+            <label for="p1PaddleColor">Player paddle color</label>
+            <input bind:value={p1PaddleColor} type="color" name="ballColor" class="input h-10 bw solid w-48" >
         </div>
         <div class="flex w-full justify-between items-center">
-            <label for="computerPaddleColor">Computer paddle color</label>
-            <input bind:value={computerPaddleColor} type="color" name="ballColor" class="input h-10 bw solid w-48" >
+            <label for="p2PaddleColor">Computer paddle color</label>
+            <input bind:value={p2PaddleColor} type="color" name="ballColor" class="input h-10 bw solid w-48" >
         </div>
         <div class="flex w-full justify-between items-center">
             <label for="chosenBallColor">Ball color</label>
@@ -411,22 +490,55 @@
         </div>
         <div class="flex justify-between items-center">
             <label for="pointsToWin">Points to win</label>
-            <select bind:value={pointsToWin} name="pointsToWin" id="pointsToWin" class="input bw solid w-48">
-                <option value="1">1</option>
-                <option value="3">3</option>
-                <option value="5">5</option>
-                <option value="7">7</option>
-                <option value="10">10</option>
-            </select>
+            <input type="number" bind:value={pointsToWin} name="pointsToWin" id="pointsToWin" class="input bw solid w-48">
         </div>
         
           <div class="flex gap-3 mt-5">
-        <button class="btn solid bw flex-1" on:click={()=>{showOptionsModal = !showOptionsModal}}>Cancel</button>
-        <button class="btn solid grapePurple flex-1" on:click={()=>{setDifficulty(choosenDifficulty)}}>Save</button>
+        <button class="btn solid danger flex-1" on:click={()=>{showOptionsModal = !showOptionsModal}}>Cancel</button>
+        <button class="btn solid indigo flex-1" on:click={()=>{
+            setDifficulty(choosenDifficulty)
+            startGame()
+            gameStarted = true
+            }}>Play</button>
       </div>
     </div>
   </div>
 
+  <label class="modal-overlay"></label>
+  <!-- show class here will make modal visible -->
+  <div class="modal flex flex-col gap-5 max-w-2xl w-full bg-gray-800 text-gray-200 {showMultiplayerOptionsModal ? 'show' : 'hidden'} ">
+    <h2 class="text-xl font-semibold text-center mb-5">Multiplayer Options</h2>
+    <div class="flex space-x-5">
+        <LabelledInput label="P1" bind:data={MultiplayerP1Name} placeholder="Enter name"  name="player_one_name"/>
+        <LabelledInput label="P2" bind:data={MultiplayerP2Name} placeholder="Enter name"  name="player_two_name"/>
+    </div>
+    <div class="flex space-x-5">
+        <div class="flex flex-col space-y-3 w-full justify-between items-center">
+            <svg width="100px" height="100px" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="#e5e5e5" d="M438.144 256c-68.352 0-92.736 4.672-117.76 18.112-20.096 10.752-35.52 26.176-46.272 46.272C260.672 345.408 256 369.792 256 438.144v275.712c0 68.352 4.672 92.736 18.112 117.76 10.752 20.096 26.176 35.52 46.272 46.272C345.408 891.328 369.792 896 438.144 896h147.712c68.352 0 92.736-4.672 117.76-18.112 20.096-10.752 35.52-26.176 46.272-46.272C763.328 806.592 768 782.208 768 713.856V438.144c0-68.352-4.672-92.736-18.112-117.76a110.464 110.464 0 0 0-46.272-46.272C678.592 260.672 654.208 256 585.856 256H438.144zm0-64h147.712c85.568 0 116.608 8.96 147.904 25.6 31.36 16.768 55.872 41.344 72.576 72.64C823.104 321.536 832 352.576 832 438.08v275.84c0 85.504-8.96 116.544-25.6 147.84a174.464 174.464 0 0 1-72.64 72.576C702.464 951.104 671.424 960 585.92 960H438.08c-85.504 0-116.544-8.96-147.84-25.6a174.464 174.464 0 0 1-72.64-72.704c-16.768-31.296-25.664-62.336-25.664-147.84v-275.84c0-85.504 8.96-116.544 25.6-147.84a174.464 174.464 0 0 1 72.768-72.576c31.232-16.704 62.272-25.6 147.776-25.6z"></path><path fill="#fff" d="M512 320q32 0 32 32v128q0 32-32 32t-32-32V352q0-32 32-32zm32-96a32 32 0 0 1-64 0v-64a32 32 0 0 0-32-32h-96a32 32 0 0 1 0-64h96a96 96 0 0 1 96 96v64z"></path></g></svg>
+            <label for="p1PaddleColor">P1 Paddle Color</label>
+            <input bind:value={p1PaddleColor} type="color" name="ballColor" class="input h-10 bw solid w-48" >
+        </div>
+        <div class="flex flex-col space-y-3 w-full justify-between items-center">
+            <svg width="100px" height="100px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 13H6.01M6 17H6.01M10 13H10.01M14 13H14.01M18 17H18.01M18 13H18.01M16 3V5H8V9M10 17H14M5.2 21H18.8C19.9201 21 20.4802 21 20.908 20.782C21.2843 20.5903 21.5903 20.2843 21.782 19.908C22 19.4802 22 18.9201 22 17.8V12.2C22 11.0799 22 10.5198 21.782 10.092C21.5903 9.71569 21.2843 9.40973 20.908 9.21799C20.4802 9 19.9201 9 18.8 9H5.2C4.07989 9 3.51984 9 3.09202 9.21799C2.71569 9.40973 2.40973 9.71569 2.21799 10.092C2 10.5198 2 11.0799 2 12.2V17.8C2 18.9201 2 19.4802 2.21799 19.908C2.40973 20.2843 2.71569 20.5903 3.09202 20.782C3.51984 21 4.0799 21 5.2 21Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+            <label for="p2PaddleColor">P2 Paddle Color</label>
+            <input bind:value={p2PaddleColor} type="color" name="ballColor" class="input h-10 bw solid w-48" >
+        </div>   
+    </div>
+    <div class="flex w-full justify-between items-center">
+        <label for="chosenBallColor">Ball color</label>
+        <input bind:value={chosenBallColor} type="color" name="ballColor" class="input h-10 bw solid w-48" >
+    </div>
+    <div class="flex justify-between items-center">
+        <label for="pointsToWin">Points to win</label>
+        <input type="number" bind:value={pointsToWin} name="pointsToWin" id="pointsToWin" class="input bw solid w-48">
+    </div>
+    <div class="flex gap-3">
+      <button class="btn solid danger flex-1" on:click={()=>{
+            gameMode = "singleplayer"
+            showMultiplayerOptionsModal = !showMultiplayerOptionsModal}}>Cancel</button>
+      <button class="btn solid indigo flex-1">Play!</button>
+    </div>
+  </div>
 
 <style>
     canvas {
