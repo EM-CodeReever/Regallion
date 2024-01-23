@@ -5,6 +5,16 @@
     export let data: PageData;
     let { userProfile } = data
 
+    let gameMode: "singleplayer" | "multiplayer" = "singleplayer" 
+    let isPlayerOne = true // if multiplayer, this will be determined by socket , made who created the game, even have the option to choose
+    
+    $: userPaddleControl = isPlayerOne ? "leftPaddleY" : "rightPaddleY" as "leftPaddleY" | "rightPaddleY"
+
+    //what determines multiplayer : socket connected? 
+    // difficulty only matters in singleplayer
+    // if multiplayer, need a dynamic way to determine who is player one and who is player two
+    // if multiplayer, need a dynamic way to determine way to make the game interesting i.e ball speed increacing every round or something
+    // being player one or two determines which side paddle user controls
 
     let showOptionsModal = false
     let playerPaddleColor = "#0091FF"
@@ -63,9 +73,17 @@
             // Paddle properties
             const paddleWidth = 15;
             let paddleHeight = .3 * canvas.height;
-            let leftPaddleY = canvas.height / 2 - paddleHeight / 2;
-            let rightPaddleY = canvas.height / 2 - paddleHeight / 2;
+
+
+            let paddleControl = {
+                leftPaddleY : canvas.height / 2 - paddleHeight / 2,
+                rightPaddleY : canvas.height / 2 - paddleHeight / 2
+            }
+   
             let paddleSpeed = chosenPaddleSpeed;
+
+           
+
 
             // Ball properties
             let ballSize = chosenBallSize;
@@ -96,7 +114,9 @@
                     return
                 }
                 const mouseY = event.clientY - canvas.getBoundingClientRect().top;
-                leftPaddleY = mouseY - paddleHeight / 2;
+                //move paddle respective to user
+                // leftPaddleY = mouseY - paddleHeight / 2;
+                paddleControl[userPaddleControl] = mouseY - paddleHeight / 2;
             });
 
             // Variable to store the initial touch position
@@ -119,9 +139,9 @@
                 }
                 const touchY = event.touches[0].clientY;
                 const deltaY = touchY - touchStartY;
-                leftPaddleY += deltaY;
+                paddleControl[userPaddleControl] += deltaY;
                 // Ensure the paddle stays within the canvas boundaries
-                leftPaddleY = Math.min(canvas.height - paddleHeight, Math.max(0, leftPaddleY));
+                paddleControl[userPaddleControl] = Math.min(canvas.height - paddleHeight, Math.max(0, paddleControl[userPaddleControl]));
                 touchStartY = touchY; // Update the initial touch position   
             });
 
@@ -132,18 +152,32 @@
 
 
             // Update paddle positions
+            //Todo: Handle multiplayer paddle
             function movePaddles() {
                 // Ensure paddles stay within the canvas boundaries
-                leftPaddleY = Math.min(canvas.height - paddleHeight, Math.max(0, leftPaddleY));
-                rightPaddleY = Math.min(canvas.height - paddleHeight, Math.max(0, rightPaddleY));
+
+                // paddleControl[userPaddleControl] = Math.min(canvas.height - paddleHeight, Math.max(0, paddleControl[userPaddleControl]));
+
+                paddleControl.leftPaddleY = Math.min(canvas.height - paddleHeight, Math.max(0, paddleControl.leftPaddleY));
+                paddleControl.rightPaddleY = Math.min(canvas.height - paddleHeight, Math.max(0, paddleControl.rightPaddleY));
+
 
                 // Move the computer-controlled paddle
-                const middleOfPaddle = rightPaddleY + paddleHeight / 2;
-                if (middleOfPaddle < ballY - 35) {
-                    rightPaddleY += paddleSpeed;
-                } else if (middleOfPaddle > ballY + 35) {
-                    rightPaddleY -= paddleSpeed;
-                }
+                //Todo: Handle real player paddle
+
+                if(gameMode === "singleplayer"){
+
+                    let computerPaddleControl: keyof typeof paddleControl = isPlayerOne ? "rightPaddleY": "leftPaddleY" 
+
+                    const middleOfPaddle = paddleControl[computerPaddleControl] + paddleHeight / 2;
+
+                    if (middleOfPaddle < ballY - 35) {
+
+                        paddleControl[computerPaddleControl] += paddleSpeed;
+                    } else if (middleOfPaddle > ballY + 35) {
+                        paddleControl[computerPaddleControl] -= paddleSpeed;
+                    }
+                } 
             }
 
 
@@ -155,15 +189,15 @@
                 // Collision with paddles
                 if (
                     ballX < paddleWidth &&
-                    ballY > leftPaddleY &&
-                    ballY < leftPaddleY + paddleHeight
+                    ballY > paddleControl.leftPaddleY &&
+                    ballY < paddleControl.leftPaddleY + paddleHeight
                 ) {
                     ballSpeedX = -ballSpeedX;
                 }
                 if (
                     ballX > canvas.width - paddleWidth &&
-                    ballY > rightPaddleY &&
-                    ballY < rightPaddleY + paddleHeight
+                    ballY > paddleControl.rightPaddleY &&
+                    ballY < paddleControl.rightPaddleY + paddleHeight
                 ) {
                     ballSpeedX = -ballSpeedX;
                 }
@@ -247,22 +281,22 @@
 
                 ctx.fillStyle = playerPaddleColor; // Paddle color
                 ctx.beginPath();
-                ctx.moveTo(0, leftPaddleY);
-                ctx.arcTo(0, leftPaddleY, paddleWidth / 2, leftPaddleY + paddleHeight, 0); // Adjust the radius as needed
-                ctx.arcTo(0, leftPaddleY + paddleHeight, paddleWidth, leftPaddleY + paddleHeight, 0); // Adjust the radius as needed
-                ctx.arcTo(paddleWidth / 1.75, leftPaddleY + paddleHeight, paddleWidth, leftPaddleY, 10); // Adjust the radius as needed
-                ctx.arcTo(paddleWidth / 1.75, leftPaddleY, paddleWidth / 2, leftPaddleY, 10); // Adjust the radius as needed
+                ctx.moveTo(0, paddleControl.leftPaddleY);
+                ctx.arcTo(0, paddleControl.leftPaddleY, paddleWidth / 2, paddleControl.leftPaddleY + paddleHeight, 0); // Adjust the radius as needed
+                ctx.arcTo(0, paddleControl.leftPaddleY + paddleHeight, paddleWidth, paddleControl.leftPaddleY + paddleHeight, 0); // Adjust the radius as needed
+                ctx.arcTo(paddleWidth / 1.75, paddleControl.leftPaddleY + paddleHeight, paddleWidth, paddleControl.leftPaddleY, 10); // Adjust the radius as needed
+                ctx.arcTo(paddleWidth / 1.75, paddleControl.leftPaddleY, paddleWidth / 2, paddleControl.leftPaddleY, 10); // Adjust the radius as needed
                 ctx.closePath();
                 ctx.fill();
 
                 // Draw the right paddle with rounded corners
                 ctx.fillStyle = computerPaddleColor; // Paddle color
                 ctx.beginPath();
-                ctx.moveTo(canvas.width, rightPaddleY);
-                ctx.arcTo(canvas.width - paddleWidth / 1.75, rightPaddleY, canvas.width - paddleWidth / 2, rightPaddleY + paddleHeight, 10); // Adjust the radius as needed
-                ctx.arcTo(canvas.width - paddleWidth / 1.75, rightPaddleY + paddleHeight, canvas.width, rightPaddleY + paddleHeight, 10); // Adjust the radius as needed
-                ctx.arcTo(canvas.width, rightPaddleY + paddleHeight, canvas.width, rightPaddleY, 10); // Adjust the radius as needed
-                ctx.arcTo(canvas.width, rightPaddleY, canvas.width - paddleWidth / 2, rightPaddleY, 0); // Adjust the radius as needed
+                ctx.moveTo(canvas.width, paddleControl.rightPaddleY);
+                ctx.arcTo(canvas.width - paddleWidth / 1.75, paddleControl.rightPaddleY, canvas.width - paddleWidth / 2, paddleControl.rightPaddleY + paddleHeight, 10); // Adjust the radius as needed
+                ctx.arcTo(canvas.width - paddleWidth / 1.75, paddleControl.rightPaddleY + paddleHeight, canvas.width, paddleControl.rightPaddleY + paddleHeight, 10); // Adjust the radius as needed
+                ctx.arcTo(canvas.width, paddleControl.rightPaddleY + paddleHeight, canvas.width, paddleControl.rightPaddleY, 10); // Adjust the radius as needed
+                ctx.arcTo(canvas.width, paddleControl.rightPaddleY, canvas.width - paddleWidth / 2, paddleControl.rightPaddleY, 0); // Adjust the radius as needed
                 ctx.closePath();
                 ctx.fill();
 
