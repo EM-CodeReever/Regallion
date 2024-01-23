@@ -46,6 +46,7 @@ export default {
             gunMetal: '#1B2432',
             raisinBlack: '#2C2B3C',
             onyx: '#403F4C',
+            indigo: '#4B0082',
             oxfordBlue: '#14213D',
             orangeWeb: '#FCA311',
             platinum: '#E5E5E5',
