@@ -19,6 +19,8 @@
 
     let showOptionsModal = false
     let showMultiplayerOptionsModal = false
+    let P1Name = ""
+    let P2Name = ""
     let MultiplayerP1Name = ""
     let MultiplayerP2Name = ""
     let p1PaddleColor = "#0039a6"
@@ -68,6 +70,16 @@
     
 
     function startGame(){
+        if(position === "left"){
+               isPlayerOne = true
+               P1Name = userProfile?.username as string
+               P2Name = "Computer"
+              }else if(position === "right"){
+                isPlayerOne = false
+                P2Name = userProfile?.username as string
+                P1Name = "Computer"
+              }
+
         let touchStartY: any
         if(browser){
             // Define canvas element and its context
@@ -87,13 +99,7 @@
    
             let paddleSpeed = chosenPaddleSpeed;
 
-           if(position === "left"){
-               paddleControl.leftPaddleY = canvas.height / 2 - paddleHeight / 2
-               paddleControl.rightPaddleY = canvas.height / 2 - paddleHeight / 2
-              }else if(position === "right"){
-                paddleControl.leftPaddleY = canvas.height / 2 - paddleHeight / 2
-                paddleControl.rightPaddleY = canvas.height / 2 - paddleHeight / 2
-              }
+           
 
 
             // Ball properties
@@ -222,7 +228,7 @@
                             gameEnded = true
                             hideBall()
                             pauseGame()
-                            winner = "Computer"
+                            winner = P2Name
 
                         }else{
                             resetBall();
@@ -235,7 +241,7 @@
                         gameEnded = true
                         hideBall()
                         pauseGame()
-                        winner = userProfile?.username as string
+                        winner = P1Name
                     }else{                      
                         resetBall();
                     }
@@ -471,8 +477,8 @@
         <div class="flex w-full justify-between items-center">
             <label for="difficulty">Player paddle positon</label>
             <select bind:value={position} name="position" id="position" class="input bw solid w-48">
-                <option value="left">Left</option>
-                <option value="right">Right</option>
+                <option value="left">Player 1</option>
+                <option value="right">Player 2</option>
             </select>
             </div>
 
@@ -497,8 +503,10 @@
         <button class="btn solid danger flex-1" on:click={()=>{showOptionsModal = !showOptionsModal}}>Cancel</button>
         <button class="btn solid indigo flex-1" on:click={()=>{
             setDifficulty(choosenDifficulty)
-            startGame()
             gameStarted = true
+            setTimeout(() => {
+                startGame()
+            }, 1000);
             }}>Play</button>
       </div>
     </div>
