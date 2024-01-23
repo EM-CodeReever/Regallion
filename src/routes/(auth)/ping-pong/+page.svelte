@@ -6,7 +6,7 @@
     let { userProfile } = data
 
     let gameMode: "singleplayer" | "multiplayer" = "singleplayer" 
-    let isPlayerOne = true // if multiplayer, this will be determined by socket , made who created the game, even have the option to choose
+    let isPlayerOne = false // if multiplayer, this will be determined by socket , made who created the game, even have the option to choose
     
     $: userPaddleControl = isPlayerOne ? "leftPaddleY" : "rightPaddleY" as "leftPaddleY" | "rightPaddleY"
 
@@ -49,12 +49,12 @@
         showOptionsModal = !showOptionsModal
     }
 
-    let playerScore = 0;
-    let computerScore = 0;
+    let player1Score = 0;
+    let player2Score = 0;
 
     function resetScore(){
-        playerScore = 0;
-        computerScore = 0;
+        player1Score = 0;
+        player2Score = 0;
     }
 
     let pauseGame = function (){}
@@ -93,8 +93,8 @@
             let ballSpeedY = chosenBallSpeed;
 
             // Scores
-            playerScore = 0;
-            computerScore = 0;
+            player1Score = 0;
+            player2Score = 0;
 
             // Game loop
             function gameLoop() {
@@ -206,8 +206,8 @@
                 if (ballX < 0) {
                     // Ball went past the left paddle
                     if(!gameEnded){
-                        computerScore++;
-                        if(computerScore >= pointsToWin){
+                        player2Score++;
+                        if(player2Score >= pointsToWin){
                             gameEnded = true
                             hideBall()
                             pauseGame()
@@ -219,8 +219,8 @@
                     }
                 } else if (ballX > canvas.width) {
                     // Ball went past the right paddle
-                    playerScore++;
-                    if(playerScore == pointsToWin){
+                    player1Score++;
+                    if(player1Score == pointsToWin){
                         gameEnded = true
                         hideBall()
                         pauseGame()
@@ -327,7 +327,7 @@
           </svg>          
         Ping pong game is unvailaible on this screen size</div>
     <div class="w-full justify-between space-x-10 px-10 items-center h-20 rounded-xl bg-[#ffffff79] blur-bg text-black  mx-auto z-50 hidden  ping-pong-breakpoint:tall:flex" style="max-width: 800px;">
-        <p class="font-sans text-lg badge light info cornered w-full">{userProfile?.username} - {playerScore}</p>
+        <p class="font-sans text-lg badge light info cornered w-full">{userProfile?.username} - {player1Score}</p>
         {#if !paused || gameEnded}
         <button class="btn light bw" on:click={()=>{pauseGame()}}>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -341,14 +341,14 @@
               </svg>                          
         </button>
         {/if}
-        <p class="font-sans text-lg badge light warn cornered w-full">Computer - {computerScore}</p>
+        <p class="font-sans text-lg badge light warn cornered w-full">Computer - {player2Score}</p>
     </div>
     <canvas id="pingPongCanvas" class="rounded-xl canvas-aspect-ratio relative mt-10 hidden ping-pong-breakpoint:tall:flex" height="500" width="800" >
     </canvas>
 
     {#if scoreDisplay && !gameEnded}
     <div transition:fly={{delay:0,duration:500,y:300,opacity:0}} class="z-50 text-7xl text-center font-bold justify-center items-center absolute mx-auto my-auto hidden ping-pong-breakpoint:tall:flex">
-        {playerScore} - {computerScore}
+        {player1Score} - {player2Score}
     </div>
     {/if}
     {#if !gameStarted}
@@ -367,7 +367,7 @@
     {#if gameEnded}
     <div in:fly={{delay:0,duration:500,y:300,opacity:0}} class="z-50 text-7xl text-center font-bold flex-col space-y-5 justify-center items-center absolute mx-auto my-auto hidden ping-pong-breakpoint:tall:flex">
         {winner} Wins! <br>
-        {playerScore} - {computerScore}
+        {player1Score} - {player2Score}
         <button class="btn lg bw solid w-40" on:click={()=>{
         gameEnded = false
         paused = false
