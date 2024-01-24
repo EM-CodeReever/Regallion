@@ -21,7 +21,7 @@ export default class Game {
     #playerPaddleColor = "#0091FF"
     #computerPaddleColor = "#F76808"
     #ballColor = "#ffffff"
-    #ballSpeed = 14;
+    #ballSpeed = 10;
     #ballSize = 10;
     #paddleSpeed = 4;
     #difficulty: "easy" | "hard" | "unfair" = "easy";
@@ -289,6 +289,10 @@ export default class Game {
 
     set ballSpeedX(value: number) {
         this.#ballSpeedX = value;
+        if(this.socket){
+            this.socket.send(JSON.stringify({type:"propertyChange", property: "ballSpeedX", value} satisfies GameAction))
+               
+        }
     }
 
     get ballSpeedY(): number {
@@ -297,6 +301,10 @@ export default class Game {
 
     set ballSpeedY(value: number) {
         this.#ballSpeedY = value;
+        if(this.socket){
+            this.socket.send(JSON.stringify({type:"propertyChange", property: "ballSpeedY", value} satisfies GameAction))
+               
+        }
     }
 
 
@@ -321,6 +329,12 @@ export default class Game {
             break;
         case "ballY":
             this.#ballY = value
+            break;
+        case "ballSpeedX":
+            this.#ballSpeedX = value
+            break;
+        case "ballSpeedY":
+            this.#ballSpeedY = value
             break;
         default:
             break;

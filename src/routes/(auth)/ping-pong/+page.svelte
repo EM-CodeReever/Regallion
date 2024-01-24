@@ -9,6 +9,8 @@
     $: ({ userProfile, roomId, ws } = data)
     console.log(roomId);
     
+    let BALLSPEEDX = 6
+    let BALLSPEEDY = 6
 
 
     let game = new Game("multiplayer-online")  //once online, socket will be responsible for game state
@@ -36,8 +38,9 @@
     let position: "left" | "right" = "left"
 
     function setDifficulty(type: 'easy' | 'hard'| 'unfair'){
+        // CHANGE THIS FUNCTION TO AN INIITIALIZE FUNCTION THAT SETS ALL GAME PROPERTIES
         if(type === 'easy'){
-                game.ballSpeed = 14
+                game.ballSpeed = 5
                 game.ballSize = 10
                 game.paddleSpeed = 4
             }else if(type === 'hard'){
@@ -89,7 +92,8 @@
             // Define canvas element and its context
             // determine canvas size from screen size
             const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
-
+            
+            
             // Paddle properties
             game.paddleHeight = .3 * canvas.height;
 
@@ -103,8 +107,9 @@
             let ballSize = game.ballSize;
             game.ballX = canvas.width / 2;
             game.ballY = canvas.height / 2;
-            let ballSpeedX = game.ballSpeed;
-            let ballSpeedY = game.ballSpeed;
+            // let ballSpeedX = 4;
+            // let ballSpeedY = 4;
+
 
             // Scores
             game.player1Score = 0;
@@ -210,8 +215,10 @@
 
             // Update ball position
             function moveBall() {
-                game.ballX += ballSpeedX;
-                game.ballY += ballSpeedY;
+                console.log("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH: " + BALLSPEEDX);
+                
+                game.ballX += BALLSPEEDX;
+                game.ballY += BALLSPEEDY;
 
                 // Collision with paddles
                 if (
@@ -219,14 +226,14 @@
                     game.ballY > game.leftPaddleY &&
                     game.ballY < game.leftPaddleY + game.paddleHeight
                 ) {
-                    ballSpeedX = -ballSpeedX;
+                    BALLSPEEDX = -BALLSPEEDX;
                 }
                 if (
                     game.ballX > canvas.width - game.paddleWidth &&
                     game.ballY > game.rightPaddleY &&
                     game.ballY < game.rightPaddleY + game.paddleHeight
                 ) {
-                    ballSpeedX = -ballSpeedX;
+                    BALLSPEEDX = -BALLSPEEDX;
                 }
 
                 // Scoring
@@ -258,8 +265,8 @@
                 }
 
                 // Ball collisions with top and bottom walls
-                if (game.ballY < 0 || game.ballY > canvas.height) {
-                    ballSpeedY = -ballSpeedY;
+                if (game.ballY <= 0 || game.ballY >= canvas.height) {
+                    BALLSPEEDY = -BALLSPEEDY
                 }
             }
 
@@ -288,8 +295,8 @@
             }
             pauseGame = () => {
                     
-                ballSpeedX = 0;
-                ballSpeedY = 0;
+                BALLSPEEDX = 0
+                BALLSPEEDY = 0
                 game.paused = true
                 
                 cancelAnimationFrame(frameId)
@@ -297,8 +304,8 @@
 
                 return () => {
                                 
-                    ballSpeedX = game.ballSpeed;
-                    ballSpeedY = game.ballSpeed;
+                    BALLSPEEDX = 6
+                    BALLSPEEDY = 6
                     game.paused = false
             
                 }
@@ -309,10 +316,7 @@
                 // Clear the canvas
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-                // Draw paddles
-                // ctx.fillStyle = colorChoice;
-                // ctx.fillRect(0, leftPaddleY, paddleWidth, paddleHeight);
-                // ctx.fillRect(canvas.width - paddleWidth, rightPaddleY, paddleWidth, paddleHeight);
+                
 
                 ctx.fillStyle = p1PaddleColor; // Paddle color
                 ctx.beginPath();
@@ -338,8 +342,9 @@
                 // Draw the ball
                 ctx.fillStyle = '#ffffff';
                 ctx.beginPath();
-                ctx.arc(game.ballX, game.ballY, ballSize, 0, Math.PI * 2);
+                ctx.arc(game.ballX, game.ballY, 10, 0, Math.PI * 2);
                 ctx.fill();
+                
 
             }
             
@@ -364,11 +369,12 @@
                         game.pointsToWin = message.game.pointsToWin
                         game.ballColor = message.game.ballColor
                         game.ballSpeed = message.game.ballSpeed
+                        game.ballSpeedX = message.game.ballSpeedX
+                        game.ballSpeedY = message.game.ballSpeedY
                         game.ballSize = message.game.ballSize
                         game.paddleSpeed = message.game.paddleSpeed
                         game.paddleHeight = message.game.paddleHeight
                         game.leftPaddleY = message.game.leftPaddleY
-                        // game.rightPaddleY = 100
                         game.rightPaddleY = message.game.rightPaddleY
                         game.player1Score = message.game.player1Score
                         game.player2Score = message.game.player2Score
@@ -396,6 +402,7 @@
                         
 
                       game.updateProperty(message.property, message.value)
+
                       
                         break;
                 }
