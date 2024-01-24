@@ -304,7 +304,7 @@ export default class Game {
 
    updateProperty = (property: keyof Game, value: any) => {
     //@ts-ignore
-    this[property] = value
+    this[`#${property}`] = value
    }
 
     resetScore = () =>  {
