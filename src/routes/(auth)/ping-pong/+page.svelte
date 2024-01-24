@@ -346,7 +346,28 @@
                 
                 switch(message.type){
                     case "gameInstance":
-                        game = message.game
+                        // game = message.game
+                        game.gameStarted = message.game.gameStarted
+                        game.gameMode = message.game.gameMode
+                        game.difficulty = message.game.difficulty
+                        game.pointsToWin = message.game.pointsToWin
+                        game.ballColor = message.game.ballColor
+                        game.ballSpeed = message.game.ballSpeed
+                        game.ballSize = message.game.ballSize
+                        game.paddleSpeed = message.game.paddleSpeed
+                        game.paddleHeight = message.game.paddleHeight
+                        game.leftPaddleY = message.game.leftPaddleY
+                        game.rightPaddleY = message.game.rightPaddleY
+                        game.player1Score = message.game.player1Score
+                        game.player2Score = message.game.player2Score
+                        game.gameEnded = message.game.gameEnded
+                        game.winner = message.game.winner
+                        game.scoreDisplay = message.game.scoreDisplay
+                        game.paused = message.game.paused
+                        game.canvasWidth = message.game.canvasWidth
+                        game.ballX = message.game.ballX
+                        game.ballY = message.game.ballY
+
                         game.socket = ws!
 
                         console.log("gameInstance", game);

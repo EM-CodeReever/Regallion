@@ -73,6 +73,9 @@ export default class Game {
       
         this.#leftPaddleY = value;
 
+        console.log("left paddle y changed");
+        
+
         if(this.socket){
             console.log("sending message");
             
