@@ -3,15 +3,19 @@
     import { fly } from 'svelte/transition';
     import type { PageData } from './$types';
     import LabelledInput from '$components/LabelledInput.svelte';
-    import Game from './Game';
+    import Game  from './Game';
     export let data: PageData;
     let { userProfile } = data
 
 
     let game = new Game("singleplayer")
 
+    let frameId: number
+
+    $: console.log(frameId, "frameId");
+    
     let gameMode: "singleplayer" | "multiplayer-local" | "multiplayer-online" = "singleplayer" 
-    let isPlayerOne = false // if multiplayer, this will be determined by socket , made who created the game, even have the option to choose
+    let isPlayerOne = true // if multiplayer, this will be determined by socket , made who created the game, even have the option to choose
     
     $: userPaddleControl = isPlayerOne ? "leftPaddleY" : "rightPaddleY" as "leftPaddleY" | "rightPaddleY"
 
@@ -32,7 +36,7 @@
     let chosenBallColor = "#ffffff"
     let chosenBallSpeed = 14;
     let chosenBallSize = 10;
-    let chosenPaddleSpeed = 4;
+    let paddleSpeed = 0;
     let choosenDifficulty: "easy" | "hard" | "unfair" = "easy";
     let paused = false;
     let scoreDisplay = false
@@ -47,35 +51,42 @@
         if(type === 'easy'){
                 chosenBallSpeed = 14
                 chosenBallSize = 10
-                chosenPaddleSpeed = 4
+                paddleSpeed = 4
             }else if(type === 'hard'){
                 chosenBallSpeed = 20
                 chosenBallSize = 8
-                chosenPaddleSpeed = 10
+                paddleSpeed = 10
             }else if(type === 'unfair'){
                 chosenBallSpeed = 21
                 chosenBallSize = 8
-                chosenPaddleSpeed = 50
+                paddleSpeed = 50
             }
         showOptionsModal = !showOptionsModal
     }
 
     game.player1Score = 0;
-    game.player2Score = 0;
+   game.player2Score = 0;
 
     function resetScore(){
         game.player1Score = 0;
         game.player2Score = 0;
     }
 
-    let pauseGame = function (){}
-    let resumeGame = function (){}
-    let centerBall = function (){}
+    let pauseGame : () => () => void = function (){return ()=>{}}
+    let resumeGame: () => void = function (){return}
+    let centerBall : () => void = function (){return}
 
     let canvas: HTMLCanvasElement
     
 
     function startGame(){
+
+
+
+        console.log('called start game');
+       
+        
+        
         if(position === "left"){
                isPlayerOne = true
                P1Name = userProfile?.username as string
@@ -93,16 +104,10 @@
             const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 
             // Paddle properties
-            const paddleWidth = 15;
             let paddleHeight = .3 * canvas.height;
 
-
-            let paddleControl = {
-                leftPaddleY : canvas.height / 2 - paddleHeight / 2,
-                rightPaddleY : canvas.height / 2 - paddleHeight / 2
-            }
    
-            let paddleSpeed = chosenPaddleSpeed;
+            
 
            
 
@@ -127,7 +132,7 @@
                 movePaddles();
                 moveBall();
                 drawCanvas();
-                requestAnimationFrame(gameLoop);
+                frameId = requestAnimationFrame(()=>gameLoop());
             }
 
             // Event listeners
@@ -138,7 +143,7 @@
                 const mouseY = event.clientY - canvas.getBoundingClientRect().top;
                 //move paddle respective to user
                 // leftPaddleY = mouseY - paddleHeight / 2;
-                paddleControl[userPaddleControl] = mouseY - paddleHeight / 2;
+                game[userPaddleControl] = mouseY - paddleHeight / 2;
             });
 
             // Variable to store the initial touch position
@@ -161,9 +166,9 @@
                 }
                 const touchY = event.touches[0].clientY;
                 const deltaY = touchY - touchStartY;
-                paddleControl[userPaddleControl] += deltaY;
+                game[userPaddleControl] += deltaY;
                 // Ensure the paddle stays within the canvas boundaries
-                paddleControl[userPaddleControl] = Math.min(canvas.height - paddleHeight, Math.max(0, paddleControl[userPaddleControl]));
+                game[userPaddleControl] = Math.min(canvas.height - paddleHeight, Math.max(0, game[userPaddleControl]));
                 touchStartY = touchY; // Update the initial touch position   
             });
 
@@ -179,9 +184,9 @@
                 // Ensure paddles stay within the canvas boundaries
 
                 // paddleControl[userPaddleControl] = Math.min(canvas.height - paddleHeight, Math.max(0, paddleControl[userPaddleControl]));
-
-                paddleControl.leftPaddleY = Math.min(canvas.height - paddleHeight, Math.max(0, paddleControl.leftPaddleY));
-                paddleControl.rightPaddleY = Math.min(canvas.height - paddleHeight, Math.max(0, paddleControl.rightPaddleY));
+                
+                game.leftPaddleY = Math.min(canvas.height - paddleHeight, Math.max(0, game.leftPaddleY));
+                game.rightPaddleY = Math.min(canvas.height - paddleHeight, Math.max(0, game.rightPaddleY));
 
 
                 // Move the computer-controlled paddle
@@ -189,15 +194,23 @@
 
                 if(gameMode === "singleplayer"){
 
-                    let computerPaddleControl: keyof typeof paddleControl = isPlayerOne ? "rightPaddleY": "leftPaddleY" 
+                    console.log('move computer paddle');
+                    
+                    let computerPaddleControl: keyof typeof game = isPlayerOne ? "rightPaddleY": "leftPaddleY" 
 
-                    const middleOfPaddle = paddleControl[computerPaddleControl] + paddleHeight / 2;
+                    const middleOfPaddle = game[computerPaddleControl] + paddleHeight / 2;
 
+                    console.log('middle of paddle', middleOfPaddle, "<", ballY - 35);
+                    
+                    
                     if (middleOfPaddle < ballY - 35) {
 
-                        paddleControl[computerPaddleControl] += paddleSpeed;
+                        game[computerPaddleControl] += paddleSpeed;
+                        console.log('move computer paddle down', game[computerPaddleControl]);
+                        
                     } else if (middleOfPaddle > ballY + 35) {
-                        paddleControl[computerPaddleControl] -= paddleSpeed;
+                        game[computerPaddleControl] -= paddleSpeed;
+                        console.log('move computer paddle up', game[computerPaddleControl]);
                     }
                 } 
             }
@@ -210,16 +223,16 @@
 
                 // Collision with paddles
                 if (
-                    ballX < paddleWidth &&
-                    ballY > paddleControl.leftPaddleY &&
-                    ballY < paddleControl.leftPaddleY + paddleHeight
+                    ballX < game.paddleWidth &&
+                    ballY > game.leftPaddleY &&
+                    ballY < game.leftPaddleY + paddleHeight
                 ) {
                     ballSpeedX = -ballSpeedX;
                 }
                 if (
-                    ballX > canvas.width - paddleWidth &&
-                    ballY > paddleControl.rightPaddleY &&
-                    ballY < paddleControl.rightPaddleY + paddleHeight
+                    ballX > canvas.width - game.paddleWidth &&
+                    ballY > game.rightPaddleY &&
+                    ballY < game.rightPaddleY + paddleHeight
                 ) {
                     ballSpeedX = -ballSpeedX;
                 }
@@ -232,7 +245,7 @@
                         if(game.player2Score >= pointsToWin){
                             gameEnded = true
                             hideBall()
-                            pauseGame()
+                            resumeGame = pauseGame()
                             winner = P2Name
 
                         }else{
@@ -245,7 +258,7 @@
                     if(game.player1Score == pointsToWin){
                         gameEnded = true
                         hideBall()
-                        pauseGame()
+                        resumeGame = pauseGame()
                         winner = P1Name
                     }else{                      
                         resetBall();
@@ -271,7 +284,7 @@
             // Reset the ball to the center
             function resetBall() {
                 centerBall();
-                pauseGame();
+                resumeGame = pauseGame();
                 scoreDisplay = true
                 setTimeout(()=>{
                 scoreDisplay = false
@@ -282,15 +295,32 @@
                 
             }
             pauseGame = () => {
+                    
                 ballSpeedX = 0;
                 ballSpeedY = 0;
                 paused = true
+                
+                cancelAnimationFrame(frameId)
+              
+
+
+                return () => {
+
+                    console.log('called resume game', paddleSpeed);
+                    
+                    ballSpeedX = chosenBallSpeed;
+                    ballSpeedY = chosenBallSpeed;
+                    paused = false
+
+                    console.log('resumed game', paddleSpeed);
+                    
+                }
             }
-            resumeGame = () => {
-                ballSpeedX = chosenBallSpeed;
-                ballSpeedY = chosenBallSpeed;
-                paused = false
-            }
+            // resumeGame = () => {
+            //     ballSpeedX = chosenBallSpeed;
+            //     ballSpeedY = chosenBallSpeed;
+            //     paused = false
+            // }
             // Draw the canvas
             function drawCanvas() {
                 // Clear the canvas
@@ -303,22 +333,22 @@
 
                 ctx.fillStyle = p1PaddleColor; // Paddle color
                 ctx.beginPath();
-                ctx.moveTo(0, paddleControl.leftPaddleY);
-                ctx.arcTo(0, paddleControl.leftPaddleY, paddleWidth / 2, paddleControl.leftPaddleY + paddleHeight, 0); // Adjust the radius as needed
-                ctx.arcTo(0, paddleControl.leftPaddleY + paddleHeight, paddleWidth, paddleControl.leftPaddleY + paddleHeight, 0); // Adjust the radius as needed
-                ctx.arcTo(paddleWidth / 1.75, paddleControl.leftPaddleY + paddleHeight, paddleWidth, paddleControl.leftPaddleY, 10); // Adjust the radius as needed
-                ctx.arcTo(paddleWidth / 1.75, paddleControl.leftPaddleY, paddleWidth / 2, paddleControl.leftPaddleY, 10); // Adjust the radius as needed
+                ctx.moveTo(0, game.leftPaddleY);
+                ctx.arcTo(0, game.leftPaddleY, game.paddleWidth / 2, game.leftPaddleY + paddleHeight, 0); // Adjust the radius as needed
+                ctx.arcTo(0, game.leftPaddleY + paddleHeight, game.paddleWidth, game.leftPaddleY + paddleHeight, 0); // Adjust the radius as needed
+                ctx.arcTo(game.paddleWidth / 1.75, game.leftPaddleY + paddleHeight, game.paddleWidth, game.leftPaddleY, 10); // Adjust the radius as needed
+                ctx.arcTo(game.paddleWidth / 1.75, game.leftPaddleY, game.paddleWidth / 2, game.leftPaddleY, 10); // Adjust the radius as needed
                 ctx.closePath();
                 ctx.fill();
 
                 // Draw the right paddle with rounded corners
                 ctx.fillStyle = p2PaddleColor; // Paddle color
                 ctx.beginPath();
-                ctx.moveTo(canvas.width, paddleControl.rightPaddleY);
-                ctx.arcTo(canvas.width - paddleWidth / 1.75, paddleControl.rightPaddleY, canvas.width - paddleWidth / 2, paddleControl.rightPaddleY + paddleHeight, 10); // Adjust the radius as needed
-                ctx.arcTo(canvas.width - paddleWidth / 1.75, paddleControl.rightPaddleY + paddleHeight, canvas.width, paddleControl.rightPaddleY + paddleHeight, 10); // Adjust the radius as needed
-                ctx.arcTo(canvas.width, paddleControl.rightPaddleY + paddleHeight, canvas.width, paddleControl.rightPaddleY, 10); // Adjust the radius as needed
-                ctx.arcTo(canvas.width, paddleControl.rightPaddleY, canvas.width - paddleWidth / 2, paddleControl.rightPaddleY, 0); // Adjust the radius as needed
+                ctx.moveTo(canvas.width, game.rightPaddleY);
+                ctx.arcTo(canvas.width - game.paddleWidth / 1.75, game.rightPaddleY, canvas.width - game.paddleWidth / 2, game.rightPaddleY + paddleHeight, 10); // Adjust the radius as needed
+                ctx.arcTo(canvas.width - game.paddleWidth / 1.75, game.rightPaddleY + paddleHeight, canvas.width, game.rightPaddleY + paddleHeight, 10); // Adjust the radius as needed
+                ctx.arcTo(canvas.width, game.rightPaddleY + paddleHeight, canvas.width, game.rightPaddleY, 10); // Adjust the radius as needed
+                ctx.arcTo(canvas.width, game.rightPaddleY, canvas.width - game.paddleWidth / 2, game.rightPaddleY, 0); // Adjust the radius as needed
                 ctx.closePath();
                 ctx.fill();
 
@@ -371,7 +401,7 @@
         </p>
         {/if}
         {#if !paused || gameEnded}
-        <button class="btn light bw" on:click={()=>{pauseGame()}}>
+        <button class="btn light bw" on:click={()=>{resumeGame = pauseGame()}}>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5" />
               </svg>              

@@ -4,7 +4,6 @@ export type PaddleAccessProperty = "leftPaddleY" | "rightPaddleY"
 
 
 export default class Game {
-
     //using # to make private properties for intercepcting when a property is changed
     gameMode: GameMode
     showOptionsModal = false
@@ -45,6 +44,12 @@ export default class Game {
     #ballSpeedX = this.#ballSpeed //set in game loop
     #ballSpeedY = this.#ballSpeed //set in game loop
 
+    constructor(gameMode: GameMode) {
+       
+        this.gameMode = gameMode
+
+    }
+
 
     // create js setter for all these properties
 
@@ -53,6 +58,7 @@ export default class Game {
     }
 
     set leftPaddleY(value: number) {
+      
         this.#leftPaddleY = value;
     }
 
@@ -61,7 +67,15 @@ export default class Game {
     }
 
     set rightPaddleY(value: number) {
+  
+        // console.log("right paddle y is " + this.#rightPaddleY);
+        
+        // console.log("setting right paddle y to " + value);
+        
         this.#rightPaddleY = value;
+
+        // console.log("right paddle y is now " + this.#rightPaddleY);
+        
     }
 
     get playerPaddleColor(): string {
@@ -238,11 +252,7 @@ export default class Game {
 
 
 
-    constructor(gameMode: GameMode) {
-
-        this.gameMode = gameMode
-
-    }
+   
 
     resetScore = () =>  {
         this.player1Score = 0;
@@ -311,6 +321,14 @@ export default class Game {
         
     }
 
+    
+
 
 
 }
+
+
+
+
+
+
