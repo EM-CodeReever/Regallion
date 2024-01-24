@@ -4,7 +4,13 @@ export type GameMode = "singleplayer" | "multiplayer-local" | "multiplayer-onlin
 export type PaddleAccessProperty = "leftPaddleY" | "rightPaddleY"
 
 
-export type GameAction = "pause" | "resume" | "reset" | "centerBall" | "hideBall" | "setDifficulty" | "resetScore" | "setPaddleHeight" | "setPaddleY" | "setBallX" | "setBallY" | "setBallSpeedX" | "setBallSpeedY" | "setPlayer1Score" | "setPlayer2Score" | "setWinner" | "setGameEnded" | "setGameStarted" | "setScoreDisplay" | "setPaused" | "setPlayerPaddleColor" | "setComputerPaddleColor" | "setBallColor" | "setBallSpeed" | "setBallSize" | "setPaddleSpeed" | "setDifficulty" | "setPointsToWin" | "setCanvasWidth" | "setGameMode" | "setSocket" | "setShowOptionsModal"
+export type GameAction = {type: "propertyChange"; property: keyof Game, value: string | number} | {type: "pause" | "resume"}
+
+
+
+export type WithUser<T> = T & {user: {id: string, name: string}}
+
+export type  ServerAction = GameAction | {type: "gameInstance", game: Game} | WithUser<{type: "userJoined"}> | WithUser< {type: "userLeft"}>
 
 
 export default class Game {
@@ -66,6 +72,11 @@ export default class Game {
     set leftPaddleY(value: number) {
       
         this.#leftPaddleY = value;
+
+        if(this.socket){
+            this.socket.send(JSON.stringify({type:"propertyChange", property: "leftPaddleY", value} satisfies GameAction))
+               
+        }
     }
 
     get rightPaddleY(): number {
@@ -73,14 +84,13 @@ export default class Game {
     }
 
     set rightPaddleY(value: number) {
-  
-        // console.log("right paddle y is " + this.#rightPaddleY);
-        
-        // console.log("setting right paddle y to " + value);
         
         this.#rightPaddleY = value;
-
-        // console.log("right paddle y is now " + this.#rightPaddleY);
+        
+        if(this.socket){
+            this.socket.send(JSON.stringify({type:"propertyChange", property: "rightPaddleY", value} satisfies GameAction))
+               
+        }
         
     }
 
@@ -114,6 +124,11 @@ export default class Game {
 
     set ballSpeed(value: number) {
         this.#ballSpeed = value;
+
+        if(this.socket){
+            this.socket.send(JSON.stringify({type:"propertyChange", property: "ballSpeed", value} satisfies GameAction))
+               
+        }
     }
 
     get ballSize(): number {

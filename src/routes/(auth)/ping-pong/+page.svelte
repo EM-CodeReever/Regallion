@@ -3,13 +3,14 @@
     import { fly } from 'svelte/transition';
     import type { PageData } from './$types';
     import LabelledInput from '$components/LabelledInput.svelte';
-    import Game,  {type GameAction}  from './Game';
+    import Game,  {type GameAction, type ServerAction}  from './Game';
     import { onMount } from 'svelte';
     export let data: PageData;
     $: ({ userProfile, roomId, ws } = data)
+    
 
 
-    let game = roomId ?  new Game("singleplayer") : new Game("multiplayer-online", ws)  //once online, socket will be respinsible for game state
+    let game = new Game("singleplayer")  //once online, socket will be responsible for game state
 
     let frameId: number
     
@@ -339,11 +340,32 @@
 
     onMount(()=>{
         if(ws){
-            ws.addEventListener("message", ()=>{
 
+           
+            ws.addEventListener("message", (event)=>{
+                let message = JSON.parse(event.data) as ServerAction
+
+                switch(message.type){
+                    case "gameInstance":
+                        game = message.game
+                        game.socket = ws!
+                        break;
+
+                    case "pause":
+                        pauseGame()
+                        break;
+                    case "resume":
+                        resumeGame()
+                        break;
+                    case "propertyChange":
+                        //@ts-ignore  Todo: fix this
+                        game[message.property] = message.value
+                        break;
+                }
             })
         }
     })
+    
     
     
 </script>
