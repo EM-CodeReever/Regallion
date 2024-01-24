@@ -36,7 +36,6 @@
     let chosenBallColor = "#ffffff"
     let chosenBallSpeed = 14;
     let chosenBallSize = 10;
-    let paddleSpeed = 0;
     let choosenDifficulty: "easy" | "hard" | "unfair" = "easy";
     let paused = false;
     let scoreDisplay = false
@@ -51,15 +50,15 @@
         if(type === 'easy'){
                 chosenBallSpeed = 14
                 chosenBallSize = 10
-                paddleSpeed = 4
+                game.paddleSpeed = 4
             }else if(type === 'hard'){
                 chosenBallSpeed = 20
                 chosenBallSize = 8
-                paddleSpeed = 10
+                game.paddleSpeed = 10
             }else if(type === 'unfair'){
                 chosenBallSpeed = 21
                 chosenBallSize = 8
-                paddleSpeed = 50
+                game.paddleSpeed = 50
             }
         showOptionsModal = !showOptionsModal
     }
@@ -132,6 +131,7 @@
                 movePaddles();
                 moveBall();
                 drawCanvas();
+                // cancelAnimationFrame(frameId)
                 frameId = requestAnimationFrame(()=>gameLoop());
             }
 
@@ -205,11 +205,11 @@
                     
                     if (middleOfPaddle < ballY - 35) {
 
-                        game[computerPaddleControl] += paddleSpeed;
+                        game[computerPaddleControl] += game.paddleSpeed;
                         console.log('move computer paddle down', game[computerPaddleControl]);
                         
                     } else if (middleOfPaddle > ballY + 35) {
-                        game[computerPaddleControl] -= paddleSpeed;
+                        game[computerPaddleControl] -= game.paddleSpeed;
                         console.log('move computer paddle up', game[computerPaddleControl]);
                     }
                 } 
@@ -301,18 +301,17 @@
                 paused = true
                 
                 cancelAnimationFrame(frameId)
-              
-
+            
 
                 return () => {
 
-                    console.log('called resume game', paddleSpeed);
+                    console.log('called resume game', game.paddleSpeed);
+                    
                     
                     ballSpeedX = chosenBallSpeed;
                     ballSpeedY = chosenBallSpeed;
                     paused = false
-
-                    console.log('resumed game', paddleSpeed);
+                    console.log('resumed game', game.paddleSpeed);
                     
                 }
             }
