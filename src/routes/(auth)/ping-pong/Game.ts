@@ -102,6 +102,15 @@ export default class Game {
         
     }
 
+    updatePaddleY = (property: PaddleAccessProperty, value: number) => {
+        //bypass setter to avoid sending message to server
+        if(property === "leftPaddleY"){
+            this.#leftPaddleY = value
+        }else if(property === "rightPaddleY"){
+            this.#rightPaddleY = value
+        }
+    }
+
     get playerPaddleColor(): string {
         return this.#playerPaddleColor;
     }

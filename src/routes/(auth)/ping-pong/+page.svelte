@@ -4,7 +4,7 @@
     import type { PageData } from './$types';
     import LabelledInput from '$components/LabelledInput.svelte';
     import Game,  {type GameAction, type ServerAction}  from './Game';
-    import { onMount } from 'svelte';
+    import { onDestroy, onMount } from 'svelte';
     export let data: PageData;
     $: ({ userProfile, roomId, ws } = data)
     console.log(roomId);
@@ -393,11 +393,30 @@
                         resumeGame()
                         break;
                     case "propertyChange":
-                        //@ts-ignore  Todo: fix this
-                        game[message.property] = message.value
+                        
+
+                        if(message.property === "leftPaddleY" || message.property === "rightPaddleY"){
+                            //this prevents setter from being called again
+                            game.updatePaddleY(message.property, message.value as number)
+                        }else{
+                            //@ts-ignore  Todo: fix this
+                            game[message.property] = message.value
+                        }
+                      
                         break;
                 }
             })
+        }
+    })
+
+    onDestroy(()=>{
+        if(ws){
+            ws.close()
+
+        }
+
+        if(frameId){
+            cancelAnimationFrame(frameId)
         }
     })
     
