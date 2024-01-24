@@ -170,10 +170,20 @@
             function movePaddles() {
                 // Ensure paddles stay within the canvas boundaries
 
-                // paddleControl[userPaddleControl] = Math.min(canvas.height - paddleHeight, Math.max(0, paddleControl[userPaddleControl]));
+
+                if(ws && game.gameMode === "multiplayer-online"){
+                    //only adjust paddle user controls
+
+                    game[userPaddleControl] = Math.min(canvas.height - game.paddleHeight, Math.max(0, game[userPaddleControl]));
+
+                }else {
+                    
+                    game.leftPaddleY = Math.min(canvas.height - game.paddleHeight, Math.max(0, game.leftPaddleY));
+                    game.rightPaddleY = Math.min(canvas.height - game.paddleHeight, Math.max(0, game.rightPaddleY));
+                }
+
                 
-                game.leftPaddleY = Math.min(canvas.height - game.paddleHeight, Math.max(0, game.leftPaddleY));
-                game.rightPaddleY = Math.min(canvas.height - game.paddleHeight, Math.max(0, game.rightPaddleY));
+            
 
 
                 // Move the computer-controlled paddle
