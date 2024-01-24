@@ -345,7 +345,7 @@
             
             // Start the game loop
             gameLoop();
-            }
+        }
     }
     
     
