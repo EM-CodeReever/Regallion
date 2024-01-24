@@ -303,11 +303,7 @@
                     
                 }
             }
-            // resumeGame = () => {
-            //     ballSpeedX = chosenBallSpeed;
-            //     ballSpeedY = chosenBallSpeed;
-            //     paused = false
-            // }
+         
             // Draw the canvas
             function drawCanvas() {
                 // Clear the canvas
