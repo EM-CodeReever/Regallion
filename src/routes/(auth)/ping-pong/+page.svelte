@@ -3,12 +3,13 @@
     import { fly } from 'svelte/transition';
     import type { PageData } from './$types';
     import LabelledInput from '$components/LabelledInput.svelte';
-    import Game  from './Game';
+    import Game,  {type GameAction}  from './Game';
+    import { onMount } from 'svelte';
     export let data: PageData;
-    let { userProfile } = data
+    $: ({ userProfile, roomId, ws } = data)
 
 
-    let game = new Game("singleplayer")
+    let game = roomId ?  new Game("singleplayer") : new Game("multiplayer-online", ws)  //once online, socket will be respinsible for game state
 
     let frameId: number
     
@@ -176,7 +177,6 @@
 
 
                 // Move the computer-controlled paddle
-                //Todo: Handle real player paddle
 
                 if(gameMode === "singleplayer"){
                     
@@ -336,6 +336,14 @@
             gameLoop();
         }
     }
+
+    onMount(()=>{
+        if(ws){
+            ws.addEventListener("message", ()=>{
+
+            })
+        }
+    })
     
     
 </script>

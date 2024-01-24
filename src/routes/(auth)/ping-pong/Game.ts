@@ -1,11 +1,16 @@
+import type PartySocket from "partysocket"
+
 export type GameMode = "singleplayer" | "multiplayer-local" | "multiplayer-online"
 export type PaddleAccessProperty = "leftPaddleY" | "rightPaddleY"
 
+
+export type GameAction = "pause" | "resume" | "reset" | "centerBall" | "hideBall" | "setDifficulty" | "resetScore" | "setPaddleHeight" | "setPaddleY" | "setBallX" | "setBallY" | "setBallSpeedX" | "setBallSpeedY" | "setPlayer1Score" | "setPlayer2Score" | "setWinner" | "setGameEnded" | "setGameStarted" | "setScoreDisplay" | "setPaused" | "setPlayerPaddleColor" | "setComputerPaddleColor" | "setBallColor" | "setBallSpeed" | "setBallSize" | "setPaddleSpeed" | "setDifficulty" | "setPointsToWin" | "setCanvasWidth" | "setGameMode" | "setSocket" | "setShowOptionsModal"
 
 
 export default class Game {
     //using # to make private properties for intercepcting when a property is changed
     gameMode: GameMode
+    socket: null | PartySocket = null
     showOptionsModal = false
     #playerPaddleColor = "#0091FF"
     #computerPaddleColor = "#F76808"
@@ -44,9 +49,10 @@ export default class Game {
     #ballSpeedX = this.#ballSpeed //set in game loop
     #ballSpeedY = this.#ballSpeed //set in game loop
 
-    constructor(gameMode: GameMode) {
+    constructor(gameMode: GameMode, socket: null | PartySocket = null) {
        
         this.gameMode = gameMode
+        this.socket = socket
 
     }
 
