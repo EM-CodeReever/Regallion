@@ -3,11 +3,17 @@
     import { fly } from 'svelte/transition';
     import type { PageData } from './$types';
     import LabelledInput from '$components/LabelledInput.svelte';
+    import Game  from './Game';
     export let data: PageData;
     let { userProfile } = data
 
+
+    let game = new Game("singleplayer")
+
+    let frameId: number
+    
     let gameMode: "singleplayer" | "multiplayer-local" | "multiplayer-online" = "singleplayer" 
-    let isPlayerOne = false // if multiplayer, this will be determined by socket , made who created the game, even have the option to choose
+    let isPlayerOne = true // if multiplayer, this will be determined by socket , made who created the game, even have the option to choose
     
     $: userPaddleControl = isPlayerOne ? "leftPaddleY" : "rightPaddleY" as "leftPaddleY" | "rightPaddleY"
 
@@ -25,51 +31,47 @@
     let MultiplayerP2Name = ""
     let p1PaddleColor = "#0039a6"
     let p2PaddleColor = "#D2122E"
-    let chosenBallColor = "#ffffff"
-    let chosenBallSpeed = 14;
-    let chosenBallSize = 10;
-    let chosenPaddleSpeed = 4;
-    let choosenDifficulty: "easy" | "hard" | "unfair" = "easy";
-    let paused = false;
-    let scoreDisplay = false
-    let gameStarted = false
-    let gameEnded = false
-    let winner = ""
-    let pointsToWin = 3
-    let canvasWidth = 800
     let position: "left" | "right" = "left"
 
     function setDifficulty(type: 'easy' | 'hard'| 'unfair'){
         if(type === 'easy'){
-                chosenBallSpeed = 14
-                chosenBallSize = 10
-                chosenPaddleSpeed = 4
+                game.ballSpeed = 14
+                game.ballSize = 10
+                game.paddleSpeed = 4
             }else if(type === 'hard'){
-                chosenBallSpeed = 20
-                chosenBallSize = 8
-                chosenPaddleSpeed = 10
+                game.ballSpeed = 20
+                game.ballSize = 8
+                game.paddleSpeed = 10
             }else if(type === 'unfair'){
-                chosenBallSpeed = 21
-                chosenBallSize = 8
-                chosenPaddleSpeed = 50
+                game.ballSpeed = 21
+                game.ballSize = 8
+                game.paddleSpeed = 50
             }
         showOptionsModal = !showOptionsModal
     }
 
-    let player1Score = 0;
-    let player2Score = 0;
+
 
     function resetScore(){
-        player1Score = 0;
-        player2Score = 0;
+        game.player1Score = 0;
+        game.player2Score = 0;
     }
 
-    let pauseGame = function (){}
-    let resumeGame = function (){}
-    let centerBall = function (){}
+    let pauseGame : () => () => void = function (){return ()=>{}}
+    let resumeGame: () => void = function (){return}
+    let centerBall : () => void = function (){return}
+
+    let canvas: HTMLCanvasElement
     
 
     function startGame(){
+
+
+
+        console.log('called start game');
+       
+        
+        
         if(position === "left"){
                isPlayerOne = true
                P1Name = userProfile?.username as string
@@ -83,64 +85,58 @@
         let touchStartY: any
         if(browser){
             // Define canvas element and its context
-            const canvas = document.getElementById("pingPongCanvas") as HTMLCanvasElement;
             // determine canvas size from screen size
             const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 
             // Paddle properties
-            const paddleWidth = 15;
-            let paddleHeight = .3 * canvas.height;
+            game.paddleHeight = .3 * canvas.height;
 
-
-            let paddleControl = {
-                leftPaddleY : canvas.height / 2 - paddleHeight / 2,
-                rightPaddleY : canvas.height / 2 - paddleHeight / 2
-            }
    
-            let paddleSpeed = chosenPaddleSpeed;
+            
 
            
 
 
             // Ball properties
-            let ballSize = chosenBallSize;
-            let ballX = canvas.width / 2;
-            let ballY = canvas.height / 2;
-            let ballSpeedX = chosenBallSpeed;
-            let ballSpeedY = chosenBallSpeed;
+            let ballSize = game.ballSize;
+            game.ballX = canvas.width / 2;
+            game.ballY = canvas.height / 2;
+            let ballSpeedX = game.ballSpeed;
+            let ballSpeedY = game.ballSpeed;
 
             // Scores
-            player1Score = 0;
-            player2Score = 0;
+            game.player1Score = 0;
+            game.player2Score = 0;
 
             // Game loop
             function gameLoop() {
                 if(window.innerWidth < 820){
-                    canvasWidth = window.innerWidth - 20
-                    paddleHeight = .3 * canvas.height
+                    game.canvasWidth = window.innerWidth - 20
+                    game.paddleHeight = .3 * canvas.height
                 }
                 movePaddles();
                 moveBall();
                 drawCanvas();
-                requestAnimationFrame(gameLoop);
+                // cancelAnimationFrame(frameId)
+                frameId = requestAnimationFrame(()=>gameLoop());
             }
 
             // Event listeners
             canvas.addEventListener("mousemove", (event) => {
-                if(paused || gameEnded){
+                if(game.paused || game.gameEnded){
                     return
                 }
                 const mouseY = event.clientY - canvas.getBoundingClientRect().top;
                 //move paddle respective to user
                 // leftPaddleY = mouseY - paddleHeight / 2;
-                paddleControl[userPaddleControl] = mouseY - paddleHeight / 2;
+                game[userPaddleControl] = mouseY - game.paddleHeight / 2;
             });
 
             // Variable to store the initial touch position
 
             // Touchstart event
             canvas.addEventListener("touchstart", (event) => {
-                if(paused || gameEnded){
+                if(game.paused || game.gameEnded){
                     return
                 }
                 touchStartY = event.touches[0].clientY;
@@ -151,14 +147,14 @@
                 console.log('called');
                 
                 event.preventDefault(); // Prevent scrolling or other default touch behavior
-                if(paused || gameEnded){
+                if(game.paused || game.gameEnded){
                     return
                 }
                 const touchY = event.touches[0].clientY;
                 const deltaY = touchY - touchStartY;
-                paddleControl[userPaddleControl] += deltaY;
+                game[userPaddleControl] += deltaY;
                 // Ensure the paddle stays within the canvas boundaries
-                paddleControl[userPaddleControl] = Math.min(canvas.height - paddleHeight, Math.max(0, paddleControl[userPaddleControl]));
+                game[userPaddleControl] = Math.min(canvas.height - game.paddleHeight, Math.max(0, game[userPaddleControl]));
                 touchStartY = touchY; // Update the initial touch position   
             });
 
@@ -174,25 +170,28 @@
                 // Ensure paddles stay within the canvas boundaries
 
                 // paddleControl[userPaddleControl] = Math.min(canvas.height - paddleHeight, Math.max(0, paddleControl[userPaddleControl]));
-
-                paddleControl.leftPaddleY = Math.min(canvas.height - paddleHeight, Math.max(0, paddleControl.leftPaddleY));
-                paddleControl.rightPaddleY = Math.min(canvas.height - paddleHeight, Math.max(0, paddleControl.rightPaddleY));
+                
+                game.leftPaddleY = Math.min(canvas.height - game.paddleHeight, Math.max(0, game.leftPaddleY));
+                game.rightPaddleY = Math.min(canvas.height - game.paddleHeight, Math.max(0, game.rightPaddleY));
 
 
                 // Move the computer-controlled paddle
                 //Todo: Handle real player paddle
 
                 if(gameMode === "singleplayer"){
+                    
+                    let computerPaddleControl: keyof typeof game = isPlayerOne ? "rightPaddleY": "leftPaddleY" 
 
-                    let computerPaddleControl: keyof typeof paddleControl = isPlayerOne ? "rightPaddleY": "leftPaddleY" 
+                    const middleOfPaddle = game[computerPaddleControl] + game.paddleHeight / 2;
 
-                    const middleOfPaddle = paddleControl[computerPaddleControl] + paddleHeight / 2;
+                    
+                    
+                    if (middleOfPaddle < game.ballY - 35) {
 
-                    if (middleOfPaddle < ballY - 35) {
-
-                        paddleControl[computerPaddleControl] += paddleSpeed;
-                    } else if (middleOfPaddle > ballY + 35) {
-                        paddleControl[computerPaddleControl] -= paddleSpeed;
+                        game[computerPaddleControl] += game.paddleSpeed;
+                        
+                    } else if (middleOfPaddle > game.ballY + 35) {
+                        game[computerPaddleControl] -= game.paddleSpeed;
                     }
                 } 
             }
@@ -200,76 +199,76 @@
 
             // Update ball position
             function moveBall() {
-                ballX += ballSpeedX;
-                ballY += ballSpeedY;
+                game.ballX += ballSpeedX;
+                game.ballY += ballSpeedY;
 
                 // Collision with paddles
                 if (
-                    ballX < paddleWidth &&
-                    ballY > paddleControl.leftPaddleY &&
-                    ballY < paddleControl.leftPaddleY + paddleHeight
+                    game.ballX < game.paddleWidth &&
+                    game.ballY > game.leftPaddleY &&
+                    game.ballY < game.leftPaddleY + game.paddleHeight
                 ) {
                     ballSpeedX = -ballSpeedX;
                 }
                 if (
-                    ballX > canvas.width - paddleWidth &&
-                    ballY > paddleControl.rightPaddleY &&
-                    ballY < paddleControl.rightPaddleY + paddleHeight
+                    game.ballX > canvas.width - game.paddleWidth &&
+                    game.ballY > game.rightPaddleY &&
+                    game.ballY < game.rightPaddleY + game.paddleHeight
                 ) {
                     ballSpeedX = -ballSpeedX;
                 }
 
                 // Scoring
-                if (ballX < 0) {
+                if (game.ballX < 0) {
                     // Ball went past the left paddle
-                    if(!gameEnded){
-                        player2Score++;
-                        if(player2Score >= pointsToWin){
-                            gameEnded = true
+                    if(!game.gameEnded){
+                        game.player2Score++;
+                        if(game.player2Score >= game.pointsToWin){
+                            game.gameEnded = true
                             hideBall()
-                            pauseGame()
-                            winner = P2Name
+                            resumeGame = pauseGame()
+                            game.winner = P2Name
 
                         }else{
                             resetBall();
                         }
                     }
-                } else if (ballX > canvas.width) {
+                } else if (game.ballX > canvas.width) {
                     // Ball went past the right paddle
-                    player1Score++;
-                    if(player1Score == pointsToWin){
-                        gameEnded = true
+                    game.player1Score++;
+                    if(game.player1Score == game.pointsToWin){
+                        game.gameEnded = true
                         hideBall()
-                        pauseGame()
-                        winner = P1Name
+                        resumeGame = pauseGame()
+                        game.winner = P1Name
                     }else{                      
                         resetBall();
                     }
                 }
 
                 // Ball collisions with top and bottom walls
-                if (ballY < 0 || ballY > canvas.height) {
+                if (game.ballY < 0 || game.ballY > canvas.height) {
                     ballSpeedY = -ballSpeedY;
                 }
             }
 
             centerBall= () => {
-                ballX = canvas.width / 2;
-                ballY = canvas.height / 2;
+                game.ballX = canvas.width / 2;
+                game.ballY = canvas.height / 2;
             }
 
             function hideBall() {
-                ballX = 0;
-                ballY = -100;
+                game.ballX = 0;
+                game.ballY = -100;
             }
 
             // Reset the ball to the center
             function resetBall() {
                 centerBall();
-                pauseGame();
-                scoreDisplay = true
+                resumeGame = pauseGame();
+                game.scoreDisplay = true
                 setTimeout(()=>{
-                scoreDisplay = false
+                game.scoreDisplay = false
                 },2000)
                 setTimeout(() => {
                     resumeGame();
@@ -277,15 +276,23 @@
                 
             }
             pauseGame = () => {
+                    
                 ballSpeedX = 0;
                 ballSpeedY = 0;
-                paused = true
+                game.paused = true
+                
+                cancelAnimationFrame(frameId)
+            
+
+                return () => {
+                                
+                    ballSpeedX = game.ballSpeed;
+                    ballSpeedY = game.ballSpeed;
+                    game.paused = false
+            
+                }
             }
-            resumeGame = () => {
-                ballSpeedX = chosenBallSpeed;
-                ballSpeedY = chosenBallSpeed;
-                paused = false
-            }
+         
             // Draw the canvas
             function drawCanvas() {
                 // Clear the canvas
@@ -298,36 +305,36 @@
 
                 ctx.fillStyle = p1PaddleColor; // Paddle color
                 ctx.beginPath();
-                ctx.moveTo(0, paddleControl.leftPaddleY);
-                ctx.arcTo(0, paddleControl.leftPaddleY, paddleWidth / 2, paddleControl.leftPaddleY + paddleHeight, 0); // Adjust the radius as needed
-                ctx.arcTo(0, paddleControl.leftPaddleY + paddleHeight, paddleWidth, paddleControl.leftPaddleY + paddleHeight, 0); // Adjust the radius as needed
-                ctx.arcTo(paddleWidth / 1.75, paddleControl.leftPaddleY + paddleHeight, paddleWidth, paddleControl.leftPaddleY, 10); // Adjust the radius as needed
-                ctx.arcTo(paddleWidth / 1.75, paddleControl.leftPaddleY, paddleWidth / 2, paddleControl.leftPaddleY, 10); // Adjust the radius as needed
+                ctx.moveTo(0, game.leftPaddleY);
+                ctx.arcTo(0, game.leftPaddleY, game.paddleWidth / 2, game.leftPaddleY + game.paddleHeight, 0); // Adjust the radius as needed
+                ctx.arcTo(0, game.leftPaddleY + game.paddleHeight, game.paddleWidth, game.leftPaddleY + game.paddleHeight, 0); // Adjust the radius as needed
+                ctx.arcTo(game.paddleWidth / 1.75, game.leftPaddleY + game.paddleHeight, game.paddleWidth, game.leftPaddleY, 10); // Adjust the radius as needed
+                ctx.arcTo(game.paddleWidth / 1.75, game.leftPaddleY, game.paddleWidth / 2, game.leftPaddleY, 10); // Adjust the radius as needed
                 ctx.closePath();
                 ctx.fill();
 
                 // Draw the right paddle with rounded corners
                 ctx.fillStyle = p2PaddleColor; // Paddle color
                 ctx.beginPath();
-                ctx.moveTo(canvas.width, paddleControl.rightPaddleY);
-                ctx.arcTo(canvas.width - paddleWidth / 1.75, paddleControl.rightPaddleY, canvas.width - paddleWidth / 2, paddleControl.rightPaddleY + paddleHeight, 10); // Adjust the radius as needed
-                ctx.arcTo(canvas.width - paddleWidth / 1.75, paddleControl.rightPaddleY + paddleHeight, canvas.width, paddleControl.rightPaddleY + paddleHeight, 10); // Adjust the radius as needed
-                ctx.arcTo(canvas.width, paddleControl.rightPaddleY + paddleHeight, canvas.width, paddleControl.rightPaddleY, 10); // Adjust the radius as needed
-                ctx.arcTo(canvas.width, paddleControl.rightPaddleY, canvas.width - paddleWidth / 2, paddleControl.rightPaddleY, 0); // Adjust the radius as needed
+                ctx.moveTo(canvas.width, game.rightPaddleY);
+                ctx.arcTo(canvas.width - game.paddleWidth / 1.75, game.rightPaddleY, canvas.width - game.paddleWidth / 2, game.rightPaddleY + game.paddleHeight, 10); // Adjust the radius as needed
+                ctx.arcTo(canvas.width - game.paddleWidth / 1.75, game.rightPaddleY + game.paddleHeight, canvas.width, game.rightPaddleY + game.paddleHeight, 10); // Adjust the radius as needed
+                ctx.arcTo(canvas.width, game.rightPaddleY + game.paddleHeight, canvas.width, game.rightPaddleY, 10); // Adjust the radius as needed
+                ctx.arcTo(canvas.width, game.rightPaddleY, canvas.width - game.paddleWidth / 2, game.rightPaddleY, 0); // Adjust the radius as needed
                 ctx.closePath();
                 ctx.fill();
 
                 // Draw the ball
-                ctx.fillStyle = chosenBallColor;
+                ctx.fillStyle = game.ballColor;
                 ctx.beginPath();
-                ctx.arc(ballX, ballY, ballSize, 0, Math.PI * 2);
+                ctx.arc(game.ballX, game.ballY, ballSize, 0, Math.PI * 2);
                 ctx.fill();
 
             }
             
             // Start the game loop
             gameLoop();
-            }
+        }
     }
     
     
@@ -354,24 +361,24 @@
             Computer
             {/if}
             
-            {#if gameStarted}
-            <span class="ml-5">{player1Score}</span>
+            {#if game.gameStarted}
+            <span class="ml-5">{game.player1Score}</span>
             {/if}
         </p>
         {:else if gameMode === "multiplayer-local"}
         <p class="font-sans text-lg badge light info cornered w-full">{MultiplayerP1Name} 
-            {#if gameStarted}
-            <span class="ml-5">{player1Score}</span>
+            {#if game.gameStarted}
+            <span class="ml-5">{game.player1Score}</span>
             {/if}
         </p>
         {/if}
-        {#if !paused || gameEnded}
-        <button class="btn light bw" on:click={()=>{pauseGame()}}>
+        {#if !game.paused || game.gameEnded}
+        <button class="btn light bw" on:click={()=>{resumeGame = pauseGame()}}>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5" />
               </svg>              
         </button>
-        {:else if paused && !gameEnded}
+        {:else if game.paused && !game.gameEnded}
         <button class="btn light bw" on:click={()=>{resumeGame()}}>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />
@@ -387,27 +394,27 @@
             {:else if position === "left"}
             Computer
             {/if}
-            {#if gameStarted}
-            <span class="ml-5">{player2Score}</span>
+            {#if game.gameStarted}
+            <span class="ml-5">{game.player2Score}</span>
             {/if}
         </p>
         {:else if gameMode === "multiplayer-local" || gameMode === "multiplayer-online" }
         <p class="font-sans text-lg badge light danger cornered w-full">{MultiplayerP2Name} 
-            {#if gameStarted}
-            <span class="ml-5">{player2Score}</span>
+            {#if game.gameStarted}
+            <span class="ml-5">{game.player2Score}</span>
             {/if}
         </p>
         {/if}
     </div>
-    <canvas id="pingPongCanvas" class="rounded-xl canvas-aspect-ratio relative mt-10 hidden ping-pong-breakpoint:tall:flex" height="500" width="800" >
+    <canvas bind:this={canvas} id="pingPongCanvas" class="rounded-xl canvas-aspect-ratio relative mt-10 hidden ping-pong-breakpoint:tall:flex" height="500" width="800" >
     </canvas>
 
-    {#if scoreDisplay && !gameEnded}
+    {#if game.scoreDisplay && !game.gameEnded}
     <div transition:fly={{delay:0,duration:500,y:300,opacity:0}} class="z-50 text-7xl text-center font-bold justify-center items-center absolute mx-auto my-auto hidden ping-pong-breakpoint:tall:flex">
-        {player1Score} - {player2Score}
+        {game.player1Score} - {game.player2Score}
     </div>
     {/if}
-    {#if !gameStarted}
+    {#if !game.gameStarted}
     <div in:fly={{delay:0,duration:500,y:300,opacity:0}} class="z-50 text-center font-bold flex-col space-y-5 justify-center items-center absolute mx-auto my-auto hidden ping-pong-breakpoint:tall:flex">
         <h1 class="text-7xl text-center font-bold">
             PING PONG!
@@ -440,18 +447,18 @@
           </div>
     </div>
     {/if}
-    {#if gameEnded}
+    {#if game.gameEnded}
     <div in:fly={{delay:0,duration:500,y:300,opacity:0}} class="z-50 text-7xl text-center font-bold flex-col space-y-5 justify-center items-center absolute mx-auto my-auto hidden ping-pong-breakpoint:tall:flex">
-        {winner} Wins! <br>
-        {player1Score} - {player2Score}
+        {game.winner} Wins! <br>
+        {game.player1Score} - {game.player2Score}
         <button class="btn lg success light w-40" on:click={()=>{
-        gameEnded = false
-        paused = false
+        game.gameEnded = false
+        game.paused = false
         resetScore()
         centerBall()
         startGame()
     }}>Replay</button>
-    <button class="btn lg info light w-40" on:click={()=>{gameEnded = false, gameStarted = false}}>Menu</button>
+    <button class="btn lg info light w-40" on:click={()=>{game.gameEnded = false, game.gameStarted = false}}>Menu</button>
     </div>
 
     {/if}
@@ -467,7 +474,7 @@
       
         <div class="flex w-full justify-between items-center">
             <label for="difficulty">Difficulty</label>
-            <select bind:value={choosenDifficulty} name="difficulty" id="difficulty" class="input bw solid w-48">
+            <select bind:value={game.difficulty} name="difficulty" id="difficulty" class="input bw solid w-48">
                 <option value="easy">Easy</option>
                 <option value="hard">Hard</option>
                 <option value="unfair">Unfair</option>
@@ -492,18 +499,18 @@
         </div>
         <div class="flex w-full justify-between items-center">
             <label for="chosenBallColor">Ball color</label>
-            <input bind:value={chosenBallColor} type="color" name="ballColor" class="input h-10 bw solid w-48" >
+            <input bind:value={game.ballColor} type="color" name="ballColor" class="input h-10 bw solid w-48" >
         </div>
         <div class="flex justify-between items-center">
             <label for="pointsToWin">Points to win</label>
-            <input type="number" bind:value={pointsToWin} name="pointsToWin" id="pointsToWin" class="input bw solid w-48">
+            <input type="number" bind:value={game.pointsToWin} name="pointsToWin" id="pointsToWin" class="input bw solid w-48">
         </div>
         
           <div class="flex gap-3 mt-5">
         <button class="btn solid danger flex-1" on:click={()=>{showOptionsModal = !showOptionsModal}}>Cancel</button>
         <button class="btn solid indigo flex-1" on:click={()=>{
-            setDifficulty(choosenDifficulty)
-            gameStarted = true
+            setDifficulty(game.difficulty)
+            game.gameStarted = true
             setTimeout(() => {
                 startGame()
             }, 1000);
@@ -534,11 +541,11 @@
     </div>
     <div class="flex w-full justify-between items-center">
         <label for="chosenBallColor">Ball color</label>
-        <input bind:value={chosenBallColor} type="color" name="ballColor" class="input h-10 bw solid w-48" >
+        <input bind:value={game.ballColor} type="color" name="ballColor" class="input h-10 bw solid w-48" >
     </div>
     <div class="flex justify-between items-center">
         <label for="pointsToWin">Points to win</label>
-        <input type="number" bind:value={pointsToWin} name="pointsToWin" id="pointsToWin" class="input bw solid w-48">
+        <input type="number" bind:value={game.pointsToWin} name="pointsToWin" id="pointsToWin" class="input bw solid w-48">
     </div>
     <div class="flex gap-3">
       <button class="btn solid danger flex-1" on:click={()=>{

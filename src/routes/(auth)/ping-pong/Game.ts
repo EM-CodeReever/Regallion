@@ -1,0 +1,334 @@
+export type GameMode = "singleplayer" | "multiplayer-local" | "multiplayer-online"
+export type PaddleAccessProperty = "leftPaddleY" | "rightPaddleY"
+
+
+
+export default class Game {
+    //using # to make private properties for intercepcting when a property is changed
+    gameMode: GameMode
+    showOptionsModal = false
+    #playerPaddleColor = "#0091FF"
+    #computerPaddleColor = "#F76808"
+    #ballColor = "#ffffff"
+    #ballSpeed = 14;
+    #ballSize = 10;
+    #paddleSpeed = 4;
+    #difficulty: "easy" | "hard" | "unfair" = "easy";
+    #paused = false;
+    #scoreDisplay = false
+    #gameStarted = false
+    #gameEnded = false
+    #winner = ""
+    #pointsToWin = 3
+    #canvasWidth = 800
+
+    #player1Score = 0;
+    #player2Score = 0;
+
+
+    // Paddle properties
+    readonly paddleWidth = 15;
+    
+    #paddleHeight = 0 //set in game loop
+
+   
+    #leftPaddleY = 0
+    #rightPaddleY =  0
+
+
+
+    // Ball properties
+    #ballX = 0 //set in game loop
+    #ballY = 0 //set in game loop
+
+    #ballSpeedX = this.#ballSpeed //set in game loop
+    #ballSpeedY = this.#ballSpeed //set in game loop
+
+    constructor(gameMode: GameMode) {
+       
+        this.gameMode = gameMode
+
+    }
+
+
+    // create js setter for all these properties
+
+    get leftPaddleY(): number {
+        return this.#leftPaddleY;
+    }
+
+    set leftPaddleY(value: number) {
+      
+        this.#leftPaddleY = value;
+    }
+
+    get rightPaddleY(): number {
+        return this.#rightPaddleY;
+    }
+
+    set rightPaddleY(value: number) {
+  
+        // console.log("right paddle y is " + this.#rightPaddleY);
+        
+        // console.log("setting right paddle y to " + value);
+        
+        this.#rightPaddleY = value;
+
+        // console.log("right paddle y is now " + this.#rightPaddleY);
+        
+    }
+
+    get playerPaddleColor(): string {
+        return this.#playerPaddleColor;
+    }
+
+    set playerPaddleColor(value: string) {
+        this.#playerPaddleColor = value;
+    }
+
+    get computerPaddleColor(): string {
+        return this.#computerPaddleColor;
+    }
+
+    set computerPaddleColor(value: string) {
+        this.#computerPaddleColor = value;
+    }
+
+    get ballColor(): string {
+        return this.#ballColor;
+    }
+
+    set ballColor(value: string) {
+        this.#ballColor = value;
+    }
+
+    get ballSpeed(): number {
+        return this.#ballSpeed;
+    }
+
+    set ballSpeed(value: number) {
+        this.#ballSpeed = value;
+    }
+
+    get ballSize(): number {
+        return this.#ballSize;
+    }
+
+    set ballSize(value: number) {
+        this.#ballSize = value;
+    }
+
+    get paddleSpeed(): number {
+        return this.#paddleSpeed;
+    }
+
+    set paddleSpeed(value: number) {
+        this.#paddleSpeed = value;
+    }
+
+    get difficulty() {
+        return this.#difficulty;
+    }
+
+    set difficulty(value: "easy" | "hard" | "unfair") {
+        this.#difficulty = value;
+    }
+
+    get paused(): boolean {
+        return this.#paused;
+    }
+
+    set paused(value: boolean) {
+        this.#paused = value;
+    }
+
+    get scoreDisplay(): boolean {
+        return this.#scoreDisplay;
+    }
+
+    set scoreDisplay(value: boolean) {
+        this.#scoreDisplay = value;
+    }
+
+    get gameStarted(): boolean {
+        return this.#gameStarted;
+    }
+
+    set gameStarted(value: boolean) {
+        this.#gameStarted = value;
+    }
+
+    get gameEnded(): boolean {
+        return this.#gameEnded;
+    }
+
+    set gameEnded(value: boolean) {
+        this.#gameEnded = value;
+    }
+
+    get winner(): string {
+        return this.#winner;
+    }
+
+    set winner(value: string) {
+        this.#winner = value;
+    }
+
+    get pointsToWin(): number {
+        return this.#pointsToWin;
+    }
+
+    set pointsToWin(value: number) {
+        this.#pointsToWin = value;
+    }
+
+    get canvasWidth(): number {
+        return this.#canvasWidth;
+    }
+
+    set canvasWidth(value: number) {
+        this.#canvasWidth = value;
+    }
+
+    get player1Score(): number {
+        return this.#player1Score;
+    }
+
+    set player1Score(value: number) {
+        this.#player1Score = value;
+    }
+
+    get player2Score(): number {
+        return this.#player2Score;
+    }
+
+    set player2Score(value: number) {        
+        this.#player2Score = value;
+    }
+
+   
+
+    get paddleHeight(): number {
+        return this.#paddleHeight;
+    }
+
+    set paddleHeight(value: number) {
+        this.#paddleHeight = value;
+    }
+
+
+    get ballX(): number {
+        return this.#ballX;
+    }
+
+    set ballX(value: number) {
+        this.#ballX = value;
+    }
+
+    get ballY(): number {
+        return this.#ballY;
+    }
+
+    set ballY(value: number) {
+        this.#ballY = value;
+    }
+
+    get ballSpeedX(): number {
+        return this.#ballSpeedX;
+    }
+
+    set ballSpeedX(value: number) {
+        this.#ballSpeedX = value;
+    }
+
+    get ballSpeedY(): number {
+        return this.#ballSpeedY;
+    }
+
+    set ballSpeedY(value: number) {
+        this.#ballSpeedY = value;
+    }
+
+
+
+
+   
+
+    resetScore = () =>  {
+        this.player1Score = 0;
+        this.#player2Score = 0;
+    }
+
+    setDifficulty= (type: 'easy' | 'hard' | 'unfair', callback: () => void | undefined) => {
+        if (type === 'easy') {
+            this.#ballSpeed = 14
+            this.#ballSize = 10
+            this.#paddleSpeed = 4
+        } else if (type === 'hard') {
+            this.#ballSpeed = 20
+            this.#ballSize = 8
+            this.#paddleSpeed = 10
+        } else if (type === 'unfair') {
+            this.#ballSpeed = 21
+            this.#ballSize = 8
+            this.#paddleSpeed = 50
+        }
+
+        if (callback) {
+            callback()
+        }
+
+    }
+
+   
+
+    pauseGame = () => {
+        this.ballSpeedX = 0;
+        this.ballSpeedY = 0;
+        this.#paused = true
+
+        //send message to server to pause game
+
+    }
+    resumeGame = () => {
+        this.ballSpeedX = this.#ballSpeed;
+        this.ballSpeedY = this.#ballSpeed;
+        this.#paused = false
+
+        //send message to server to resume game
+    }
+    centerBall = ( canvasWidth: number, canvasHeight: number) => { 
+        this.#ballX = canvasWidth / 2;
+        this.#ballY = canvasHeight / 2;
+    }
+
+    hideBall = () => {
+        this.#ballX = 0;
+        this.#ballY = -100;
+    }
+
+    // Reset the ball to the center
+    resetBall = (canvasWidth: number, canvasHeight: number) => {
+        this.centerBall(canvasWidth, canvasHeight);
+        this.pauseGame();
+        this.#scoreDisplay = true
+        setTimeout(()=>{
+        this.#scoreDisplay = false
+        },2000)
+        setTimeout(() => {
+            this.resumeGame();
+        }, 2500);
+        
+    }
+
+    
+
+
+
+}
+
+
+
+
+
+
