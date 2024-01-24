@@ -7,10 +7,11 @@
     import { onMount } from 'svelte';
     export let data: PageData;
     $: ({ userProfile, roomId, ws } = data)
+    console.log(roomId);
     
 
 
-    let game = new Game("singleplayer")  //once online, socket will be responsible for game state
+    let game = new Game("multiplayer-online")  //once online, socket will be responsible for game state
 
     let frameId: number
     
@@ -209,8 +210,8 @@
 
             // Update ball position
             function moveBall() {
-                game.ballX += ballSpeedX;
-                game.ballY += ballSpeedY;
+                // game.ballX += ballSpeedX;
+                // game.ballY += ballSpeedY;
 
                 // Collision with paddles
                 if (
@@ -351,7 +352,7 @@
         if(ws){
 
            
-            ws.addEventListener("message", (event)=>{
+            ws.addEventListener("message", (event: any)=>{
                 let message = JSON.parse(event.data) as ServerAction
                 
                 switch(message.type){
@@ -367,6 +368,7 @@
                         game.paddleSpeed = message.game.paddleSpeed
                         game.paddleHeight = message.game.paddleHeight
                         game.leftPaddleY = message.game.leftPaddleY
+                        // game.rightPaddleY = 100
                         game.rightPaddleY = message.game.rightPaddleY
                         game.player1Score = message.game.player1Score
                         game.player2Score = message.game.player2Score
