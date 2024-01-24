@@ -27,15 +27,29 @@ export default class Server implements Party.Server {
 
     switch(data.type){
       case "propertyChange":
-        // @ts-ignore
-        this.Game[data.property] = data.value;
+  
+        if(this.Game[data.property] !== data.value){
+            // @ts-ignore
+          this.Game[data.property] = data.value;
+          this.room.broadcast(message, [sender.id]);
+        }
+       
+        break;
+
+      case "pause":
+        this.Game.pauseGame()
+        this.room.broadcast(message, [sender.id]);
+        break;
+      case "resume":
+        this.Game.resumeGame()
+        this.room.broadcast(message, [sender.id]);
         break;
 
     }
       
     
     // as well as broadcast it to all the other connections in the room...
-    this.room.broadcast(message, [sender.id]);
+    
   }
 }
 
