@@ -105,8 +105,8 @@
             <SplideSlide class="flex justify-center items-center space-x-5 p-3">
                 <span class="flex flex-col space-y-2">
                   <p class="text-2xl font-bold">Ping-Pong</p>
-                  <p class="text-sm max-w-sm">Simple Ping pong game, built using HTML Canvas. Grab a paddle and hit the ball back and forth until it scores. Doesn't work on mobile  </p>
-                  <button class="btn sm bw light ml-auto sm:m-0">Check it out</button>
+                  <p class="text-sm max-w-sm">Simple Ping pong game, built using HTML Canvas. Grab a paddle and hit the ball back and forth until it scores. Incompatible with smaller screens  </p>
+                  <button class="btn sm bw light ml-auto sm:m-0" on:click={()=>{goto("/ping-pong")}} >Check it out</button>
                 </span>
                 <div class="rounded-lg w-96 h-72 bg-gray-900 aspect-video sm:flex hidden relative justify-center">
                   <span class="text-3xl mt-3 font-bold text-indieRed-900">0 - 0</span>
@@ -119,7 +119,7 @@
               <span class="flex flex-col space-y-2">
                 <p class="text-2xl font-bold">Memory card</p>
                 <p class="text-sm max-w-sm"> Memory cards is a game of cards, that can be flipped over and matched. If a match is found, the cards stay flipped, if not, they will turn back. The game continues until all cards are flipped.</p>
-                <button class="btn sm bw light ml-auto sm:m-0">Check it out</button>
+                <button class="btn sm bw light ml-auto sm:m-0" on:click={()=>{goto("/memory-card")}} >Check it out</button>
               </span>
               <div class="rounded-lg w-96 h-72 aspect-video sm:flex justify-center hidden p-3">
                 <div class="aspect-square w-72  max-w-sm border-2 border-gray-900 rounded-md grid grid-cols-5 grid-rows-5 gap-3 p-3">
@@ -133,9 +133,12 @@
           </SplideSlide>
           <SplideSlide class="flex justify-center items-center space-x-5 p-3">
             <span class="flex flex-col space-y-2">
-              <p class="text-2xl font-bold">Regpost</p>
-              <p class="text-sm max-w-sm">A basic social media platform for posting, and communicating with other users. Has all the typical social stuff, user profiles, posts and</p>
-              <button class="btn sm bw light ml-auto sm:m-0">Check it out</button>
+              <p class="text-2xl font-bold">Regalore</p>
+              <p class="text-sm max-w-sm">A basic chatroom for communicating with other users. 
+                <br>
+                <span class="text-xs">Note: This is a work in progress, so it's not fully functional yet.</span>
+              </p>
+              <button class="btn sm bw light ml-auto sm:m-0" on:click={()=>{goto("/chat-room")}}>Check it out</button>
             </span>
             <div class="rounded-lg w-96 h-72 bg-gray-900 aspect-video sm:flex flex-col hidden">
               <div class="flex justify-between items-center px-4 w-full p-3">
