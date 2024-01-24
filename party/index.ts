@@ -17,6 +17,8 @@ export default class Server implements Party.Server {
 
    
     conn.send(JSON.stringify({type: "gameInstance", game: this.Game} as ServerAction) )
+
+    this.room.broadcast(JSON.stringify({type: "userJoined",user:{ id: conn.id }} satisfies ServerAction), [conn.id])
   }
 
   onMessage(message: string, sender: Party.Connection) {

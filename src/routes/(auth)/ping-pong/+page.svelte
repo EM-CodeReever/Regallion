@@ -3,17 +3,20 @@
     import { fly } from 'svelte/transition';
     import type { PageData } from './$types';
     import LabelledInput from '$components/LabelledInput.svelte';
-    import Game,  {type GameAction, type ServerAction}  from './Game';
+    import Game,  {type GameAction, type ServerAction, type GameUser}  from './Game';
     import { onDestroy, onMount } from 'svelte';
     export let data: PageData;
     $: ({ userProfile, roomId, ws } = data)
-    console.log(roomId);
+
+    
     
     let BALLSPEEDX = 6
     let BALLSPEEDY = 6
 
 
-    let game = new Game("multiplayer-online")  //once online, socket will be responsible for game state
+    let game = new Game("singleplayer")  //once online, socket will be responsible for game state
+
+    // game.players = [userProfile?.username as string, "Computer"]
 
     let frameId: number
     
@@ -70,6 +73,7 @@
     
 
     function startGame(){
+        BALLSPEEDX = 6, BALLSPEEDY = 6
 
 
 
@@ -215,7 +219,8 @@
 
             // Update ball position
             function moveBall() {
-                console.log("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH: " + BALLSPEEDX);
+                console.log("BALLSPEED X: " + BALLSPEEDX);
+                console.log("BALLSPEED Y: " + BALLSPEEDY);
                 
                 game.ballX += BALLSPEEDX;
                 game.ballY += BALLSPEEDY;
@@ -405,6 +410,12 @@
 
                       
                         break;
+                    case "userJoined":
+                        console.log("user joined");
+                        console.log(message.user)
+                        P2Name = message.user?.name as string
+                        // message.user.name = message.user.name === userProfile?.username ? "You" : message.user.name
+                        break;
                 }
             })
         }
@@ -509,27 +520,11 @@
             showOptionsModal = !showOptionsModal
 
         }}>Singleplayer</button>
-        <!-- <button class="btn lg indigo light w-40" on:click={()=>{
-            gameMode = "multiplayer"
+        <button class="btn lg indigo light w-40" on:click={()=>{
+            game.gameMode = "multiplayer-online"
             showMultiplayerOptionsModal = !showMultiplayerOptionsModal}}>
             Multiplayer
-        </button> -->
-        <div class="dropdown success">
-            <label class="btn lg indigo light w-40" tabindex="0">Multiplayer</label>
-            <div class="menu right w-52">
-              <button class="item text-sm w-48"
-              on:click={()=>{
-                game.gameMode = "multiplayer-local"
-                showMultiplayerOptionsModal = !showMultiplayerOptionsModal}}>Local Versus
-                <svg width="28px" height="28px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12.75 6V3.75H11.25V6L9 6C6.10051 6 3.75 8.3505 3.75 11.25V17.909C3.75 19.2019 4.7981 20.25 6.09099 20.25C6.71186 20.25 7.3073 20.0034 7.74632 19.5643L10.8107 16.5H13.1893L16.2537 19.5643C16.6927 20.0034 17.2881 20.25 17.909 20.25C19.2019 20.25 20.25 19.2019 20.25 17.909V11.25C20.25 8.3505 17.8995 6 15 6L12.75 6ZM18.75 11.25C18.75 9.17893 17.0711 7.5 15 7.5L9 7.5C6.92893 7.5 5.25 9.17893 5.25 11.25V17.909C5.25 18.3735 5.62652 18.75 6.09099 18.75C6.31403 18.75 6.52794 18.6614 6.68566 18.5037L10.1893 15H13.8107L17.3143 18.5037C17.4721 18.6614 17.686 18.75 17.909 18.75C18.3735 18.75 18.75 18.3735 18.75 17.909V11.25ZM6.75 12.75V11.25H8.25V9.75H9.75V11.25H11.25V12.75H9.75V14.25H8.25V12.75H6.75ZM15 10.875C15 11.4963 14.4963 12 13.875 12C13.2537 12 12.75 11.4963 12.75 10.875C12.75 10.2537 13.2537 9.75 13.875 9.75C14.4963 9.75 15 10.2537 15 10.875ZM16.125 14.25C16.7463 14.25 17.25 13.7463 17.25 13.125C17.25 12.5037 16.7463 12 16.125 12C15.5037 12 15 12.5037 15 13.125C15 13.7463 15.5037 14.25 16.125 14.25Z" fill="currentColor"></path> </g></svg>
-              </button>
-              <button class="item text-sm"on:click={()=>{
-                game.gameMode = "multiplayer-online"
-                }}>Online H-2-H
-                <svg width="28px" height="28px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M1.5 6.5C1.5 3.46243 3.96243 1 7 1C10.0376 1 12.5 3.46243 12.5 6.5C12.5 9.53757 10.0376 12 7 12C3.96243 12 1.5 9.53757 1.5 6.5Z" fill="#0039a6"></path> <path d="M14.4999 6.5C14.4999 8.00034 14.0593 9.39779 13.3005 10.57C14.2774 11.4585 15.5754 12 16.9999 12C20.0375 12 22.4999 9.53757 22.4999 6.5C22.4999 3.46243 20.0375 1 16.9999 1C15.5754 1 14.2774 1.54153 13.3005 2.42996C14.0593 3.60221 14.4999 4.99966 14.4999 6.5Z" fill="#FF033E"></path> <path d="M0 18C0 15.7909 1.79086 14 4 14H10C12.2091 14 14 15.7909 14 18V22C14 22.5523 13.5523 23 13 23H1C0.447716 23 0 22.5523 0 22V18Z" fill="#0039a6"></path> <path d="M16 18V23H23C23.5522 23 24 22.5523 24 22V18C24 15.7909 22.2091 14 20 14H14.4722C15.4222 15.0615 16 16.4633 16 18Z" fill="#FF033E"></path> </g></svg>
-              </button>
-            </div>
-          </div>
+        </button>
     </div>
     {/if}
     {#if game.gameEnded}
@@ -542,8 +537,15 @@
         resetScore()
         centerBall()
         startGame()
+        BALLSPEEDX = 6
+        BALLSPEEDY = 6
     }}>Replay</button>
-    <button class="btn lg info light w-40" on:click={()=>{game.gameEnded = false, game.gameStarted = false}}>Menu</button>
+    <button class="btn lg info light w-40" on:click={()=>{
+        resetScore()
+        game.gameEnded = false
+        game.gameStarted = false
+        
+        }}>Menu</button>
     </div>
 
     {/if}

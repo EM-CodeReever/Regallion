@@ -5,10 +5,10 @@ export type PaddleAccessProperty = "leftPaddleY" | "rightPaddleY"
 
 
 export type GameAction = {type: "propertyChange"; property: keyof Game, value: string | number} | {type: "pause" | "resume"}
+export type GameUser = {id: string, name?: string}
 
 
-
-export type WithUser<T> = T & {user: {id: string, name: string}}
+export type WithUser<T> = T & {user: GameUser | null}
 
 export type  ServerAction = GameAction | {type: "gameInstance", game: Game} | WithUser<{type: "userJoined"}> | WithUser< {type: "userLeft"}>
 
@@ -16,6 +16,7 @@ export type  ServerAction = GameAction | {type: "gameInstance", game: Game} | Wi
 export default class Game {
     //using # to make private properties for intercepcting when a property is changed
     gameMode: GameMode
+    #players: [player1: GameUser | null, player2: GameUser | null] = [null, null]
     socket: null | PartySocket = null
     showOptionsModal = false
     #playerPaddleColor = "#0091FF"
@@ -265,10 +266,10 @@ export default class Game {
 
     set ballX(value: number) {
         this.#ballX = value;
-        if(this.socket){
-            this.socket.send(JSON.stringify({type:"propertyChange", property: "ballX", value} satisfies GameAction))
+        // if(this.socket){
+        //     this.socket.send(JSON.stringify({type:"propertyChange", property: "ballX", value} satisfies GameAction))
                
-        }
+        // }
     }
 
     get ballY(): number {
@@ -277,10 +278,10 @@ export default class Game {
 
     set ballY(value: number) {
         this.#ballY = value;
-        if(this.socket){
-            this.socket.send(JSON.stringify({type:"propertyChange", property: "ballY", value} satisfies GameAction))
+        // if(this.socket){
+        //     this.socket.send(JSON.stringify({type:"propertyChange", property: "ballY", value} satisfies GameAction))
                
-        }
+        // }
     }
 
     get ballSpeedX(): number {
@@ -307,7 +308,13 @@ export default class Game {
         }
     }
 
+    get players(): [player1: GameUser | null, player2: GameUser | null] {
+        return this.#players;
+    }
 
+    set players(value: [player1: GameUser | null, player2: GameUser | null]) {
+        this.#players = value;
+    }
 
 
    updateProperty = (property: keyof Game, value: any) => {
@@ -324,12 +331,12 @@ export default class Game {
         case "ballSpeed":
             this.#ballSpeed = value
             break;
-        case "ballX":
-            this.#ballX = value
-            break;
-        case "ballY":
-            this.#ballY = value
-            break;
+        // case "ballX":
+        //     this.#ballX = value
+        //     break;
+        // case "ballY":
+        //     this.#ballY = value
+        //     break;
         case "ballSpeedX":
             this.#ballSpeedX = value
             break;
