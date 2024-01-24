@@ -1,5 +1,5 @@
 import type * as Party from "partykit/server";
-import Game, { GameAction } from "../src/routes/(auth)/ping-pong/Game"
+import Game, { GameAction, ServerAction } from "../src/routes/(auth)/ping-pong/Game"
 
 export default class Server implements Party.Server {
 
@@ -15,7 +15,7 @@ export default class Server implements Party.Server {
     console.log( `Connected: id: ${conn.id} room: ${this.room.id} url: ${new URL(ctx.request.url).pathname}`);
 
    
-    conn.send(JSON.stringify(this.Game))
+    conn.send(JSON.stringify({type: "gameInstance", game: this.Game} as ServerAction) )
   }
 
   onMessage(message: string, sender: Party.Connection) {

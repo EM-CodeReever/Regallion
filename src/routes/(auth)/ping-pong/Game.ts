@@ -74,6 +74,8 @@ export default class Game {
         this.#leftPaddleY = value;
 
         if(this.socket){
+            console.log("sending message");
+            
             this.socket.send(JSON.stringify({type:"propertyChange", property: "leftPaddleY", value} satisfies GameAction))
                
         }
