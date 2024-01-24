@@ -344,6 +344,8 @@
            
             ws.addEventListener("message", (event)=>{
                 let message = JSON.parse(event.data) as ServerAction
+                console.log("client", message);
+                
 
                 switch(message.type){
                     case "gameInstance":
@@ -352,7 +354,7 @@
                         break;
 
                     case "pause":
-                        pauseGame()
+                        resumeGame = pauseGame()
                         break;
                     case "resume":
                         resumeGame()
