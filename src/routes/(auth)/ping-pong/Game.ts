@@ -44,7 +44,7 @@ export default class Game {
 
    
     #leftPaddleY = 0
-    #rightPaddleY =  0
+    #rightPaddleY = 0
 
 
 
@@ -133,6 +133,10 @@ export default class Game {
 
     set ballColor(value: string) {
         this.#ballColor = value;
+        if(this.socket){
+            this.socket.send(JSON.stringify({type:"propertyChange", property: "ballColor", value} satisfies GameAction))
+               
+        }
     }
 
     get ballSpeed(): number {
@@ -261,6 +265,10 @@ export default class Game {
 
     set ballX(value: number) {
         this.#ballX = value;
+        if(this.socket){
+            this.socket.send(JSON.stringify({type:"propertyChange", property: "ballX", value} satisfies GameAction))
+               
+        }
     }
 
     get ballY(): number {
@@ -269,6 +277,10 @@ export default class Game {
 
     set ballY(value: number) {
         this.#ballY = value;
+        if(this.socket){
+            this.socket.send(JSON.stringify({type:"propertyChange", property: "ballY", value} satisfies GameAction))
+               
+        }
     }
 
     get ballSpeedX(): number {
@@ -290,7 +302,10 @@ export default class Game {
 
 
 
-   
+   updateProperty = (property: keyof Game, value: any) => {
+    //@ts-ignore
+    this[property] = value
+   }
 
     resetScore = () =>  {
         this.player1Score = 0;

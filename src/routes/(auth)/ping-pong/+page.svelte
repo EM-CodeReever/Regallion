@@ -336,7 +336,7 @@
                 ctx.fill();
 
                 // Draw the ball
-                ctx.fillStyle = game.ballColor;
+                ctx.fillStyle = '#ffffff';
                 ctx.beginPath();
                 ctx.arc(game.ballX, game.ballY, ballSize, 0, Math.PI * 2);
                 ctx.fill();
@@ -395,13 +395,7 @@
                     case "propertyChange":
                         
 
-                        if(message.property === "leftPaddleY" || message.property === "rightPaddleY"){
-                            //this prevents setter from being called again
-                            game.updatePaddleY(message.property, message.value as number)
-                        }else{
-                            //@ts-ignore  Todo: fix this
-                            game[message.property] = message.value
-                        }
+                      game.updateProperty(message.property, message.value)
                       
                         break;
                 }
