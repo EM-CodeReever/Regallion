@@ -303,8 +303,28 @@ export default class Game {
 
 
    updateProperty = (property: keyof Game, value: any) => {
-    //@ts-ignore
-    this[`#${property}`] = value
+    switch (property) {
+        case "leftPaddleY":
+            this.leftPaddleY = value
+            break;
+        case "rightPaddleY":
+            this.rightPaddleY = value
+            break;
+        case "ballColor":
+            this.ballColor = value
+            break;
+        case "ballSpeed":
+            this.ballSpeed = value
+            break;
+        case "ballX":
+            this.ballX = value
+            break;
+        case "ballY":
+            this.ballY = value
+            break;
+        default:
+            break;
+    }
    }
 
     resetScore = () =>  {
