@@ -305,22 +305,22 @@ export default class Game {
    updateProperty = (property: keyof Game, value: any) => {
     switch (property) {
         case "leftPaddleY":
-            this.leftPaddleY = value
+            this.#leftPaddleY = value
             break;
         case "rightPaddleY":
-            this.rightPaddleY = value
+            this.#rightPaddleY = value
             break;
         case "ballColor":
-            this.ballColor = value
+            this.#ballColor = value
             break;
         case "ballSpeed":
-            this.ballSpeed = value
+            this.#ballSpeed = value
             break;
         case "ballX":
-            this.ballX = value
+            this.#ballX = value
             break;
         case "ballY":
-            this.ballY = value
+            this.#ballY = value
             break;
         default:
             break;
