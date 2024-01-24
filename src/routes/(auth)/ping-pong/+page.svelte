@@ -3,8 +3,12 @@
     import { fly } from 'svelte/transition';
     import type { PageData } from './$types';
     import LabelledInput from '$components/LabelledInput.svelte';
+    import Game from './Game';
     export let data: PageData;
     let { userProfile } = data
+
+
+    let game = new Game("singleplayer")
 
     let gameMode: "singleplayer" | "multiplayer-local" | "multiplayer-online" = "singleplayer" 
     let isPlayerOne = false // if multiplayer, this will be determined by socket , made who created the game, even have the option to choose
@@ -56,17 +60,19 @@
         showOptionsModal = !showOptionsModal
     }
 
-    let player1Score = 0;
-    let player2Score = 0;
+    game.player1Score = 0;
+    game.player2Score = 0;
 
     function resetScore(){
-        player1Score = 0;
-        player2Score = 0;
+        game.player1Score = 0;
+        game.player2Score = 0;
     }
 
     let pauseGame = function (){}
     let resumeGame = function (){}
     let centerBall = function (){}
+
+    let canvas: HTMLCanvasElement
     
 
     function startGame(){
@@ -83,7 +89,6 @@
         let touchStartY: any
         if(browser){
             // Define canvas element and its context
-            const canvas = document.getElementById("pingPongCanvas") as HTMLCanvasElement;
             // determine canvas size from screen size
             const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 
@@ -110,8 +115,8 @@
             let ballSpeedY = chosenBallSpeed;
 
             // Scores
-            player1Score = 0;
-            player2Score = 0;
+            game.player1Score = 0;
+            game.player2Score = 0;
 
             // Game loop
             function gameLoop() {
@@ -223,8 +228,8 @@
                 if (ballX < 0) {
                     // Ball went past the left paddle
                     if(!gameEnded){
-                        player2Score++;
-                        if(player2Score >= pointsToWin){
+                        game.player2Score++;
+                        if(game.player2Score >= pointsToWin){
                             gameEnded = true
                             hideBall()
                             pauseGame()
@@ -236,8 +241,8 @@
                     }
                 } else if (ballX > canvas.width) {
                     // Ball went past the right paddle
-                    player1Score++;
-                    if(player1Score == pointsToWin){
+                    game.player1Score++;
+                    if(game.player1Score == pointsToWin){
                         gameEnded = true
                         hideBall()
                         pauseGame()
@@ -355,13 +360,13 @@
             {/if}
             
             {#if gameStarted}
-            <span class="ml-5">{player1Score}</span>
+            <span class="ml-5">{game.player1Score}</span>
             {/if}
         </p>
         {:else if gameMode === "multiplayer-local"}
         <p class="font-sans text-lg badge light info cornered w-full">{MultiplayerP1Name} 
             {#if gameStarted}
-            <span class="ml-5">{player1Score}</span>
+            <span class="ml-5">{game.player1Score}</span>
             {/if}
         </p>
         {/if}
@@ -388,23 +393,23 @@
             Computer
             {/if}
             {#if gameStarted}
-            <span class="ml-5">{player2Score}</span>
+            <span class="ml-5">{game.player2Score}</span>
             {/if}
         </p>
         {:else if gameMode === "multiplayer-local" || gameMode === "multiplayer-online" }
         <p class="font-sans text-lg badge light danger cornered w-full">{MultiplayerP2Name} 
             {#if gameStarted}
-            <span class="ml-5">{player2Score}</span>
+            <span class="ml-5">{game.player2Score}</span>
             {/if}
         </p>
         {/if}
     </div>
-    <canvas id="pingPongCanvas" class="rounded-xl canvas-aspect-ratio relative mt-10 hidden ping-pong-breakpoint:tall:flex" height="500" width="800" >
+    <canvas bind:this={canvas} id="pingPongCanvas" class="rounded-xl canvas-aspect-ratio relative mt-10 hidden ping-pong-breakpoint:tall:flex" height="500" width="800" >
     </canvas>
 
     {#if scoreDisplay && !gameEnded}
     <div transition:fly={{delay:0,duration:500,y:300,opacity:0}} class="z-50 text-7xl text-center font-bold justify-center items-center absolute mx-auto my-auto hidden ping-pong-breakpoint:tall:flex">
-        {player1Score} - {player2Score}
+        {game.player1Score} - {game.player2Score}
     </div>
     {/if}
     {#if !gameStarted}
@@ -443,7 +448,7 @@
     {#if gameEnded}
     <div in:fly={{delay:0,duration:500,y:300,opacity:0}} class="z-50 text-7xl text-center font-bold flex-col space-y-5 justify-center items-center absolute mx-auto my-auto hidden ping-pong-breakpoint:tall:flex">
         {winner} Wins! <br>
-        {player1Score} - {player2Score}
+        {game.player1Score} - {game.player2Score}
         <button class="btn lg success light w-40" on:click={()=>{
         gameEnded = false
         paused = false
