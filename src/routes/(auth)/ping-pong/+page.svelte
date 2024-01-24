@@ -33,38 +33,26 @@
     let MultiplayerP2Name = ""
     let p1PaddleColor = "#0039a6"
     let p2PaddleColor = "#D2122E"
-    let chosenBallColor = "#ffffff"
-    let chosenBallSpeed = 14;
-    let chosenBallSize = 10;
-    let choosenDifficulty: "easy" | "hard" | "unfair" = "easy";
-    let paused = false;
-    let scoreDisplay = false
-    let gameStarted = false
-    let gameEnded = false
-    let winner = ""
-    let pointsToWin = 3
-    let canvasWidth = 800
     let position: "left" | "right" = "left"
 
     function setDifficulty(type: 'easy' | 'hard'| 'unfair'){
         if(type === 'easy'){
-                chosenBallSpeed = 14
-                chosenBallSize = 10
+                game.ballSpeed = 14
+                game.ballSize = 10
                 game.paddleSpeed = 4
             }else if(type === 'hard'){
-                chosenBallSpeed = 20
-                chosenBallSize = 8
+                game.ballSpeed = 20
+                game.ballSize = 8
                 game.paddleSpeed = 10
             }else if(type === 'unfair'){
-                chosenBallSpeed = 21
-                chosenBallSize = 8
+                game.ballSpeed = 21
+                game.ballSize = 8
                 game.paddleSpeed = 50
             }
         showOptionsModal = !showOptionsModal
     }
 
-    game.player1Score = 0;
-   game.player2Score = 0;
+
 
     function resetScore(){
         game.player1Score = 0;
@@ -112,11 +100,11 @@
 
 
             // Ball properties
-            let ballSize = chosenBallSize;
+            let ballSize = game.ballSize;
             let ballX = canvas.width / 2;
             let ballY = canvas.height / 2;
-            let ballSpeedX = chosenBallSpeed;
-            let ballSpeedY = chosenBallSpeed;
+            let ballSpeedX = game.ballSpeed;
+            let ballSpeedY = game.ballSpeed;
 
             // Scores
             game.player1Score = 0;
@@ -125,7 +113,7 @@
             // Game loop
             function gameLoop() {
                 if(window.innerWidth < 820){
-                    canvasWidth = window.innerWidth - 20
+                    game.canvasWidth = window.innerWidth - 20
                     paddleHeight = .3 * canvas.height
                 }
                 movePaddles();
@@ -137,7 +125,7 @@
 
             // Event listeners
             canvas.addEventListener("mousemove", (event) => {
-                if(paused || gameEnded){
+                if(game.paused || game.gameEnded){
                     return
                 }
                 const mouseY = event.clientY - canvas.getBoundingClientRect().top;
@@ -150,7 +138,7 @@
 
             // Touchstart event
             canvas.addEventListener("touchstart", (event) => {
-                if(paused || gameEnded){
+                if(game.paused || game.gameEnded){
                     return
                 }
                 touchStartY = event.touches[0].clientY;
@@ -161,7 +149,7 @@
                 console.log('called');
                 
                 event.preventDefault(); // Prevent scrolling or other default touch behavior
-                if(paused || gameEnded){
+                if(game.paused || game.gameEnded){
                     return
                 }
                 const touchY = event.touches[0].clientY;
@@ -240,13 +228,13 @@
                 // Scoring
                 if (ballX < 0) {
                     // Ball went past the left paddle
-                    if(!gameEnded){
+                    if(!game.gameEnded){
                         game.player2Score++;
-                        if(game.player2Score >= pointsToWin){
-                            gameEnded = true
+                        if(game.player2Score >= game.pointsToWin){
+                            game.gameEnded = true
                             hideBall()
                             resumeGame = pauseGame()
-                            winner = P2Name
+                            game.winner = P2Name
 
                         }else{
                             resetBall();
@@ -255,11 +243,11 @@
                 } else if (ballX > canvas.width) {
                     // Ball went past the right paddle
                     game.player1Score++;
-                    if(game.player1Score == pointsToWin){
-                        gameEnded = true
+                    if(game.player1Score == game.pointsToWin){
+                        game.gameEnded = true
                         hideBall()
                         resumeGame = pauseGame()
-                        winner = P1Name
+                        game.winner = P1Name
                     }else{                      
                         resetBall();
                     }
@@ -285,9 +273,9 @@
             function resetBall() {
                 centerBall();
                 resumeGame = pauseGame();
-                scoreDisplay = true
+                game.scoreDisplay = true
                 setTimeout(()=>{
-                scoreDisplay = false
+                game.scoreDisplay = false
                 },2000)
                 setTimeout(() => {
                     resumeGame();
@@ -298,7 +286,7 @@
                     
                 ballSpeedX = 0;
                 ballSpeedY = 0;
-                paused = true
+                game.paused = true
                 
                 cancelAnimationFrame(frameId)
             
@@ -308,9 +296,9 @@
                     console.log('called resume game', game.paddleSpeed);
                     
                     
-                    ballSpeedX = chosenBallSpeed;
-                    ballSpeedY = chosenBallSpeed;
-                    paused = false
+                    ballSpeedX = game.ballSpeed;
+                    ballSpeedY = game.ballSpeed;
+                    game.paused = false
                     console.log('resumed game', game.paddleSpeed);
                     
                 }
@@ -352,7 +340,7 @@
                 ctx.fill();
 
                 // Draw the ball
-                ctx.fillStyle = chosenBallColor;
+                ctx.fillStyle = game.ballColor;
                 ctx.beginPath();
                 ctx.arc(ballX, ballY, ballSize, 0, Math.PI * 2);
                 ctx.fill();
@@ -388,24 +376,24 @@
             Computer
             {/if}
             
-            {#if gameStarted}
+            {#if game.gameStarted}
             <span class="ml-5">{game.player1Score}</span>
             {/if}
         </p>
         {:else if gameMode === "multiplayer-local"}
         <p class="font-sans text-lg badge light info cornered w-full">{MultiplayerP1Name} 
-            {#if gameStarted}
+            {#if game.gameStarted}
             <span class="ml-5">{game.player1Score}</span>
             {/if}
         </p>
         {/if}
-        {#if !paused || gameEnded}
+        {#if !game.paused || game.gameEnded}
         <button class="btn light bw" on:click={()=>{resumeGame = pauseGame()}}>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5" />
               </svg>              
         </button>
-        {:else if paused && !gameEnded}
+        {:else if game.paused && !game.gameEnded}
         <button class="btn light bw" on:click={()=>{resumeGame()}}>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />
@@ -421,13 +409,13 @@
             {:else if position === "left"}
             Computer
             {/if}
-            {#if gameStarted}
+            {#if game.gameStarted}
             <span class="ml-5">{game.player2Score}</span>
             {/if}
         </p>
         {:else if gameMode === "multiplayer-local" || gameMode === "multiplayer-online" }
         <p class="font-sans text-lg badge light danger cornered w-full">{MultiplayerP2Name} 
-            {#if gameStarted}
+            {#if game.gameStarted}
             <span class="ml-5">{game.player2Score}</span>
             {/if}
         </p>
@@ -436,12 +424,12 @@
     <canvas bind:this={canvas} id="pingPongCanvas" class="rounded-xl canvas-aspect-ratio relative mt-10 hidden ping-pong-breakpoint:tall:flex" height="500" width="800" >
     </canvas>
 
-    {#if scoreDisplay && !gameEnded}
+    {#if game.scoreDisplay && !game.gameEnded}
     <div transition:fly={{delay:0,duration:500,y:300,opacity:0}} class="z-50 text-7xl text-center font-bold justify-center items-center absolute mx-auto my-auto hidden ping-pong-breakpoint:tall:flex">
         {game.player1Score} - {game.player2Score}
     </div>
     {/if}
-    {#if !gameStarted}
+    {#if !game.gameStarted}
     <div in:fly={{delay:0,duration:500,y:300,opacity:0}} class="z-50 text-center font-bold flex-col space-y-5 justify-center items-center absolute mx-auto my-auto hidden ping-pong-breakpoint:tall:flex">
         <h1 class="text-7xl text-center font-bold">
             PING PONG!
@@ -474,18 +462,18 @@
           </div>
     </div>
     {/if}
-    {#if gameEnded}
+    {#if game.gameEnded}
     <div in:fly={{delay:0,duration:500,y:300,opacity:0}} class="z-50 text-7xl text-center font-bold flex-col space-y-5 justify-center items-center absolute mx-auto my-auto hidden ping-pong-breakpoint:tall:flex">
-        {winner} Wins! <br>
+        {game.winner} Wins! <br>
         {game.player1Score} - {game.player2Score}
         <button class="btn lg success light w-40" on:click={()=>{
-        gameEnded = false
-        paused = false
+        game.gameEnded = false
+        game.paused = false
         resetScore()
         centerBall()
         startGame()
     }}>Replay</button>
-    <button class="btn lg info light w-40" on:click={()=>{gameEnded = false, gameStarted = false}}>Menu</button>
+    <button class="btn lg info light w-40" on:click={()=>{game.gameEnded = false, game.gameStarted = false}}>Menu</button>
     </div>
 
     {/if}
@@ -501,7 +489,7 @@
       
         <div class="flex w-full justify-between items-center">
             <label for="difficulty">Difficulty</label>
-            <select bind:value={choosenDifficulty} name="difficulty" id="difficulty" class="input bw solid w-48">
+            <select bind:value={game.difficulty} name="difficulty" id="difficulty" class="input bw solid w-48">
                 <option value="easy">Easy</option>
                 <option value="hard">Hard</option>
                 <option value="unfair">Unfair</option>
@@ -526,18 +514,18 @@
         </div>
         <div class="flex w-full justify-between items-center">
             <label for="chosenBallColor">Ball color</label>
-            <input bind:value={chosenBallColor} type="color" name="ballColor" class="input h-10 bw solid w-48" >
+            <input bind:value={game.ballColor} type="color" name="ballColor" class="input h-10 bw solid w-48" >
         </div>
         <div class="flex justify-between items-center">
             <label for="pointsToWin">Points to win</label>
-            <input type="number" bind:value={pointsToWin} name="pointsToWin" id="pointsToWin" class="input bw solid w-48">
+            <input type="number" bind:value={game.pointsToWin} name="pointsToWin" id="pointsToWin" class="input bw solid w-48">
         </div>
         
           <div class="flex gap-3 mt-5">
         <button class="btn solid danger flex-1" on:click={()=>{showOptionsModal = !showOptionsModal}}>Cancel</button>
         <button class="btn solid indigo flex-1" on:click={()=>{
-            setDifficulty(choosenDifficulty)
-            gameStarted = true
+            setDifficulty(game.difficulty)
+            game.gameStarted = true
             setTimeout(() => {
                 startGame()
             }, 1000);
@@ -568,11 +556,11 @@
     </div>
     <div class="flex w-full justify-between items-center">
         <label for="chosenBallColor">Ball color</label>
-        <input bind:value={chosenBallColor} type="color" name="ballColor" class="input h-10 bw solid w-48" >
+        <input bind:value={game.ballColor} type="color" name="ballColor" class="input h-10 bw solid w-48" >
     </div>
     <div class="flex justify-between items-center">
         <label for="pointsToWin">Points to win</label>
-        <input type="number" bind:value={pointsToWin} name="pointsToWin" id="pointsToWin" class="input bw solid w-48">
+        <input type="number" bind:value={game.pointsToWin} name="pointsToWin" id="pointsToWin" class="input bw solid w-48">
     </div>
     <div class="flex gap-3">
       <button class="btn solid danger flex-1" on:click={()=>{
