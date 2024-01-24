@@ -4,7 +4,7 @@
     import type { PageData } from './$types';
     import LabelledInput from '$components/LabelledInput.svelte';
     import Game,  {type GameAction, type ServerAction}  from './Game';
-    import { onMount } from 'svelte';
+    import { onDestroy, onMount } from 'svelte';
     export let data: PageData;
     $: ({ userProfile, roomId, ws } = data)
     console.log(roomId);
@@ -398,6 +398,17 @@
                         break;
                 }
             })
+        }
+    })
+
+    onDestroy(()=>{
+        if(ws){
+            ws.close()
+
+        }
+
+        if(frameId){
+            cancelAnimationFrame(frameId)
         }
     })
     
