@@ -210,8 +210,8 @@
 
             // Update ball position
             function moveBall() {
-                // game.ballX += ballSpeedX;
-                // game.ballY += ballSpeedY;
+                game.ballX += ballSpeedX;
+                game.ballY += ballSpeedY;
 
                 // Collision with paddles
                 if (
