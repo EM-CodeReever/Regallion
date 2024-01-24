@@ -285,15 +285,11 @@
             
 
                 return () => {
-
-                    console.log('called resume game', game.paddleSpeed);
-                    
-                    
+                                
                     ballSpeedX = game.ballSpeed;
                     ballSpeedY = game.ballSpeed;
                     game.paused = false
-                    console.log('resumed game', game.paddleSpeed);
-                    
+            
                 }
             }
          
