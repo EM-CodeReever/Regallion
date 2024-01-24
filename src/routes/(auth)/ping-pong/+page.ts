@@ -1,5 +1,6 @@
 import PartySocket from 'partysocket';
 import type { PageLoad } from './$types';
+import { dev } from '$app/environment';
 
 export const load = (async ({url}) => {
 
@@ -7,7 +8,7 @@ export const load = (async ({url}) => {
     let roomId = url.searchParams.get("roomId") 
     if(roomId){
         const ws = new PartySocket({
-            host: "localhost:1999",   //"project-name.username.partykit.dev", // or localhost:1999 in dev
+            host: dev ? "localhost:1999": "regallion-party.mcole-k9.partykit.dev",   //"project-name.username.partykit.dev", // or localhost:1999 in dev
             room:  roomId, // or "ping-pong" in dev
             // add an optional id to identify the client,
             // if not provided, a random id will be generated
