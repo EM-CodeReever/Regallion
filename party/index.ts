@@ -8,6 +8,7 @@ export default class Server implements Party.Server {
 
   constructor(readonly room: Party.Room) {
     this.Game = new Game("multiplayer-online");
+    this.Game.gameStarted = true;
   }
 
   onConnect(conn: Party.Connection, ctx: Party.ConnectionContext) {
