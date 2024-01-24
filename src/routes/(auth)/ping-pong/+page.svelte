@@ -11,8 +11,6 @@
     let game = new Game("singleplayer")
 
     let frameId: number
-
-    $: console.log(frameId, "frameId");
     
     let gameMode: "singleplayer" | "multiplayer-local" | "multiplayer-online" = "singleplayer" 
     let isPlayerOne = true // if multiplayer, this will be determined by socket , made who created the game, even have the option to choose
@@ -181,24 +179,19 @@
                 //Todo: Handle real player paddle
 
                 if(gameMode === "singleplayer"){
-
-                    console.log('move computer paddle');
                     
                     let computerPaddleControl: keyof typeof game = isPlayerOne ? "rightPaddleY": "leftPaddleY" 
 
                     const middleOfPaddle = game[computerPaddleControl] + game.paddleHeight / 2;
 
-                    console.log('middle of paddle', middleOfPaddle, "<", game.ballY - 35);
                     
                     
                     if (middleOfPaddle < game.ballY - 35) {
 
                         game[computerPaddleControl] += game.paddleSpeed;
-                        console.log('move computer paddle down', game[computerPaddleControl]);
                         
                     } else if (middleOfPaddle > game.ballY + 35) {
                         game[computerPaddleControl] -= game.paddleSpeed;
-                        console.log('move computer paddle up', game[computerPaddleControl]);
                     }
                 } 
             }
