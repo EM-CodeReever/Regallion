@@ -323,25 +323,25 @@
             PING PONG!
         </h1>
             <span class="text-center font-bold">Use your mouse or touch to move the paddle</span>
-        <button class="btn lg bw solid w-40" on:click={()=>{
+        <button class="btn lg success light w-40" on:click={()=>{
             startGame()
             gameStarted = true
         }}>Start Game</button>
-        <button class="btn lg grapePurple solid w-40" disabled={!gameEnded && gameStarted}  on:click={()=>{showOptionsModal = !showOptionsModal}}>Options</button>
+        <button class="btn lg indigo light w-40" disabled={!gameEnded && gameStarted}  on:click={()=>{showOptionsModal = !showOptionsModal}}>Options</button>
     </div>
     {/if}
     {#if gameEnded}
     <div in:fly={{delay:0,duration:500,y:300,opacity:0}} class="z-50 text-7xl text-center font-bold flex-col space-y-5 justify-center items-center absolute mx-auto my-auto hidden ping-pong-breakpoint:tall:flex">
         {winner} Wins! <br>
         {playerScore} - {computerScore}
-        <button class="btn lg bw solid w-40" on:click={()=>{
+        <button class="btn lg success light w-40" on:click={()=>{
         gameEnded = false
         paused = false
         resetScore()
         centerBall()
         startGame()
     }}>New Game</button>
-    <button class="btn lg grapePurple solid w-40" disabled={!gameEnded && gameStarted}  on:click={()=>{showOptionsModal = !showOptionsModal}}>Options</button>
+    <button class="btn lg indigo light w-40" disabled={!gameEnded && gameStarted}  on:click={()=>{showOptionsModal = !showOptionsModal}}>Options</button>
     </div>
 
     {/if}
@@ -351,7 +351,7 @@
     <!-- remove `modal-overlay` element will make modal opened without overlay -->
     <label class="modal-overlay"></label>
     <!-- show class here will make modal visible -->
-    <div class="modal bg-gray-900 text-gray-200 flex-col gap-3 w-full max-w-lg hidden ping-pong-breakpoint:tall:flex{showOptionsModal ? 'show' : ''}">
+    <div class="modal bg-gray-900 text-gray-200 flex-col gap-3 w-full max-w-lg {showOptionsModal ? 'show' : ''}">
       <!-- <button class="absolute btn light bw right-4 top-3">✕</button> -->
       <h2 class="text-xl font-semibold text-center mb-5">Game Options</h2>
         
@@ -377,18 +377,11 @@
         </div>
         <div class="flex justify-between items-center">
             <label for="pointsToWin">Points to win</label>
-            <select bind:value={pointsToWin} name="pointsToWin" id="pointsToWin" class="input bw solid w-48">
-                <option value="1">1</option>
-                <option value="3">3</option>
-                <option value="5">5</option>
-                <option value="7">7</option>
-                <option value="10">10</option>
-            </select>
+            <input bind:value={pointsToWin} type="number" name="pointsToWin" id="pointsToWin" class="input h-10 bw solid w-48">
         </div>
-        
           <div class="flex gap-3 mt-5">
         <button class="btn solid bw flex-1" on:click={()=>{showOptionsModal = !showOptionsModal}}>Cancel</button>
-        <button class="btn solid grapePurple flex-1" on:click={()=>{setDifficulty(choosenDifficulty)}}>Save</button>
+        <button class="btn solid success flex-1" on:click={()=>{setDifficulty(choosenDifficulty)}}>Save</button>
       </div>
     </div>
   </div>

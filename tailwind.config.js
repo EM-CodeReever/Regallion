@@ -45,6 +45,7 @@ export default {
             richBlack: '#121420',
             gunMetal: '#1B2432',
             raisinBlack: '#2C2B3C',
+            indigo: '#4B0082',
             onyx: '#403F4C',
             oxfordBlue: '#14213D',
             orangeWeb: '#FCA311',
