@@ -91,12 +91,14 @@
 <section class="w-full h-fit flex justify-center items-center select-none">
     <div class="text-lg mx-auto text-center p-3 lg:pb-3 flex flex-col justify-center items-center space-y-4">
         <h1 class="font-bold xl:text-4xl xs:text-3xl text-2xl">Memory Cards</h1>
-        <p class="text-gray-200 max-w-xs text-sm text-center">Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga praesentium quisquam optio eaque eveniet sunt dignissimos.</p>
+        <p class="text-gray-200 max-w-xs text-sm text-center">How good is your memory?<br><br>
+            Find out with this simple memory game. Click on the cards to reveal the emoji. Match all the cards to win the game!
+        </p>
         <div class="flex justify-between w-80 sm:w-96">
-            <div class="bg-orangeWeb-800 rounded-md flex justify-between items-center w-fit px-2 space-x-2 text-black font-semibold">
+            <div class="bg-orangeWeb-800 rounded-md flex flex-col items-center w-fit p-2  text-black font-semibold">
                 
-                <p class="text-xl">{matchedCounter}</p>
-                <p class="text-sm">Matches</p>
+                <p class="text-xl -mt-1">{matchedCounter}</p>
+                <p class="text-sm -mt-2">Matches</p>
             </div>
             <span class="flex space-x-3">
                 <span class="text-sm text-center">
@@ -106,18 +108,18 @@
             </span>
             <span>
                 <!-- Reveal cards button -->
-                <button disabled={!revealAvailable} class="btn orangeWeb solid" on:click={()=>{displayCardsForThreeSeconds()}}> 
+                <button disabled={!revealAvailable} class="btn orangeWeb solid h-full" on:click={()=>{displayCardsForThreeSeconds()}}> 
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                       </svg>                                  
                 </button>
                 <!-- options button -->
-                <button class="btn orangeWeb solid">
+                <!-- <button class="btn orangeWeb solid">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
                       </svg>                  
-                </button>
+                </button> -->
             </span>
             
         </div>
