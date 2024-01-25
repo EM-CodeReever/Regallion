@@ -37,11 +37,18 @@
     let { supabase } = data
     $: ({ supabase } = data)
 
-    
 
-    const handleSignUp = async (type: 'email' | 'github') => {
+
+    let githubSignUp = async () => {
+        await supabase.auth.signInWithOAuth({
+                provider: 'github',
+                options: {
+                    redirectTo: `${location.origin}/auth/callback`,
+                },
+        })
+    }
+    let emailSignup = async () => {
         registerProcessing = true
-        if(type === 'email'){
             if(!validate()){
             return
             }
@@ -51,15 +58,6 @@
             })
             next = true
             registerProcessing = false
-        }
-        if(type === 'github'){
-            await supabase.auth.signInWithOAuth({
-                provider: 'github',
-                options: {
-                    redirectTo: `${location.origin}/auth/callback`,
-                },
-            })
-        }
     }
 </script>
 <svelte:head>
@@ -73,25 +71,24 @@
         <h1 class="text-center text-3xl font-bold text-gray-200 mb-5">Account Creation</h1>
         
         
-        <form class="grid gap-5 grid-cols-4 px-5 mt-10 w-full min-w-fit">
-            <button class="btn solid orangeWeb flex-grow w-full col-span-full" on:click={()=>{handleSignUp('github')}}>Sign Up with Github</button>
+        <div class="grid gap-5 grid-cols-4 px-5 mt-10 w-full min-w-fit">
+            <button class="btn solid orangeWeb flex-grow w-full col-span-full" on:click={()=>{githubSignUp()}}>Sign Up with Github</button>
             <div class="divider info col-span-full text-gray-200">or</div>
-            <p class="text-center font-semibold text-gray-200 col-span-full">Sign up with Email</p>
-            <input class="input solid info col-span-full" placeholder="Email" bind:value={email}/>
-            <input class="input solid info col-span-full md:col-span-2" type="password" placeholder="Choose password" bind:value={password}/>
-            <input class="input solid info col-span-full md:col-span-2" type="password" placeholder="Confirm password" bind:value={confirmPassword}/>
+                <p class="text-center font-semibold text-gray-200 col-span-full">Sign up with Email</p>
+                <input class="input solid info col-span-full" placeholder="Email" bind:value={email}/>
+                <input class="input solid info col-span-full md:col-span-2" type="password" placeholder="Choose password" bind:value={password}/>
+                <input class="input solid info col-span-full md:col-span-2" type="password" placeholder="Confirm password" bind:value={confirmPassword}/>
 
-            <div class="flex col-span-4 justify-between items-center">
-                <p class="text-red-700">{errorText}</p>
-                <button class="btn orangeWeb solid col-span-1 justify-self-end {registerProcessing
-                    ? 'is-loading'
-                    : ''}"
-                on:click={()=>{
-                    handleSignUp('email')
-                    }}>Submit</button>
-            </div>
-            
-        </form>
+                <div class="flex col-span-4 justify-between items-center">
+                    <p class="text-red-700">{errorText}</p>
+                    <button class="btn orangeWeb solid col-span-1 justify-self-end {registerProcessing
+                        ? 'is-loading'
+                        : ''}"
+                    on:click={()=>{
+                        emailSignup()
+                        }}>Submit</button>
+                </div>
+        </div>
     </div>
     {/if}
     {#if next}
