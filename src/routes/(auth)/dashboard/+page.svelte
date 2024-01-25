@@ -121,7 +121,11 @@
             <button class="btn orangeWeb -mb-1 ghost p-2 lg:hidden" on:click={()=>{toggleDrawer('left')}}>
                 <Sidebar/>
             </button>   
+            {#if userProfile?.username}
             <p>Hello, {userProfile?.first_name}! 👋</p>
+            {:else}
+            <p>Hello, {session?.user.email}! 👋</p>
+            {/if}
         </span>
             <button class="btn sm:md sm solid orangeWeb" on:click={()=>{aboutModal = !aboutModal}}>
             <p class="hidden screen-500:block">About Regallion</p>
@@ -230,7 +234,7 @@
                 <button class="m-1 w-full btn light bw h-16 rounded-md flex justify-start" on:click={()=>{goto("/chat-room")}}>
                     <ChatBubble/>
                     <div class="text-left">
-                        <p class="font-semibold">Regalore</p>
+                        <p class="font-semibold">Regalore (coming soon)</p>
                         <p class="text-xs font-thin">A socket powered Chatroom</p>
                     </div>
                 </button>

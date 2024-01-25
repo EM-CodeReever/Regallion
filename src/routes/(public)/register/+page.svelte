@@ -28,7 +28,7 @@
             registerProcessing = false
             return false
         }
-        registerProcessing = false
+        // registerProcessing = false
         return true
     }
 
