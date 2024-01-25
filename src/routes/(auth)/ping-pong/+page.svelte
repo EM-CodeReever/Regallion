@@ -5,9 +5,17 @@
     import LabelledInput from '$components/LabelledInput.svelte';
     import Game,  {type GameAction, type ServerAction, type GameUser}  from './Game';
     import { onDestroy, onMount } from 'svelte';
+    import { boolean } from 'zod';
+    import { goto, invalidateAll } from '$app/navigation';
+    import { page } from '$app/stores';
+    import { redirect } from '@sveltejs/kit';
     export let data: PageData;
     $: ({ userProfile, roomId, ws } = data)
 
+    let random5LetterString = Math.random().toString(36).substring(2, 7)
+
+    
+    
     
     
     let BALLSPEEDX = 6
@@ -16,11 +24,13 @@
 
     let game = new Game("singleplayer")  //once online, socket will be responsible for game state
 
+    
     // game.players = [userProfile?.username as string, "Computer"]
 
     let frameId: number
     
     let isPlayerOne = true // if multiplayer, this will be determined by socket , made who created the game, even have the option to choose
+    
     
     $: userPaddleControl = isPlayerOne ? "leftPaddleY" : "rightPaddleY" as "leftPaddleY" | "rightPaddleY"
 
@@ -31,7 +41,8 @@
     // being player one or two determines which side paddle user controls
 
     let showOptionsModal = false
-    let showMultiplayerOptionsModal = false
+    let showMultiplayerOptionsModal = $page.url.searchParams.get("showMultiplayerModal") === "true" ? true : false
+    let showJoinGameModal = false
     let P1Name = ""
     let P2Name = ""
     let MultiplayerP1Name = ""
@@ -39,6 +50,7 @@
     let p1PaddleColor = "#0039a6"
     let p2PaddleColor = "#D2122E"
     let position: "left" | "right" = "left"
+    let joinCode = ""
 
     function setDifficulty(type: 'easy' | 'hard'| 'unfair'){
         // CHANGE THIS FUNCTION TO AN INIITIALIZE FUNCTION THAT SETS ALL GAME PROPERTIES
@@ -516,15 +528,38 @@
             PING PONG!
         </h1>
             <span class="text-center font-bold">Use your mouse or touch to move the paddle</span>
+            {#if !roomId}
         <button class="btn lg success light w-40" on:click={()=>{
             showOptionsModal = !showOptionsModal
 
         }}>Singleplayer</button>
         <button class="btn lg indigo light w-40" on:click={()=>{
-            game.gameMode = "multiplayer-online"
-            showMultiplayerOptionsModal = !showMultiplayerOptionsModal}}>
-            Multiplayer
+            $page.url.searchParams.set("roomId", random5LetterString)
+            $page.url.searchParams.set("showMultiplayerModal", "true")
+            window.location.href = $page.url.toString()
+            // goto(`/ping-pong?roomId=${random5LetterString}`)
+            // showMultiplayerOptionsModal = !showMultiplayerOptionsModal
+            }}>
+            Create Game
         </button>
+        <button class="btn lg indigo light w-40" on:click={()=>{
+            // goto(`/ping-pong?roomId=${random5LetterString}`)
+            showJoinGameModal = !showJoinGameModal
+            }}>
+            Join Game
+        </button>
+        {/if}
+        {#if roomId}
+        <button class="btn lg success light w-40" on:click={()=>{
+            game.gameStarted = true
+            setTimeout(() => {
+                startGame()
+            }, 1000);
+            console.log(game.players);
+            
+        }}>Start!</button>
+        {/if}
+
     </div>
     {/if}
     {#if game.gameEnded}
@@ -611,20 +646,22 @@
   <div class="modal flex flex-col gap-5 max-w-2xl w-full bg-gray-800 text-gray-200 {showMultiplayerOptionsModal ? 'show' : 'hidden'} ">
     <h2 class="text-xl font-semibold text-center mb-5">Multiplayer Options</h2>
     <div class="flex space-x-5">
-        <LabelledInput label="P1" bind:data={MultiplayerP1Name} placeholder="Enter name"  name="player_one_name"/>
-        <LabelledInput label="P2" bind:data={MultiplayerP2Name} placeholder="Enter name"  name="player_two_name"/>
-    </div>
-    <div class="flex space-x-5">
-        <div class="flex flex-col space-y-3 w-full justify-between items-center">
-            <svg width="100px" height="100px" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="#e5e5e5" d="M438.144 256c-68.352 0-92.736 4.672-117.76 18.112-20.096 10.752-35.52 26.176-46.272 46.272C260.672 345.408 256 369.792 256 438.144v275.712c0 68.352 4.672 92.736 18.112 117.76 10.752 20.096 26.176 35.52 46.272 46.272C345.408 891.328 369.792 896 438.144 896h147.712c68.352 0 92.736-4.672 117.76-18.112 20.096-10.752 35.52-26.176 46.272-46.272C763.328 806.592 768 782.208 768 713.856V438.144c0-68.352-4.672-92.736-18.112-117.76a110.464 110.464 0 0 0-46.272-46.272C678.592 260.672 654.208 256 585.856 256H438.144zm0-64h147.712c85.568 0 116.608 8.96 147.904 25.6 31.36 16.768 55.872 41.344 72.576 72.64C823.104 321.536 832 352.576 832 438.08v275.84c0 85.504-8.96 116.544-25.6 147.84a174.464 174.464 0 0 1-72.64 72.576C702.464 951.104 671.424 960 585.92 960H438.08c-85.504 0-116.544-8.96-147.84-25.6a174.464 174.464 0 0 1-72.64-72.704c-16.768-31.296-25.664-62.336-25.664-147.84v-275.84c0-85.504 8.96-116.544 25.6-147.84a174.464 174.464 0 0 1 72.768-72.576c31.232-16.704 62.272-25.6 147.776-25.6z"></path><path fill="#fff" d="M512 320q32 0 32 32v128q0 32-32 32t-32-32V352q0-32 32-32zm32-96a32 32 0 0 1-64 0v-64a32 32 0 0 0-32-32h-96a32 32 0 0 1 0-64h96a96 96 0 0 1 96 96v64z"></path></g></svg>
-            <label for="p1PaddleColor">P1 Paddle Color</label>
-            <input bind:value={p1PaddleColor} type="color" name="ballColor" class="input h-10 bw solid w-48" >
+        <div class="flex w-full">
+            <button class="{isPlayerOne ? 'bg-blue-800' : 'bg-gray-900'} rounded-l-lg space-x-3 flex justify-center items-center p-3 w-full" on:click={()=>{
+                isPlayerOne = true
+            }}>
+                <span>Player One</span>
+            </button>
+            <button class="{!isPlayerOne ? 'bg-red-800' : 'bg-gray-900'} rounded-r-lg space-x-3 flex justify-center items-center p-3 w-full" on:click={()=>{
+                isPlayerOne = false
+            }}>
+                <span>Player Two</span>
+            </button>
         </div>
-        <div class="flex flex-col space-y-3 w-full justify-between items-center">
-            <svg width="100px" height="100px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 13H6.01M6 17H6.01M10 13H10.01M14 13H14.01M18 17H18.01M18 13H18.01M16 3V5H8V9M10 17H14M5.2 21H18.8C19.9201 21 20.4802 21 20.908 20.782C21.2843 20.5903 21.5903 20.2843 21.782 19.908C22 19.4802 22 18.9201 22 17.8V12.2C22 11.0799 22 10.5198 21.782 10.092C21.5903 9.71569 21.2843 9.40973 20.908 9.21799C20.4802 9 19.9201 9 18.8 9H5.2C4.07989 9 3.51984 9 3.09202 9.21799C2.71569 9.40973 2.40973 9.71569 2.21799 10.092C2 10.5198 2 11.0799 2 12.2V17.8C2 18.9201 2 19.4802 2.21799 19.908C2.40973 20.2843 2.71569 20.5903 3.09202 20.782C3.51984 21 4.0799 21 5.2 21Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
-            <label for="p2PaddleColor">P2 Paddle Color</label>
-            <input bind:value={p2PaddleColor} type="color" name="ballColor" class="input h-10 bw solid w-48" >
-        </div>   
+    </div>
+    <div class="flex w-full justify-between items-center">
+        <label for="p1PaddleColor">Player paddle color</label>
+        <input bind:value={game.playerPaddleColor} type="color" name="ballColor" class="input h-10 bw solid w-48" >
     </div>
     <div class="flex w-full justify-between items-center">
         <label for="chosenBallColor">Ball color</label>
@@ -634,11 +671,41 @@
         <label for="pointsToWin">Points to win</label>
         <input type="number" bind:value={game.pointsToWin} name="pointsToWin" id="pointsToWin" class="input bw solid w-48">
     </div>
+    <div class="flex w-full justify-between items-center">
+        <label for="p1PaddleColor">Game Code</label>
+        <input value={roomId} type="text" disabled name="txtGameCodeDisabaled" class="input h-10 bw solid w-48" >
+        <!-- <p class="">{roomId}</p> -->
+    </div>
     <div class="flex gap-3">
       <button class="btn solid danger flex-1" on:click={()=>{
-            game.gameMode = "singleplayer"
+            goto(`/ping-pong`)
             showMultiplayerOptionsModal = !showMultiplayerOptionsModal}}>Cancel</button>
-      <button class="btn solid indigo flex-1">Play!</button>
+      <button class="btn solid indigo flex-1" on:click={()=>{
+        // setDifficulty(game.difficulty)
+        $page.url.searchParams.delete("showMultiplayerModal")
+        showMultiplayerOptionsModal = !showMultiplayerOptionsModal
+        goto(`/ping-pong?roomId=${roomId}`)
+        }}>Play!</button>
+    </div>
+  </div>
+
+  <label class="modal-overlay"></label>
+  <!-- show class here will make modal visible -->
+  <div class="modal flex flex-col gap-5 max-w-2xl w-full bg-gray-800 text-gray-200 {showJoinGameModal ? 'show' : 'hidden'} ">
+    <h2 class="text-xl font-semibold text-center mb-5">Join Multiplayer Game</h2>
+    <div class="flex w-full justify-between items-center">
+        <label for="p1PaddleColor">Enter Game Code</label>
+        <input bind:value={joinCode} type="text" name="txtGameCode" class="input h-10 bw solid w-48" >
+    </div>
+    <div class="flex gap-3">
+      <button class="btn solid danger flex-1" on:click={()=>{
+            goto(`/ping-pong`)
+            showJoinGameModal = !showJoinGameModal}}>Cancel</button>
+      <button class="btn solid indigo flex-1" on:click={()=>{
+        // setDifficulty(game.difficulty)
+        $page.url.searchParams.set("roomId", joinCode)
+        window.location.href = $page.url.toString()
+        }}>Join Game Room</button>
     </div>
   </div>
 
