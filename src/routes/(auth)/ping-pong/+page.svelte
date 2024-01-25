@@ -43,8 +43,8 @@
     let showOptionsModal = false
     let showMultiplayerOptionsModal = $page.url.searchParams.get("showMultiplayerModal") === "true" ? true : false
     let showJoinGameModal = false
-    let P1Name = ""
-    let P2Name = ""
+    // let game.player1 = ""
+    // let game.player2 = ""
     let MultiplayerP1Name = ""
     let MultiplayerP2Name = ""
     let p1PaddleColor = "#0039a6"
@@ -93,15 +93,7 @@
        
         
         
-        if(position === "left"){
-               isPlayerOne = true
-               P1Name = userProfile?.username as string
-               P2Name = "Computer"
-              }else if(position === "right"){
-                isPlayerOne = false
-                P2Name = userProfile?.username as string
-                P1Name = "Computer"
-              }
+
 
         let touchStartY: any
         if(browser){
@@ -262,7 +254,7 @@
                             game.gameEnded = true
                             hideBall()
                             resumeGame = pauseGame()
-                            game.winner = P2Name
+                            game.winner = game.player2?.name as string
 
                         }else{
                             resetBall();
@@ -275,7 +267,7 @@
                         game.gameEnded = true
                         hideBall()
                         resumeGame = pauseGame()
-                        game.winner = P1Name
+                        game.winner = game.player1?.name as string
                     }else{                      
                         resetBall();
                     }
@@ -402,11 +394,32 @@
                         game.canvasWidth = message.game.canvasWidth
                         game.ballX = message.game.ballX
                         game.ballY = message.game.ballY
+                        game.pointsToWin = message.game.pointsToWin
+                        game.player1 = message.game.player1
+                        game.player2 = message.game.player2
+                        
 
                         game.socket = ws!
 
-                        console.log("gameInstance", game);
                         
+                        console.log("player1", game.player1);
+                        console.log("player2", game.player2);
+                        
+                        
+                        if(game.player1 != null && game.player2 == null && ws){
+                            game.player2 = {id: ws.id, name: userProfile?.username as string}
+                            isPlayerOne = false
+                            
+                        }else if(game.player1 == null && game.player2 != null && ws){
+                            game.player1 = {id: ws.id, name: userProfile?.username as string}
+                            isPlayerOne = true
+                        } else if(game.player1 == null && game.player2 == null && ws){
+                            game.player1 = {id: ws.id, name: userProfile?.username as string}
+                            isPlayerOne = true
+                        }
+                        
+                        console.log("gameInstance", game);
+
                         break;
 
                     case "pause":
@@ -425,7 +438,6 @@
                     case "userJoined":
                         console.log("user joined");
                         console.log(message.user)
-                        P2Name = message.user?.name as string
                         // message.user.name = message.user.name === userProfile?.username ? "You" : message.user.name
                         break;
                 }
@@ -459,7 +471,7 @@
           </svg>          
         Ping pong game is unvailaible on this screen size</div>
     <div class="w-full justify-between space-x-10 px-10 items-center h-20 rounded-xl bg-[#ffffff79] blur-bg text-black  mx-auto z-50 hidden  ping-pong-breakpoint:tall:flex" style="max-width: 800px;">
-        {#if game.gameMode === "singleplayer" || game.gameMode === "multiplayer-online"}
+        <!-- {#if game.gameMode === "singleplayer"}
         <p class="font-sans text-lg badge light info cornered w-full">
             {#if position === "left"}
             <span>
@@ -472,14 +484,14 @@
             {#if game.gameStarted}
             <span class="ml-5">{game.player1Score}</span>
             {/if}
-        </p>
-        {:else if game.gameMode === "multiplayer-local"}
-        <p class="font-sans text-lg badge light info cornered w-full">{MultiplayerP1Name} 
+        </p> -->
+        <!-- {:else if game.gameMode === "multiplayer-online"} -->
+        <p class="font-sans text-lg badge light info cornered w-full">{game.player1?.name ?? "Waiting for player..."} 
             {#if game.gameStarted}
             <span class="ml-5">{game.player1Score}</span>
             {/if}
         </p>
-        {/if}
+        <!-- {/if} -->
         {#if !game.paused || game.gameEnded}
         <button class="btn light bw" on:click={()=>{resumeGame = pauseGame()}}>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -493,7 +505,7 @@
               </svg>                          
         </button>
         {/if}
-        {#if game.gameMode === "singleplayer"}
+        <!-- {#if game.gameMode === "singleplayer"}
         <p class="font-sans text-lg badge light danger cornered w-full">
             {#if position === "right"}
             <span>
@@ -505,18 +517,22 @@
             {#if game.gameStarted}
             <span class="ml-5">{game.player2Score}</span>
             {/if}
-        </p>
-        {:else if game.gameMode === "multiplayer-local" || game.gameMode === "multiplayer-online" }
-        <p class="font-sans text-lg badge light danger cornered w-full">{MultiplayerP2Name} 
+        </p> -->
+        
+        <p class="font-sans text-lg badge light danger cornered w-full">{game.player2?.name ?? "Waiting for player..."} 
             {#if game.gameStarted}
             <span class="ml-5">{game.player2Score}</span>
             {/if}
         </p>
-        {/if}
+        <!-- {/if} -->
     </div>
     <canvas bind:this={canvas} id="pingPongCanvas" class="rounded-xl canvas-aspect-ratio relative mt-10 hidden ping-pong-breakpoint:tall:flex" height="500" width="800" >
     </canvas>
-
+    <p class="font-sans text-lg badge light danger cornered w-full">{game.player2?.name} 
+        {#if game.gameStarted}
+        <span class="ml-5">{game.player2Score}</span>
+        {/if}
+    </p>
     {#if game.scoreDisplay && !game.gameEnded}
     <div transition:fly={{delay:0,duration:500,y:300,opacity:0}} class="z-50 text-7xl text-center font-bold justify-center items-center absolute mx-auto my-auto hidden ping-pong-breakpoint:tall:flex">
         {game.player1Score} - {game.player2Score}
@@ -555,7 +571,6 @@
             setTimeout(() => {
                 startGame()
             }, 1000);
-            console.log(game.players);
             
         }}>Start!</button>
         {/if}
@@ -649,11 +664,19 @@
         <div class="flex w-full">
             <button class="{isPlayerOne ? 'bg-blue-800' : 'bg-gray-900'} rounded-l-lg space-x-3 flex justify-center items-center p-3 w-full" on:click={()=>{
                 isPlayerOne = true
+                if(ws && userProfile){
+                     game.player1 = {id: ws.id, name: userProfile.username}
+                     game.player2 = null
+                }
             }}>
                 <span>Player One</span>
             </button>
             <button class="{!isPlayerOne ? 'bg-red-800' : 'bg-gray-900'} rounded-r-lg space-x-3 flex justify-center items-center p-3 w-full" on:click={()=>{
                 isPlayerOne = false
+                if(ws && userProfile){
+                     game.player2 = {id: ws.id, name: userProfile.username}
+                     game.player1 = null
+                }
             }}>
                 <span>Player Two</span>
             </button>

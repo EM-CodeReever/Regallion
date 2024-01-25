@@ -4,8 +4,8 @@ export type GameMode = "singleplayer" | "multiplayer-local" | "multiplayer-onlin
 export type PaddleAccessProperty = "leftPaddleY" | "rightPaddleY"
 
 
-export type GameAction = {type: "propertyChange"; property: keyof Game, value: string | number} | {type: "pause" | "resume"}
-export type GameUser = {id: string, name?: string}
+export type GameAction = { type: "propertyChange"; property: keyof Game, value: any } | {type: "pause" | "resume"}
+export type GameUser = {id: string, name?: string | null}
 
 
 export type WithUser<T> = T & {user: GameUser | null}
@@ -16,7 +16,8 @@ export type  ServerAction = GameAction | {type: "gameInstance", game: Game} | Wi
 export default class Game {
     //using # to make private properties for intercepcting when a property is changed
     gameMode: GameMode
-    #players: [player1: GameUser | null, player2: GameUser | null] = [null, null]
+    #player1: GameUser | null = null
+    #player2: GameUser | null = null
     socket: null | PartySocket = null
     showOptionsModal = false
     #playerPaddleColor = "#0091FF"
@@ -31,7 +32,7 @@ export default class Game {
     #gameStarted = false
     #gameEnded = false
     #winner = ""
-    #pointsToWin = 3
+    pointsToWin: number = 3;
     #canvasWidth = 800
 
     #player1Score = 0;
@@ -63,6 +64,15 @@ export default class Game {
 
     }
 
+    setPointsToWin = (points: number) => {
+        this.pointsToWin = points
+        if(this.socket){
+            this.socket.send(JSON.stringify({type:"propertyChange", property: "pointsToWin", value: points} satisfies GameAction))
+        }
+    }
+     getPointsToWin = () => {
+        return this.pointsToWin
+    }
 
     // create js setter for all these properties
 
@@ -217,13 +227,17 @@ export default class Game {
         this.#winner = value;
     }
 
-    get pointsToWin(): number {
-        return this.#pointsToWin;
-    }
+    // get pointsToWin(): number {
+    //     return this.#pointsToWin;
+    // }
 
-    set pointsToWin(value: number) {
-        this.#pointsToWin = value;
-    }
+    // set pointsToWin(value: number) {
+    //     this.#pointsToWin = value;
+    //     if(this.socket){
+    //         this.socket.send(JSON.stringify({type:"propertyChange", property: "pointsToWin", value} satisfies GameAction))
+               
+    //     }
+    // }
 
     get canvasWidth(): number {
         return this.#canvasWidth;
@@ -308,12 +322,26 @@ export default class Game {
         }
     }
 
-    get players(): [player1: GameUser | null, player2: GameUser | null] {
-        return this.#players;
+    get player1(){
+        return this.#player1
     }
 
-    set players(value: [player1: GameUser | null, player2: GameUser | null]) {
-        this.#players = value;
+    set player1(value: GameUser | null){
+        this.#player1 = value
+        if(this.socket){
+            this.socket.send(JSON.stringify({type:"propertyChange", property: "player1", value} satisfies GameAction))
+        }
+    }
+
+    get player2(){
+        return this.#player2
+    }
+
+    set player2(value: GameUser | null){
+        this.#player2 = value
+        if(this.socket){
+            this.socket.send(JSON.stringify({type:"propertyChange", property: "player2", value} satisfies GameAction))
+        }
     }
 
 
@@ -343,6 +371,9 @@ export default class Game {
         case "ballSpeedY":
             this.#ballSpeedY = value
             break;
+        // case "pointsToWin" :
+        //     this.#pointsToWin = value
+        //     break;
         default:
             break;
     }
