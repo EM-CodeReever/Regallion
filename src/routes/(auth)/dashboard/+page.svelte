@@ -168,7 +168,7 @@
                 <p>Logout</p>
             </button>
           </div>
-        <div class="h-fit relative rounded-xl bg-[#ffffffc0] w-full max-w-3xl mr-5 lg:mr-0 p-5 flex flex-col justify-between text-gray-800" >
+        <div class="h-fit relative rounded-xl bg-[#ffffffc0] w-full mr-5 lg:mr-0 p-5 flex flex-col justify-between text-gray-800" >
             <button class="btn rounded-full p-1 solid orangeWeb absolute top-4 right-4" on:click={()=>{
                 refreshRiddle()
             }}>
