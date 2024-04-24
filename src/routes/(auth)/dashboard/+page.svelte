@@ -25,7 +25,7 @@
     $: ({ supabase, session, userProfile } = data)
     let aboutModal = false;
     let completeProfileModal = false;
-    let showContent = false;
+    let triggerContentLoadInAnimation = false;
     let showInternalProjects = true;
     let showExternalProjects = false;
     let quote = "";
@@ -38,7 +38,7 @@
     }
     let showAnswer = false;
     onMount(()=>{
-        showContent = true;
+        triggerContentLoadInAnimation = true;
         riddlePromise = fetch('https://riddles-api.vercel.app/random').then(res => res.json()).then(data => {
             riddleObjet = data;
         });
@@ -114,7 +114,7 @@
     <title>Dashboard</title>
 </svelte:head>
 <Toaster />
-<section class="w-full h-fit">
+<section class="w-full h-fit gunmetal-waves">
     <div class="flex justify-between items-center">
         
         <span class="text-2xl sm:text-3xl font-bold text-gray-200 flex items-center space-x-2">
@@ -135,7 +135,7 @@
     <div class="divider platinum" />
     
     <div class="w-full h-fit flex flex-col space-y-5  lg:space-x-5 ping-pong-breakpoint:space-y-0 ping-pong-breakpoint:flex-row">
-        {#if showContent}
+        {#if triggerContentLoadInAnimation}
         <div class="w-56 bg-orangeWeb-800 text-gray-800 p-3 h-fit rounded-xl justify-start items-center space-y-3 flex-col hidden lg:flex">
             <div class="flex space-x-1 items-center m-3 mb-0">
               <img src="/favicon.ico" alt="Regal logo" class="w-9 h-9 hidden sm:flex">
@@ -147,9 +147,12 @@
             <SideNavItem title="Overview" isActive={false} linkTo="/dashboard">
               <Overview/>
             </SideNavItem>
-            <!-- <SideNavItem title="Projects" isActive={false} linkTo="/projects">
+            <SideNavItem title="Projects" isActive={false} linkTo="/projects">
               <Project/>
-            </SideNavItem> -->
+            </SideNavItem>
+            <SideNavItem title="Projects" isActive={false} linkTo="/projects">
+                <Project/>
+              </SideNavItem>
             <SideNavItem title="Profile" isActive={false} linkTo="/profile">
               <Profile/>
             </SideNavItem>
@@ -159,6 +162,7 @@
             <SideNavItem title="Homepage" isActive={false} linkTo="/">
               <Home/>
             </SideNavItem>
+            
             <button class="cursor-pointer flex justify-start items-center font-semibold space-x-3 hover:bg-oxfordBlue-600 hover:text-gray-300 w-full p-3 rounded-lg relative"
                 on:click={()=>{
                     supabase.auth.signOut();
@@ -168,7 +172,7 @@
                 <p>Logout</p>
             </button>
           </div>
-        <div class="h-fit relative rounded-xl bg-[#ffffffc0] w-full mr-5 lg:mr-0 p-5 flex flex-col justify-between text-gray-800" >
+        <div class="h-72 relative rounded-xl bg-[#ffffffc0] w-full mr-5 lg:mr-0 p-5 flex flex-col justify-between text-gray-800" >
             <button class="btn rounded-full p-1 solid orangeWeb absolute top-4 right-4" on:click={()=>{
                 refreshRiddle()
             }}>
@@ -198,7 +202,7 @@
             </div>
             
         </div>
-        <div class="p-2 w-full ping-pong-breakpoint:max-w-sm h-64 mt-2 rounded-lg flex flex-col space-y-2 bg-[#ffffffc0] text-gray-800">
+        <div class="p-2 w-full ping-pong-breakpoint:max-w-sm h-72 mt-2 rounded-lg flex flex-col space-y-2 bg-[#ffffffc0] text-gray-800">
             <span class="flex justify-between items-center px-2">
                 <p class="font-semibold">Projects</p>
                 <!-- svelte-ignore a11y-no-static-element-interactions -->
