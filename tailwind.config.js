@@ -48,7 +48,7 @@ export default {
             indigo: '#4B0082',
             onyx: '#403F4C',
             oxfordBlue: '#14213D',
-            orangeWeb: '#FCA311',
+            orangeWeb: '#900219',
             platinum: '#E5E5E5',
           },
         },

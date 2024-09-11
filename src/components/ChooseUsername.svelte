@@ -1,16 +1,15 @@
 <script lang="ts">
-    export let username: string;
+    import { User } from "lucide-svelte";
     export let name:string;
+    export let extraClasses:string = "";
 </script>
 
 
-<div class="input solid oxfordBlue col-span-full sm:col-span-3">
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-      </svg>                  
-    <input {name}  placeholder="Choose Username" bind:value={username}/>
+<div class="input rounded-md solid oxfordBlue {extraClasses}">
+    <User />                
+    <input {name} class="" placeholder="Choose Username"/>
     <!-- X icon svg -->
-    {#if true}
+    {#if false}
     <svg 
         width="15"
         height="15"
@@ -47,7 +46,7 @@
 
 <style>
     input::placeholder {
-  color: #e5e5e5;
-  opacity: 1; /* Firefox */
+  color: #e5e7ebbb;
+  opacity: .75; /* Firefox */
 }
 </style>

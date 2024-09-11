@@ -35,7 +35,7 @@
 
   </script>
 
-  <section class="flex gunmetal-waves w-full h-fit min-h-screen p-5 screen-400:p-12 screen-400:pb-0">
+  <section class="flex bg-oxfordBlue-500 w-full h-fit min-h-screen p-5 screen-400:p-4 screen-400:pb-0">
     <!-- <nav class="blur-bg fixed px-3 w-full top-0 bg-transparent flex justify-between items-center h-16 z-50">
         <div class="flex justify-center items-center py-5 px-1">
             <button class="btn" on:click={()=>{toggleDrawer('left')}}>

@@ -23,16 +23,17 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@prisma/client": "^5.4.1",
-		"@sira-ui/tailwind": "^0.11.6",
+		"@prisma/client": "^5.19.1",
+		"@sira-ui/tailwind": "^0.11.8",
 		"@splidejs/svelte-splide": "^0.2.9",
 		"@supabase/auth-helpers-sveltekit": "^0.10.3",
 		"@supabase/supabase-js": "^2.37.0",
 		"@types/nodemailer": "^6.4.11",
+		"lucide-svelte": "^0.439.0",
 		"nodemailer": "^6.9.5",
-		"prisma": "^5.4.1",
+		"prisma": "^5.19.1",
 		"svelte-french-toast": "^1.2.0",
 		"svelte-inview": "^4.0.1",
-		"zod": "^3.22.4"
+		"zod": "^3.23.8"
 	}
 }
