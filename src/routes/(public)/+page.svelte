@@ -17,6 +17,7 @@
     import SiraUi from "$components/svg/SiraUI.svelte";
     import { Splide, SplideSlide, SplideTrack } from '@splidejs/svelte-splide';
     import '@splidejs/splide/dist/css/themes/splide-default.min.css';
+  import { Image, LogIn, Menu, UserPlus } from "lucide-svelte";
 
   let sectionOneINVIEW = false;
   let sectionTwoINVIEW = false;
@@ -37,7 +38,7 @@
 <svelte:head>
   <title>Home</title>
 </svelte:head>
-<section class="w-full dusk-waves text-gray-200 h-screen">
+<section class="w-full misty-waves text-gray-200 h-screen">
   {#if show}
     <div
       class="flex space-y-8 justify-center items-center flex-col h-full"
@@ -58,16 +59,21 @@
         in:fade={{ duration: 800, easing: cubicOut, delay: 500 }}
       >
         <button
-          class="btn bw solid lg:lg"
+          class="btn platinum solid lg:lg"
           on:click={() => {
             goto("register");
-          }}>Create an account</button
+          }}>Create an account
+          <UserPlus />
+          </button
         >
         <button
-          class="btn orangeWeb solid lg:lg"
+          class="btn morningGreen solid lg:lg"
           on:click={() => {
             goto("login");
-          }}>Log in</button
+          }}>
+          Log in
+          <LogIn size="24" />
+          </button
         >
       </span>
     </div>
@@ -79,7 +85,7 @@
   on:inview_change={({ detail }) => {
     sectionOneINVIEW = detail.inView;
   }}
-  class="w-full flex flex-col space-y-5 justify-center items-center bg-[#B76D68] text-gray-900"
+  class="w-full flex flex-col space-y-5 justify-center items-center bg-[#14746f] text-gray-900"
   style="height: 30rem;"
   data-theme="custom"
 >
@@ -99,30 +105,30 @@
       height  : '22rem',
       // width   : '100%',
 
-    } } hasTrack={ false } class="bg-indieRed-900 rounded-lg p-1 w-full max-w-4xl m-5">
+    } } hasTrack={ false } class="bg-oxfordBlue-200 text-gray-300 rounded-lg p-1 w-full max-w-4xl m-5">
       <div style="position: relative">
         <SplideTrack >
             <SplideSlide class="flex justify-center items-center space-x-5 p-3">
                 <span class="flex flex-col space-y-2">
                   <p class="text-2xl font-bold">Ping-Pong</p>
                   <p class="text-sm max-w-sm">Simple Ping pong game, built using HTML Canvas. Grab a paddle and hit the ball back and forth until it scores. Incompatible with smaller screens  </p>
-                  <button class="btn sm bw light ml-auto sm:m-0" on:click={()=>{goto("/ping-pong")}} >Check it out</button>
+                  <button class="btn sm morningGreen light ml-auto sm:m-0" on:click={()=>{goto("/ping-pong")}} >Check it out</button>
                 </span>
                 <div class="rounded-lg w-96 h-72 bg-gray-900 aspect-video sm:flex hidden relative justify-center">
-                  <span class="text-3xl mt-3 font-bold text-indieRed-900">0 - 0</span>
-                  <span class="w-4 rounded-md h-24 bg-indieRed-900 absolute left-3 bottom-5"></span>
-                  <div class="w-4 h-4 bg-indieRed-900 rounded-full absolute top-1/2 right-1/2"></div>
-                  <span class="w-4 rounded-md h-24 bg-indieRed-900 absolute right-3 top-5"></span>
+                  <span class="text-3xl mt-3 font-bold text-[#14746f]">0 - 0</span>
+                  <span class="w-4 rounded-md h-24 bg-[#14746f] absolute left-3 bottom-5"></span>
+                  <div class="w-4 h-4 bg-[#14746f] rounded-full absolute top-1/2 right-1/2"></div>
+                  <span class="w-4 rounded-md h-24 bg-[#14746f] absolute right-3 top-5"></span>
                 </div>
             </SplideSlide>
             <SplideSlide class="flex justify-center items-center space-x-5 p-3">
               <span class="flex flex-col space-y-2">
                 <p class="text-2xl font-bold">Memory card</p>
                 <p class="text-sm max-w-sm"> Memory cards is a game of cards, that can be flipped over and matched. If a match is found, the cards stay flipped, if not, they will turn back. The game continues until all cards are flipped.</p>
-                <button class="btn sm bw light ml-auto sm:m-0" on:click={()=>{goto("/memory-card")}} >Check it out</button>
+                <button class="btn sm morningGreen light ml-auto sm:m-0" on:click={()=>{goto("/memory-card")}} >Check it out</button>
               </span>
               <div class="rounded-lg w-96 h-72 aspect-video sm:flex justify-center hidden p-3">
-                <div class="aspect-square w-72  max-w-sm border-2 border-gray-900 rounded-md grid grid-cols-5 grid-rows-5 gap-3 p-3">
+                <div class="aspect-square w-72  max-w-sm bg-[#14746f] rounded-md grid grid-cols-5 grid-rows-5 gap-3 p-3">
                   {#each Array(25) as _, i}
                   <div class="w-full h-full bg-gray-900 rounded-md cursor-pointer hover:bg-gray-700 hover:border-gray-200 hover:border-2 flex justify-center items-center">
                       <p>{fruitEmojiArray[Math.floor(Math.random()*fruitEmojiArray.length)]}</p>
@@ -136,28 +142,23 @@
               <p class="text-2xl font-bold">Regalore</p>
               <p class="text-sm max-w-sm">A basic chatroom for communicating with other users. 
                 <br>
-                <span class="text-xs">Note: This is a work in progress, so it's not fully functional yet.</span>
+                <span class="text-xs">Note: This is a work in progress, so it's not functional yet.</span>
               </p>
-              <button class="btn sm bw light ml-auto sm:m-0" on:click={()=>{goto("/chat-room")}}>Check it out</button>
+              <button class="btn sm morningGreen light ml-auto sm:m-0" on:click={()=>{goto("/chat-room")}}>Check it out</button>
             </span>
             <div class="rounded-lg w-96 h-72 bg-gray-900 aspect-video sm:flex flex-col hidden">
               <div class="flex justify-between items-center px-4 w-full p-3">
                 <div>
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#B76D68" class="w-6 h-6">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 5.25h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5" />
-                </svg> 
+                  <Menu color="#14746f"/>
                </div>
-                <div class="w-24 h-6 bg-indieRed-900 rounded-md "></div>
-                <div class="avatar bg-indieRed-900"></div>
+                <div class="avatar bg-[#14746f]"></div>
               </div>
-              <div class="w-full h-full bg-indieRed-900 border-2 border-gray-900 rounded-b-lg relative">
+              <div class="w-full h-full bg-[#14746f] border-2 border-gray-900 rounded-b-lg relative">
                 <div class="w-36 h-6 rounded-xl absolute right-4 top-5 bg-gray-900"></div>
                 <div class="w-20 h-6 rounded-xl absolute left-4 top-11 bg-gray-900"></div>
                 <div class="w-40 h-6 rounded-xl absolute left-4 top-20 bg-gray-900"></div>
                 <div class="flex justify-center items-center w-24 h-24 rounded-xl absolute right-4 top-24 bg-gray-900">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#B76D68" class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
-                  </svg>                  
+                  <Image color="#14746f" size="24" />                  
                 </div>
               </div>
             </div>
@@ -182,7 +183,7 @@
   on:inview_change={({ detail }) => {
     sectionTwoINVIEW = detail.inView;
   }}
-  class="w-full dusk-waves-inverse flex flex-col space-y-10 justify-center items-center relative"
+  class="w-full misty-waves-inversed flex flex-col space-y-10 justify-center items-center relative"
   style="height: 60rem;"
   data-theme="custom"
 >
