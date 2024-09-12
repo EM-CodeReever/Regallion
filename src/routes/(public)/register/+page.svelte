@@ -64,7 +64,7 @@
     <title>Register</title>
 </svelte:head>
 
-<section class="gunmetal-waves h-screen flex px-5 items-center justify-center">
+<section class="misty-waves h-screen flex px-5 items-center justify-center">
     <!-- initail box -->
     {#if !next}
     <div class="w-full max-w-xl h-fit flex items-center flex-col space-y-5 px-3 pt-40 pb-10">

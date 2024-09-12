@@ -48,7 +48,7 @@
 	<title>Login</title>
 </svelte:head>
 <section
-	class="gunmetal-waves h-fit min-h-screen flex items-center justify-center w-full"
+	class="misty-waves h-fit min-h-screen flex items-center justify-center w-full"
 >
 	<div
 		class="w-full min-w-fit max-w-xl h-fit flex items-center flex-col space-y-5 my-32 mx-5 pt-10 pb-5 rounded-xl"
