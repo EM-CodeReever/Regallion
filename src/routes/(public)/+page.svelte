@@ -41,7 +41,7 @@
 <section class="w-full misty-waves text-gray-200 h-screen">
   {#if show}
     <div
-      class="flex space-y-8 justify-center items-center flex-col h-full"
+      class="flex space-y-8 justify-center items-center flex-col h-screen"
       in:fly={{ duration: 1000, y: 100, opacity: 0.3, easing: cubicOut }}
     >
       <h1 class="font-bold xl:text-5xl xs:text-3xl text-2xl">
