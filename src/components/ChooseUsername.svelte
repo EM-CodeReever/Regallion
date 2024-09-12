@@ -5,9 +5,9 @@
 </script>
 
 
-<div class="input rounded-md solid oxfordBlue {extraClasses}">
+<div class="input rounded-md solid morningGreen {extraClasses}">
     <User />                
-    <input {name} class="" placeholder="Choose Username"/>
+    <input {name} class="" placeholder="Create a cool username"/>
     <!-- X icon svg -->
     {#if false}
     <svg 
