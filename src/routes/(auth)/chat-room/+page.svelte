@@ -18,7 +18,7 @@
         <button class="btn flex-grow w-full max-w-md solid orangeWeb">Join Global Chat</button>
         <div class="divider richBlack max-w-md">or</div>
         <span class="grid w-full max-w-md gap-y-3 grid-cols-1">
-            <LabelledInput label="Join with room code" placeholder="Enter a room code" data={roomCode} name="CodeInput" />
+            <LabelledInput label="Join with room code" placeholder="Enter a room code" name="CodeInput" />
             <button class="btn flex-grow w-full max-w-md solid richBlack">Join</button>
         </span>
 
