@@ -11,7 +11,7 @@
 <svelte:head>
     <title>About</title>
 </svelte:head>
-<section class="dusk-waves min-h-screen h-fit flex flex-col items-center justify-center px-5 text-gray-800">
+<section class="misty-waves min-h-screen h-fit flex flex-col items-center justify-center px-5 text-gray-800">
     {#if showContent}
     <div class="w-full max-w-2xl h-fit text-white" in:fly={{duration:1000,y:-400,opacity:0}}>
         <h1 class="text-4xl text-center font-bold mb-5">About Regallion</h1>
