@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from "$app/navigation";
+  import { Github } from "lucide-svelte";
 	import type { PageData } from "./$types";
 	export let data: PageData;
 	import z from "zod";
@@ -56,10 +57,12 @@
 		<h1 class="text-center text-3xl font-bold text-gray-200 mb-5">Log in to your account</h1>
 		<div class="w-full px-5">
 			<button
-				class="btn solid orangeWeb flex-grow w-full"
+				class="btn solid morningGreen flex-grow w-full"
 				on:click={() => {
 					githubSignIn();
-				}}>Continue with Github</button
+				}}>Continue with Github
+				<Github/>
+				</button
 			>
 		</div>
 		<div class="divider px-5 info">or</div>
@@ -111,7 +114,7 @@
 			<div class="flex justify-between items-center">
 				<p class="text-red-600 text-sm">{errorText}</p>
 				<button
-					class="btn orangeWeb solid ml-auto {loginProcessing
+					class="btn morningGreen solid ml-auto {loginProcessing
 						? 'is-loading'
 						: ''}">Login</button
 				>
