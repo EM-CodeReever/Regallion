@@ -200,7 +200,7 @@
       in:fly={{ duration: 2000, y: 100, opacity: 0.3, easing: cubicOut }}
       class="text-gray-200 max-w-3xl text-center mx-3"
     >
-     Svelte is cool, Tailwind is super-cool, Typescript is cool, Supabase is cool, but I will always say haikei is a slept on background design tool. Sira UI is cool too, a bit weird to use but cool.
+     Svelte is cool, Tailwind is super-cool, Typescript is cool, Supabase is cool, but I will always say Haikei is a slept on frontend design tool. Sira UI is cool too, a bit weird to use but cool.
 
     </p>
     <div class="md:flex md:justify-between gap-y-5 xs:gap-y-10 grid grid-rows-2 grid-cols-3 w-full max-w-3xl">
