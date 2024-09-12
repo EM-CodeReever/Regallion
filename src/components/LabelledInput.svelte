@@ -7,7 +7,7 @@
     export let extraClasses:string = "";
 
 </script>
-<div class="input oxfordBlue solid rounded-md select-none {extraClasses}">
+<div class="input morningGreen solid rounded-md select-none {extraClasses}">
     <div style="color: #E5E5E5;" class="select-none">{label}</div>
     <input {name} {placeholder} type="text" />
     
