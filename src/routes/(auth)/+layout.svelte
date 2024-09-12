@@ -29,7 +29,7 @@
 
   </script>
 
-  <section class="flex flex-col misty-waves w-full h-fit min-h-screen p-5 screen-400:p-4 screen-400:pb-0">
+  <section class="flex flex-col misty-waves w-full h-fit min-h-screen p-5 screen-400:p-4">
     <MainNavbar userProfile={userProfile} supabase={supabase}/>
       <SideNavbar {currentPath}>
         <slot />
