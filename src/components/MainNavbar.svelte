@@ -2,7 +2,7 @@
   import { goto } from "$app/navigation";
 
 
-  import { LogOut, Settings, Sidebar } from "lucide-svelte";
+  import { LogOut, Menu, Settings, Sidebar } from "lucide-svelte";
   export let userProfile;
   export let supabase;
 
@@ -23,12 +23,12 @@
     class="text-2xl sm:text-3xl font-bold text-gray-200 flex items-center space-x-2"
   >
     <button
-      class="btn orangeWeb -mb-1 ghost p-2 lg:hidden"
+      class="btn morningGreen -mb-1 ghost p-2 lg:hidden"
       on:click={() => {
         toggleDrawer("left");
       }}
     >
-      <Sidebar />
+      <Menu class="w-6 h-6" />
     </button>
     <div class="flex space-x-1 items-center">
       <img
