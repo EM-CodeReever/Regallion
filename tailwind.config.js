@@ -17,6 +17,7 @@ export default {
       'ping-pong-breakpoint': '820px',
       // => @media (min-width: 820px) { ... }
       'screen-800': '800px',
+      'screen-900': '900px',
 
       'lg': '1024px',
       // => @media (min-width: 1024px) { ... }

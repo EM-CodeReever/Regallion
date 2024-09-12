@@ -92,7 +92,7 @@
   {#if sectionOneINVIEW}
     <p
       in:fly={{ duration: 1000, y: 500, opacity: 0.3, easing: cubicOut }}
-      class="lg:text-4xl text-2xl px-5 font-bold text-center"
+      class="lg:text-4xl text-2xl px-5 font-bold text-center text-gray-300"
     >
       Regallion Project Showcase
     </p>
@@ -103,9 +103,11 @@
       autoplay: true,
       arrows  : false,
       height  : '22rem',
+      
+
       // width   : '100%',
 
-    } } hasTrack={ false } class="bg-oxfordBlue-200 text-gray-300 rounded-lg p-1 w-full max-w-4xl m-5">
+    } } hasTrack={ false } class="bg-oxfordBlue-200 text-gray-300 md:rounded-lg p-1 w-full md:max-w-2xl lg:max-w-4xl">
       <div style="position: relative">
         <SplideTrack >
             <SplideSlide class="flex justify-center items-center space-x-5 p-3">
@@ -114,7 +116,7 @@
                   <p class="text-sm max-w-sm">Simple Ping pong game, built using HTML Canvas. Grab a paddle and hit the ball back and forth until it scores. Incompatible with smaller screens  </p>
                   <button class="btn sm morningGreen light ml-auto sm:m-0" on:click={()=>{goto("/ping-pong")}} >Check it out</button>
                 </span>
-                <div class="rounded-lg w-96 h-72 bg-gray-900 aspect-video sm:flex hidden relative justify-center">
+                <div class="rounded-lg w-96 h-72 bg-gray-900 aspect-video lg:flex hidden relative justify-center">
                   <span class="text-3xl mt-3 font-bold text-[#14746f]">0 - 0</span>
                   <span class="w-4 rounded-md h-24 bg-[#14746f] absolute left-3 bottom-5"></span>
                   <div class="w-4 h-4 bg-[#14746f] rounded-full absolute top-1/2 right-1/2"></div>
@@ -127,7 +129,7 @@
                 <p class="text-sm max-w-sm"> Memory cards is a game of cards, that can be flipped over and matched. If a match is found, the cards stay flipped, if not, they will turn back. The game continues until all cards are flipped.</p>
                 <button class="btn sm morningGreen light ml-auto sm:m-0" on:click={()=>{goto("/memory-card")}} >Check it out</button>
               </span>
-              <div class="rounded-lg w-96 h-72 aspect-video sm:flex justify-center hidden p-3">
+              <div class="rounded-lg w-96 h-72 aspect-video lg:flex justify-center hidden p-3">
                 <div class="aspect-square w-72  max-w-sm bg-[#14746f] rounded-md grid grid-cols-5 grid-rows-5 gap-3 p-3">
                   {#each Array(25) as _, i}
                   <div class="w-full h-full bg-gray-900 rounded-md cursor-pointer hover:bg-gray-700 hover:border-gray-200 hover:border-2 flex justify-center items-center">
@@ -146,7 +148,7 @@
               </p>
               <button class="btn sm morningGreen light ml-auto sm:m-0" on:click={()=>{goto("/chat-room")}}>Check it out</button>
             </span>
-            <div class="rounded-lg w-96 h-72 bg-gray-900 aspect-video sm:flex flex-col hidden">
+            <div class="rounded-lg w-96 h-72 bg-gray-900 aspect-video lg:flex flex-col hidden">
               <div class="flex justify-between items-center px-4 w-full p-3">
                 <div>
                   <Menu color="#14746f"/>
@@ -232,6 +234,6 @@
 
 <style>
   .splide__progress__bar{
-    background-color: #000;
+    background-color: #e5e5e5;
   }
 </style>

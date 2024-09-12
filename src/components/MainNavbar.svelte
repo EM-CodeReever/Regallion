@@ -1,8 +1,9 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
-
-
-  import { LogOut, Menu, Settings, Sidebar } from "lucide-svelte";
+  import { Club, DiamondPercent, House, LogOut, Menu, MessageSquareMore, Settings } from "lucide-svelte";
+  import SideNavbar from "./SideNavbar.svelte";
+  import SideNavItem from "./SideNavItem.svelte";
+  import Project from "./svg/Project.svelte";
   export let userProfile;
   export let supabase;
 
@@ -82,6 +83,41 @@
           goto("/");
         }}><LogOut class="w-4 h-4" /> Log-out</a
       >
+    </div>
+  </div>
+</div>
+
+
+<div data-theme="dark">
+  <!-- svelte-ignore a11y-click-events-have-key-events -->
+  <!-- svelte-ignore a11y-label-has-associated-control -->
+  <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+  <label class="drawer-overlay" on:click={()=>{toggleDrawer('left')}}></label>
+  <div class="drawer left" id="drawer-left">
+    <div class="content flex flex-col h-full">
+      <!-- svelte-ignore a11y-click-events-have-key-events -->
+      <!-- svelte-ignore a11y-label-has-associated-control -->
+      <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+      <label class="btn sm circle morningGreen ghost absolute right-3 top-3" on:click={()=>{toggleDrawer('left')}}>✕</label>
+      <div class="flex items-center justify-center">
+        <a href="/dashboard" class="bg-oxfordBlue-600 px-2 py-0.5 rounded-md font-extrabold text-2xl lg:text-2xl text-gray-200">Regallion</a>
+      </div>
+      <SideNavItem title="Dashboard" linkTo="/dashboard">
+        <Project/>
+    </SideNavItem>
+    <SideNavItem title="Ping Pong" linkTo="/ping-pong">
+      <DiamondPercent/>
+    </SideNavItem>
+    <SideNavItem title="Memory Cards"  linkTo="/memory-card">
+        <Club/>
+    </SideNavItem>
+    <SideNavItem title="Regalore" linkTo="/chat-room">
+      <MessageSquareMore/>
+    </SideNavItem>
+    <SideNavItem title="Homepage" linkTo="/">
+      <House/>
+    </SideNavItem>
+      
     </div>
   </div>
 </div>

@@ -15,11 +15,11 @@
         <p >Welcome to the chat room (coming soon)</p>
     </span>
     <div class="flex flex-col justify-center items-center space-y-3 w-full">
-        <button class="btn flex-grow w-full max-w-md solid orangeWeb">Join Global Chat</button>
+        <button class="btn flex-grow w-full max-w-md solid morningGreen">Join Global Chat</button>
         <div class="divider richBlack max-w-md">or</div>
         <span class="grid w-full max-w-md gap-y-3 grid-cols-1">
             <LabelledInput label="Join with room code" placeholder="Enter a room code" name="CodeInput" />
-            <button class="btn flex-grow w-full max-w-md solid richBlack">Join</button>
+            <button class="btn flex-grow w-full max-w-md solid oxfordBlue">Join</button>
         </span>
 
     </div>
