@@ -1,28 +1,31 @@
 <script>
     import { goto } from "$app/navigation";
     import "$styles";
+  import { AppWindow } from "lucide-svelte";
   </script>
   
   <!-- bg-[#14213D] -->
-  <nav class=" fixed w-full top-0 bg-[#121420] px-3 flex justify-center h-20 z-50" >
+  <nav class=" fixed w-full top-0 bg-[#001220] px-3 flex justify-center h-20 z-50" >
     <div class="w-full max-w-6xl h-full flex justify-between">
         <div class="flex space-x-2 items-center pl-2 lg:p-0">
             <img src="/favicon.ico" alt="Regal logo" class="w-9 h-9">
             <a href="/" class=" font-extrabold text-2xl lg:text-2xl text-gray-200">Regallion</a>
         </div>
         <ul class="hidden lg:flex text-gray-200">
-            <li class="h-full flex items-center px-5 duration-300 hover:text-[#FAC311]">
+            <li class="h-full flex items-center px-5 duration-300 hover:text-morningGreen-800">
                 <a href="/" class="font-bold">Home</a>
             </li>
-            <li class="h-full flex items-center px-5 marker:duration-300 hover:text-[#FAC311]">
+            <li class="h-full flex items-center px-5 marker:duration-300 hover:text-morningGreen-800">
                 <a href="/about" class="font-bold">About</a>
             </li>
-            <li class="h-full flex items-center px-5 duration-300 hover:text-[#FAC311]">
+            <li class="h-full flex items-center px-5 duration-300 hover:text-morningGreen-800">
                 <a href="/contact" class="font-bold">Contact</a>
             </li>
         </ul>
         <div class="hidden lg:flex items-center">
-            <button class="btn solid orangeWeb text-black" on:click={()=>{goto('dashboard')}}>Open App</button>
+            <button class="btn light morningGreen text-black" on:click={()=>{goto('dashboard')}}>
+                <AppWindow size="20" />
+                Open Application</button>
         </div>
         <div class="flex justify-center items-center lg:hidden">
             
@@ -43,7 +46,7 @@
                         Contact
                     </a>
                     <!-- for mobile... i repeat FOR MOBILE.... ELLIOT THIS BUTTON IS ONLY SEEN ON MOBILE -->
-                    <button class="btn sm solid orangeWeb w-full" on:click={()=>{goto('dashboard')}}>Open App</button>
+                    <button class="btn sm solid morningGreen w-full" on:click={()=>{goto('dashboard')}}>Open App</button>
                   </div>
                 </div>
         </div>
