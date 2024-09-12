@@ -11,9 +11,9 @@
 	let loginProcessing = false;
 	let errorText = "";
 
-	supabase.auth.getSession().then((session) => {
-		console.log(session);
-	});
+	// supabase.auth.getSession().then((session) => {
+	// 	console.log(session);
+	// });
 
 	const emailSignIn = async () => {
 		loginProcessing = true;
