@@ -25,7 +25,7 @@
     <title>Contact</title>
 </svelte:head>
 <Toaster />
-<section class="dusk-waves min-h-screen h-fit flex flex-col items-center space-y-10 justify-center px-5 pb-20 pt-32 text-gray-200">
+<section class="misty-waves min-h-screen h-fit flex flex-col items-center space-y-10 justify-center px-5 pb-20 pt-32 text-gray-200">
     {#if showHeading}
     <h1 class="text-4xl text-center font-bold" in:fade={{duration:1000}}>Contact Me</h1>
     <p class="max-w-3xl text-center px-5" in:fade={{duration:1000}}>
@@ -65,7 +65,7 @@
         </div>
         <div in:fly={{duration:1000,y:400,opacity:0,delay:300}} class="w-full max-w-sm h-96 md:max-w-3xl blur-bg bg-[#ffffff91] flex flex-col p-5 custom-box-shadow rounded-xl">
             <hi class="text-3xl text-center font-bold text-gray-800 mb-4">Leave a message</hi>
-            <form class="w-full h-full rounded-xl flex flex-col px-5 space-y-4" method="POST" action="?/sendContactMail" use:enhance={({})=>{
+            <form class="w-full h-full morningGreen light rounded-xl flex flex-col px-5 space-y-4" method="POST" action="?/sendContactMail" use:enhance={({})=>{
                 contactSending = true;
                 return async ({result,update})=>{
                     update({reset:true})
@@ -82,11 +82,11 @@
                     contactSending = false;
                 }
                 }}>
-                <input class="input oxfordBlue" placeholder="Name" name="contactSender"/>
-                <input class="input oxfordBlue" placeholder="Email address" name="contactEmail"/>
-                <textarea  class="input h-full oxfordBlue" placeholder="Write your message" name="contactMessage" />
+                <input class="input solid" placeholder="Name" name="contactSender"/>
+                <input class="input solid" placeholder="Email address" name="contactEmail"/>
+                <textarea  class="input solid h-full" placeholder="Write your message" name="contactMessage" />
                 <div class="flex justify-end w-full">
-                    <button class="btn solid orangeWeb {contactSending? 'is-loading' : ''}">Send</button>
+                    <button class="btn light morningGreen {contactSending? 'is-loading' : ''}">Send</button>
                 </div>
             </form>
         </div>
