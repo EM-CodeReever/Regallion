@@ -3,6 +3,7 @@
     import { fade, fly } from 'svelte/transition';
     import type { PageData } from './$types';
     import {fruitEmojiObject} from './util'
+  import { EyeOff, Timer, View } from 'lucide-svelte';
 
     let clickHistory = <any>[];
     let hidden = true;
@@ -88,98 +89,99 @@
 <svelte:head>
     <title>Memory Cards</title>
 </svelte:head>
-<section class="w-full h-fit flex justify-center items-center select-none">
-    <div class="text-lg mx-auto text-center p-3 lg:pb-3 flex flex-col justify-center items-center space-y-4">
-        <h1 class="font-bold xl:text-4xl xs:text-3xl text-2xl">Memory Cards</h1>
-        <p class="text-gray-200 max-w-xs text-sm text-center">How good is your memory?<br><br>
-            Find out with this simple memory game. Click on the cards to reveal the emoji. Match all the cards to win the game!
-        </p>
-        <div class="flex justify-between w-80 sm:w-96">
-            <div class="bg-orangeWeb-800 rounded-md flex flex-col items-center w-fit p-2  text-black font-semibold">
-                
-                <p class="text-xl -mt-1">{matchedCounter}</p>
-                <p class="text-sm -mt-2">Matches</p>
-            </div>
-            <span class="flex space-x-3">
-                <span class="text-sm text-center">
-                    <p>{moveCounter} Moves</p>
-                    <p>Time: {time.minutes < 10 ? '0' + time.minutes : time.minutes}:{time.seconds < 10 ? '0' + time.seconds : time.seconds}</p>
-                </span>
-            </span>
-            <span>
-                <!-- Reveal cards button -->
-                <button disabled={!revealAvailable} class="btn orangeWeb solid h-full" on:click={()=>{displayCardsForThreeSeconds()}}> 
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                      </svg>                                  
-                </button>
-                <!-- options button -->
-                <!-- <button class="btn orangeWeb solid">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
-                      </svg>                  
-                </button> -->
-            </span>
-            
-        </div>
+<section class="w-full h-fit flex select-none">
+
+        
         {#if start}
-        <div class="aspect-square w-80 sm:w-96 max-w-sm bg-orangeWeb-800 rounded-md grid grid-cols-6 grid-rows-6 gap-1 lg:gap-3 p-3">
-            {#if display}
-            {#each randomFruitEmojiObject as fruit}
-            <div class="w-full h-full bg-gray-900 rounded-md cursor-pointer hover:bg-gray-700 hover:border-gray-200 hover:border-2 flex justify-center items-center" in:fade|global={{duration:300}}>
-                <p>{fruit.emoji}</p>
+        <div class="flex flex-col w-full h-full space-y-3 items-center">
+            <!-- game inofrmation -->
+            <div class="w-[30rem] grid grid-cols-3">
+                <div class="col-span-1 rounded-md flex flex-col items-start w-full p-2 justify-start font-extralight text-xl">
+                    <span class="flex space-x-1">
+                        <p>{matchedCounter} Matches</p>
+                    </span>
+                    <span>
+                        <p>{moveCounter} Moves</p>
+                    </span>
+                    
+                </div>
+                <span class="col-span-1 flex justify-center items-center space-x-3">
+                    <span class="text-sm text-center flex flex-col items-center">
+                         <Timer size="30" />
+                        <p class="text-xl">{time.minutes < 10 ? '0' + time.minutes : time.minutes}:{time.seconds < 10 ? '0' + time.seconds : time.seconds}</p>
+                    </span>
+                </span>
+                <span class="col-span-1 flex justify-end items-center">
+                    <button disabled={!revealAvailable} class="btn rounded-md morningGreen solid" on:click={()=>{displayCardsForThreeSeconds()}}> 
+                        {#if revealAvailable}
+                        <View size="20" /> Reveal
+                        {:else}
+                        <EyeOff size="20" /> Reveal
+                        {/if}
+                    </button>
+                </span>
             </div>
-            {/each}
-            {:else}
-            {#each randomFruitEmojiObject as fruit}
-            <!-- svelte-ignore a11y-click-events-have-key-events -->
-            <!-- svelte-ignore a11y-no-static-element-interactions -->
-            <div in:fade|global={{duration:1000}} class="w-full h-full bg-gray-900 rounded-md cursor-pointer hover:bg-gray-700 hover:border-gray-200 hover:border-2 flex justify-center items-center" on:click={()=>{
-                if(fruit.matched === false){
-                    fruit.hidden = !fruit.hidden
-                    console.log(fruit)
-                    clickHistory.push(fruit)
-                    if(clickHistory.length === 2){
-                        if(clickHistory[0].emoji === clickHistory[1].emoji && clickHistory[0].id !== clickHistory[1].id){
-                            console.log('match')
-                            matchedCounter++
+            <!-- memory card grid box -->
+            <div class="aspect-square w-[30rem] bg-[#8d99ae] rounded-md grid grid-cols-6 grid-rows-6 gap-1 lg:gap-3 p-3">
+                {#if display}
+                {#each randomFruitEmojiObject as fruit}
+                <div class="w-full text-3xl h-full bg-gray-900 rounded-md cursor-pointer hover:bg-gray-700 hover:border-gray-200 hover:border-2 flex justify-center items-center" in:fade|global={{duration:300}}>
+                    <p>{fruit.emoji}</p>
+                </div>
+                {/each}
+                {:else}
+                {#each randomFruitEmojiObject as fruit}
+                <!-- svelte-ignore a11y-click-events-have-key-events -->
+                <!-- svelte-ignore a11y-no-static-element-interactions -->
+                <div in:fade|global={{duration:1000}} class="w-full text-3xl h-full bg-gray-900 rounded-md cursor-pointer hover:bg-gray-700 hover:border-gray-200 hover:border-2 flex justify-center items-center" on:click={()=>{
+                    if(fruit.matched === false){
+                        fruit.hidden = !fruit.hidden
+                        console.log(fruit)
+                        clickHistory.push(fruit)
+                        if(clickHistory.length === 2){
+                            if(clickHistory[0].emoji === clickHistory[1].emoji && clickHistory[0].id !== clickHistory[1].id){
+                                console.log('match')
+                                matchedCounter++
+                                randomFruitEmojiObject.forEach((fruit)=>{
+                                    if(fruit.emoji === clickHistory[0].emoji){
+                                        fruit.matched = true
+                                    }
+                                })
+                                clickHistory = []
+                            }else{
+                                console.log('no match')
+                                clickHistory = []
+                            }
                             randomFruitEmojiObject.forEach((fruit)=>{
-                                if(fruit.emoji === clickHistory[0].emoji){
-                                    fruit.matched = true
+                                if(fruit.hidden === false && fruit.matched === false){
+                                    fruit.hidden = true
                                 }
                             })
-                            clickHistory = []
-                        }else{
-                            console.log('no match')
-                            clickHistory = []
-                        }
-                        randomFruitEmojiObject.forEach((fruit)=>{
-                            if(fruit.hidden === false && fruit.matched === false){
-                                fruit.hidden = true
+                            moveCounter++
+                            if (matchedCounter === 18){
+                                clearInterval(timerId)
+                                clearInterval(revealID)
+                                showEndModal = true
                             }
-                        })
-                        moveCounter++
-                        if (matchedCounter === 18){
-                            clearInterval(timerId)
-                            clearInterval(revealID)
-                            showEndModal = true
                         }
                     }
-                }
-            }}>
-                {#if fruit.hidden === false}
-                <p>{fruit.emoji}</p>
-                {:else}
-                <MemoryCardBack />
-                {/if}
+                }}>
+                    {#if fruit.hidden === false}
+                    <p>{fruit.emoji}</p>
+                    {:else}
+                    <MemoryCardBack />
+                    {/if}
+                </div>
+                {/each}
+            {/if}
             </div>
-            {/each}
-         {/if}
+            
         </div>
         {:else}
-        <div class="aspect-square w-80 sm:w-96 max-w-sm bg-orangeWeb-800 rounded-md flex justify-center items-center p-3">
-            <button class="btn bw light lg" on:click={()=>{
+        <div class="flex flex-col space-y-3 items-center justify-center mx-8 lg:mx-0 w-full h-[20rem]">
+            <h1 class="text-3xl text-center">Memory Cards</h1>
+            <p class="text-center">How good is your memory? Let's find out! <br> Click on the cards to reveal the emoji, if two identical emojis are clicked in a row then you've found a match!. Match all the cards to win the game.</p>
+            <button class="btn morningGreen solid lg" on:click={()=>{
                 start = true;
                 displayCardsForThreeSeconds()
                 setTimeout(()=>{
