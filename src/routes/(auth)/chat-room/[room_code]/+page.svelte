@@ -14,7 +14,7 @@
 
 // connect to our server
 const partySocket = new PartySocket({
-  host: "localhost:1999",
+  host: "https://regallion-party.em-codereever.partykit.dev",
   room: roomCode,
   id: userProfile?.username as string,
 });
