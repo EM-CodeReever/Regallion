@@ -1,10 +1,9 @@
 <script>
     import { goto } from "$app/navigation";
     import "$styles";
-  import { AppWindow } from "lucide-svelte";
+  import { AppWindow, Menu, House, Info, Mailbox } from "lucide-svelte";
   </script>
   
-  <!-- bg-[#14213D] -->
   <nav class=" fixed w-full top-0 bg-[#001220] px-3 flex justify-center h-20 z-50" >
     <div class="w-full max-w-6xl h-full flex justify-between">
         <div class="flex space-x-2 items-center pl-2 lg:p-0">
@@ -29,24 +28,27 @@
         </div>
         <div class="flex justify-center items-center lg:hidden">
             
-            <div class="dropdown bw">
+            <div class="dropdown morningGreen">
                 <button class="btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="white" class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                      </svg>                  
+                    <Menu size="20" />                
                 </button>
-                <div class="menu bottom-left" style="width: 10rem; z-index: 999;">
-                    <a href="/" class="item text-sm flex space-x-3 justify-center items-center" tabindex="-1">
+                <div class="menu bottom-left !mt-5" style="width: max-content; z-index: 999;">
+                    <a href="/" class="item text flex space-x-5 justify-start items-center" tabindex="-1">
+                        <House size="20" />
                         Home
                     </a>
-                    <a href="/about" class="item text-sm flex space-x-3 justify-center items-center" tabindex="-1">                     
+                    <a href="/about" class="item text flex space-x-5 justify-start items-center" tabindex="-1">     
+                        <Info size="20" />              
                         About
                     </a>
-                    <a href="/contact" class="item text-sm flex space-x-3 justify-center items-center" tabindex="-1">
+                    <a href="/contact" class="item flex space-x-5 justify-start items-center" tabindex="-1">
+                        <Mailbox size="20" />
                         Contact
                     </a>
                     <!-- for mobile... i repeat FOR MOBILE.... ELLIOT THIS BUTTON IS ONLY SEEN ON MOBILE -->
-                    <button class="btn sm solid morningGreen w-full" on:click={()=>{goto('dashboard')}}>Open App</button>
+                    <button class="btn light morningGreen text-black" on:click={()=>{goto('dashboard')}}>
+                        <AppWindow size="20" />
+                        Open Application</button>
                   </div>
                 </div>
         </div>
