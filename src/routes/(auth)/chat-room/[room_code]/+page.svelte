@@ -5,12 +5,20 @@
     let { supabase, session, userProfile } = data;
     import { page } from "$app/stores";
   import { SendHorizonal, SendHorizonalIcon } from 'lucide-svelte';
+  import { onMount } from 'svelte';
+  import { browser } from '$app/environment';
+  import { set } from 'zod';
     let roomCode = $page.params.room_code;
-
     let messages:string[] = [];
-
     let message = "";
+    let element: HTMLDivElement
+    let messageInput: HTMLInputElement
+
     
+    
+    const scrollToBottom = async (node:HTMLDivElement) => {
+        node.scroll({ top: node.scrollHeight, behavior: 'smooth' });
+    }; 
 
 // connect to our server
 const partySocket = new PartySocket({
@@ -21,9 +29,9 @@ const partySocket = new PartySocket({
 
 // print each incoming message from the server to console
 partySocket.addEventListener("message", (e) => {
-    messages = [...messages, e.data];
-    console.log(e.data);
+    messages = [e.data,...messages];
 });
+
 
 
 </script>
@@ -39,7 +47,7 @@ partySocket.addEventListener("message", (e) => {
         Leave
        </button>
     </div>
-    <div class="bg-black p-3 rounded-xl overflow-y-auto my-3 bg-opacity-20 w-full h-[30rem]">
+    <div bind:this={element} class="bg-black flex flex-col-reverse px-3 rounded-xl overflow-y-auto my-3 bg-opacity-20 w-full h-[calc(100vh-15.5rem)]">
         {#each messages as message}
             <div class="w-full">
                 <p>{message}</p>
@@ -47,9 +55,13 @@ partySocket.addEventListener("message", (e) => {
         {/each}
     </div>
     <form class="flex items-center">
-        <input type="text" class="input morningGreen solid h-12 rounded-r-none" placeholder="Type a message" bind:value={message} />
+        <input bind:this={messageInput} type="text" class="input morningGreen solid h-12 rounded-r-none" placeholder="Type a message" bind:value={message} />
         <button class="btn morningGreen solid rounded-l-none" on:click={()=>{
             partySocket.send(message)
+            scrollToBottom(element);
+            setTimeout(()=>{
+                messageInput?.focus();
+            },1)
             message = "";
             }}>
             <SendHorizonalIcon />
