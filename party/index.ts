@@ -12,8 +12,11 @@ export default class Server implements Party.Server {
       url: ${new URL(ctx.request.url).pathname}`
     );
     this.room.broadcast(`[Connection]: ${conn.id} joined the room`);
-    // let's send a message to the connection
-    // conn.send("hello from server");
+  }
+
+  onClose(conn: Party.Connection): void | Promise<void> {
+    console.log("user left")
+    this.room.broadcast(`${conn.id} has left the room`)
   }
 
   onMessage(message: string, sender: Party.Connection) {

@@ -4,9 +4,11 @@
   import { Globe, SquarePlus, ArrowBigRightDash } from 'lucide-svelte';
     import type { PageData } from './$types';
   import { goto } from '$app/navigation';
+  import { enhance } from '$app/forms';
     export let data: PageData;
     let { supabase, session,userProfile } = data;
     let roomCode = '';
+    let password = '';
     let errorText = '';
 </script>
 <svelte:head>
@@ -28,15 +30,9 @@
 
         </span>
         <div class="divider info max-w-md">or</div>
-        <form class="grid w-full max-w-md gap-y-3 grid-cols-1" on:submit|preventDefault={()=>{
-            if(!roomCode) {
-                errorText = "Please enter a room code";
-                return;
-            }
-            console.log("Join Room", roomCode);
-            goto(`/chat-room/${roomCode}`);
-        }}>
-            <input type="text" class="input morningGreen solid placeholder:text-gray-300" placeholder="Enter a room code" bind:value={roomCode} />
+        <form  method="POST" action="?/validateRoom" class="grid w-full max-w-md gap-y-3 grid-cols-1" use:enhance>
+            <input type="text" class="input morningGreen solid placeholder:text-gray-300" name="room_code" placeholder="Enter a room code" bind:value={roomCode} />
+            <input type="text" class="input morningGreen solid placeholder:text-gray-300" name="password" placeholder="Password" bind:value={password} />
             <button type="submit" class="btn flex-grow w-full max-w-md solid morningGreen">Join Room 
                 <ArrowBigRightDash />
             </button>
