@@ -11,32 +11,30 @@ export const actions = { updateProfile: async ({ request }) => {
       const firstName = formData.get('firstName');
       const lastName = formData.get('lastName');
       const username = formData.get('username');
-      const gender = formData.get('gender');
-      const dateOfBirth = formData.get('dateOfBirth');
-      const phoneNumber = formData.get('phoneNumber');
       const sessionUserId = formData.get('sessionUserId');
       const sessionUserEmail = formData.get('sessionUserEmail');
-
-      console.log(formData);
       
-        
-    //   let profile = await prisma.profile.create({
-    //         data: {
-    //            auth_user_id: sessionUserId as string,
-    //            auth_email: sessionUserEmail as string,
-    //            avatar: '',
-    //            created_at: new Date(),
-    //            date_of_birth: new Date(dateOfBirth as string),
-    //            first_name: firstName as string,
-    //            gender: gender as string,
-    //            last_name: lastName as string,
-    //            username: username as string,
-    //         },
-    //     });
+      let profile = await prisma.profile.create({
+            data: {
+               auth_user_id: sessionUserId as string,
+               auth_email: sessionUserEmail as string,
+               avatar: '',
+               created_at: new Date(),
+               first_name: firstName as string,
+               last_name: lastName as string,
+               username: username as string,
+            },
+        });
         if (formData) {
-            return { success: true };
+            return { 
+                success: true,
+                data: profile
+            };
         }else{
-            return { success: false };
+            return { 
+                success: false,
+                data: null
+             };
         }
     },
   };

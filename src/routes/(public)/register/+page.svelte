@@ -3,6 +3,7 @@
     import type { PageData } from './$types';
     export let data: PageData;
     import z from 'zod';
+  import { GithubIcon } from 'lucide-svelte';
     let next = false;
     let email: string
     let password: string
@@ -71,8 +72,8 @@
         <h1 class="text-center text-3xl font-bold text-gray-200 mb-5">Account Creation</h1>
         
         
-        <div class="grid gap-5 grid-cols-4 px-5 mt-10 w-full min-w-fit">
-            <button class="btn solid orangeWeb flex-grow w-full col-span-full" on:click={()=>{githubSignUp()}}>Sign Up with Github</button>
+        <div class="grid gap-3 grid-cols-4 px-5 mt-10 w-full min-w-fit">
+            <button class="btn solid morningGreen flex-grow w-full col-span-full" on:click={()=>{githubSignUp()}}>Sign Up with Github <GithubIcon/></button>
             <div class="divider info col-span-full text-gray-200">or</div>
                 <p class="text-center font-semibold text-gray-200 col-span-full">Sign up with Email</p>
                 <input class="input solid info col-span-full" placeholder="Email" bind:value={email}/>
@@ -81,7 +82,7 @@
 
                 <div class="flex col-span-4 justify-between items-center">
                     <p class="text-red-700">{errorText}</p>
-                    <button class="btn orangeWeb solid col-span-1 justify-self-end {registerProcessing
+                    <button class="btn morningGreen solid col-span-1 justify-self-end {registerProcessing
                         ? 'is-loading'
                         : ''}"
                     on:click={()=>{

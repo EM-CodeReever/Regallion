@@ -41,7 +41,7 @@
 <section class="w-full misty-waves text-gray-200 h-screen">
   {#if show}
     <div
-      class="flex space-y-8 justify-center items-center flex-col h-full"
+      class="flex space-y-8 justify-center items-center flex-col h-screen"
       in:fly={{ duration: 1000, y: 100, opacity: 0.3, easing: cubicOut }}
     >
       <h1 class="font-bold xl:text-5xl xs:text-3xl text-2xl">
@@ -200,7 +200,7 @@
       in:fly={{ duration: 2000, y: 100, opacity: 0.3, easing: cubicOut }}
       class="text-gray-200 max-w-3xl text-center mx-3"
     >
-     Svelte is cool, Tailwind is super-cool, Typescript is cool, Supabase is cool, but I will always say haikei is a slept on background design tool. Sira UI is cool too, a bit weird to use but cool.
+     Svelte is cool, Tailwind is super-cool, Typescript is cool, Supabase is cool, but I will always say Haikei is a slept on frontend design tool. Sira UI is cool too, a bit weird to use but cool.
 
     </p>
     <div class="md:flex md:justify-between gap-y-5 xs:gap-y-10 grid grid-rows-2 grid-cols-3 w-full max-w-3xl">

@@ -56,7 +56,7 @@
             <AboutInfo/>
             
             </button> -->
-      <div class="flex flex-col">
+      <div class="screen-500:flex flex-col hidden">
         <p class="font-semibold">{userProfile?.username}</p>
         <p class="text-xs font-thin">{userProfile?.auth_email}</p>
       </div>

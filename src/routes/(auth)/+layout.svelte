@@ -3,15 +3,7 @@
     import { page } from "$app/stores";
   import MainNavbar from "$components/MainNavbar.svelte";
   import SideNavbar from "$components/SideNavbar.svelte";
-    import SideNavItem from "$components/SideNavItem.svelte";
-    import Chatroom from "$components/svg/Chatroom.svelte";
-    import Home from "$components/svg/Home.svelte";
-    import Logout from "$components/svg/Logout.svelte";
-    import Overview from "$components/svg/Overview.svelte";
-    import Profile from "$components/svg/Profile.svelte";
-    import Project from "$components/svg/Project.svelte";
-    import Settings from "$components/svg/Settings.svelte";
-    import Sidebar from "$components/svg/Sidebar.svelte";
+
     export let data;
     let { session, supabase,userProfile } = data;
     $: ({ session, supabase,userProfile } = data);
@@ -37,7 +29,7 @@
 
   </script>
 
-  <section class="flex flex-col misty-waves w-full h-fit min-h-screen p-5 screen-400:p-4 screen-400:pb-0">
+  <section class="flex flex-col misty-waves w-full h-fit min-h-screen p-5 screen-400:p-4">
     <MainNavbar userProfile={userProfile} supabase={supabase}/>
       <SideNavbar {currentPath}>
         <slot />
