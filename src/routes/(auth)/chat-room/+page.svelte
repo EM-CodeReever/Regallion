@@ -8,7 +8,6 @@
     export let data: PageData;
     let { supabase, session,userProfile } = data;
     let roomCode = '';
-    let password = '';
     let errorText = '';
 </script>
 <svelte:head>
@@ -21,7 +20,7 @@
     </span>
     <div class="flex flex-col justify-center items-center space-y-3 w-full">
         <span class="flex space-x-2 w-full max-w-md">
-            <button class="btn flex-grow w-full max-w-md solid bw">Join Global Chat
+            <button class="btn flex-grow w-full max-w-md solid bw" on:click={()=>{goto('/chat-room/global')}}>Join Global Chat
                 <Globe size="20" />
             </button>
             <button class="btn flex-grow w-full max-w-md solid oxfordBlue">Create a room
@@ -30,9 +29,8 @@
 
         </span>
         <div class="divider info max-w-md">or</div>
-        <form  method="POST" action="?/validateRoom" class="grid w-full max-w-md gap-y-3 grid-cols-1" use:enhance>
+        <form class="grid w-full max-w-md gap-y-3 grid-cols-1" on:submit|preventDefault={()=>{goto(`/chat-room/${roomCode}`)}}>
             <input type="text" class="input morningGreen solid placeholder:text-gray-300" name="room_code" placeholder="Enter a room code" bind:value={roomCode} />
-            <input type="text" class="input morningGreen solid placeholder:text-gray-300" name="password" placeholder="Password" bind:value={password} />
             <button type="submit" class="btn flex-grow w-full max-w-md solid morningGreen">Join Room 
                 <ArrowBigRightDash />
             </button>

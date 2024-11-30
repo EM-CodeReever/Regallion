@@ -13,7 +13,6 @@
     let message = "";
     let element: HTMLDivElement
     let messageInput: HTMLInputElement
-
     
     
     const scrollToBottom = async (node:HTMLDivElement) => {
@@ -24,7 +23,7 @@
 const partySocket = new PartySocket({
   host: "https://regallion-party.em-codereever.partykit.dev",
   room: roomCode,
-  id: userProfile?.username as string,
+  id: userProfile?.username as string, 
 });
 
 // print each incoming message from the server to console
