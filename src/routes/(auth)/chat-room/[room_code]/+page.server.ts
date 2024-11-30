@@ -5,16 +5,17 @@ import { prisma } from "$lib";
 export const load: PageServerLoad = async ({params}) => {
     console.log(params.room_code);
     if(params.room_code != "global"){
-        throw redirect(302,"/error/room-not-found")
+        try {
+            let room = await prisma.chatRoom.findFirstOrThrow({
+                where : {
+                    code: params.room_code
+                }
+            })
+            console.log(room);
+            
+        } catch (error) {
+            console.log(error);
+            throw redirect(302,"/error/room-not-found")
+        }
     }
-    try {
-        let room = prisma.chatRoom.findFirstOrThrow({
-            where : {
-                uuid: 'iefhj'
-            }
-        })
-    } catch (error) {
-        
-    }
-    
 }
