@@ -12,10 +12,17 @@ export const load: PageServerLoad = async ({params}) => {
                 }
             })
             console.log(room);
-            
+            let roomOwnerProfile = await prisma.profile.findFirst({
+                where : {
+                    auth_user_id : room.owner
+                }
+            })
+            return {roomName: room.name, roomOwner: roomOwnerProfile?.username, roomCode: room.code, isGlobal:false }
         } catch (error) {
             console.log(error);
             throw redirect(302,"/error/room-not-found")
         }
+    }else{
+        return {isGlobal:true}
     }
 }

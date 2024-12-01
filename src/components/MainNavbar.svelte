@@ -1,6 +1,6 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
-  import { Club, DiamondPercent, House, LogOut, Menu, MessageSquareMore, Settings } from "lucide-svelte";
+  import { Club, DiamondPercent, House, ListOrdered, LogOut, Menu, MessageSquareMore, Settings, Sticker } from "lucide-svelte";
   import SideNavbar from "./SideNavbar.svelte";
   import SideNavItem from "./SideNavItem.svelte";
   import Project from "./svg/Project.svelte";
@@ -109,10 +109,13 @@
       <DiamondPercent/>
     </SideNavItem>
     <SideNavItem title="Memory Cards"  linkTo="/memory-card">
-        <Club/>
+        <Sticker/>
     </SideNavItem>
     <SideNavItem title="Regalore" linkTo="/chat-room">
       <MessageSquareMore/>
+    </SideNavItem>
+    <SideNavItem title="Leaderboard" linkTo="/leaderboard">
+      <ListOrdered/>
     </SideNavItem>
     <SideNavItem title="Homepage" linkTo="/">
       <House/>

@@ -48,8 +48,8 @@
             <p>{userProfile?.auth_email}</p>
         </div>
     </div>
-    <div class="bg-oxfordBlue-400 gap-3 w-full max-w-xl h-[20rem] rounded-xl grid grid-cols-2 p-5">
-
+    <div class=" gap-3 w-full h-[20rem] rounded-xl grid grid-cols-2 p-5">
+        <p class="text-xl">Some features to edit your profile and other stuff coming soon</p>
     
         
     </div>

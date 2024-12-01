@@ -5,6 +5,12 @@
     
 </script>
 
+<svelte:head>
+ <title>
+    Room Not Found
+ </title>
+</svelte:head>
+
 <section class="w-full h-fit">
     <div class="w-full flex justify-center items-center">
         <span class="flex flex-col items-center space-y-3 ">
@@ -18,7 +24,7 @@
     style="width:200px;height:200px">
 </lord-icon>
             <h1 class="text-5xl font-semibold">Room Not Found</h1>
-            <p >Invalid room code, double check to ensure you got it right</p>
+            <p class="lg:max-w-full max-w-xs text-center">Invalid room code, please double check to ensure you got it right.</p>
             <button class="btn flex-grow w-full max-w-md solid oxfordBlue" on:click={()=>{goto("/chat-room")}}>Return to Chat Home
             </button>
         </span>

@@ -189,6 +189,15 @@
         </div>
         {:else}
         <div class="flex flex-col space-y-6 items-center justify-center mx-8 lg:mx-0 w-full h-[32rem]">
+            <script src="https://cdn.lordicon.com/lordicon.js"></script>
+            <lord-icon
+                src="https://cdn.lordicon.com/jsmqucas.json"
+                trigger="in"
+                stroke="regular"
+                state="pinch"
+                colors="primary:#ffffff,secondary:#ffffff"
+                style="width:250px;height:250px">
+            </lord-icon>
             <h1 class="text-3xl font-bold text-center">Memory Cards</h1>
             <p class="text-center text-sm">How good is your memory? Let's find out! <br> Click on the cards to reveal the emoji, if two identical emojis are clicked in a row then you've found a match!. Match all the cards to win the game.</p>
             <button class="btn morningGreen solid lg" on:click={()=>{
