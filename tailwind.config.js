@@ -51,7 +51,8 @@ export default {
             oxfordBlue: '#14213D',
             orangeWeb: '#900219',
             platinum: '#E5E5E5',
-            morningGreen: '#14746f'
+            morningGreen: '#14746f',
+            sunGold: '#facc15'
           },
         },
       ],

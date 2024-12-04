@@ -21,7 +21,7 @@ import { onMount } from "svelte";
     }
 </script>
 
-<div class="h-72 relative rounded-xl bg-[#8d99ae] w-full mr-5 lg:mr-0 p-5 flex flex-col justify-between text-gray-800" >
+<div class="h-fit max-h-72 relative rounded-xl  w-full mr-5 lg:mr-0 p-5 flex flex-col justify-between text-gray-200" >
     <button class="btn rounded-full p-2 light morningGreen absolute top-4 right-4" on:click={()=>{
         refreshRiddle()
     }}>

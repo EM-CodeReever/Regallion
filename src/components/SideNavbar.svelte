@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Club, DiamondPercent, House, MessageSquareMore } from "lucide-svelte";
+  import { Club, DiamondPercent, House, ListOrdered, MessageSquareMore, Sticker } from "lucide-svelte";
 
 
   import SideNavItem from "./SideNavItem.svelte";
@@ -22,10 +22,13 @@
           <DiamondPercent/>
         </SideNavItem>
         <SideNavItem title="Memory Cards" isActive={(currentPath === staticPath + "/memory-card")} linkTo="/memory-card">
-            <Club/>
+            <Sticker/>
         </SideNavItem>
         <SideNavItem title="Regalore" isActive={(currentPath === staticPath + "/chat-room")} linkTo="/chat-room">
           <MessageSquareMore/>
+        </SideNavItem>
+        <SideNavItem title="Leaderboard" isActive={(currentPath === staticPath + "/leaderboard")} linkTo="/leaderboard">
+          <ListOrdered/>
         </SideNavItem>
         <SideNavItem title="Homepage" isActive={false} linkTo="/">
           <House/>
