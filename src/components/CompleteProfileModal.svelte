@@ -18,7 +18,7 @@
 
     <form in:fly={{delay:200, duration: 1500, y:300}} method="POST" action="?/updateProfile" class="modal bg-[#001220] rounded-md w-full lg:max-w-xl flex flex-col space-y-4 show" use:enhance={({})=>{
         return ({result})=>{
-            if(result){
+            if(result.type === "success"){
                 profileUpdateLoading = false;
                 IsVisible = false;
                 toast.success('Successfully Updated Profile!')
