@@ -297,15 +297,16 @@ model users {
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model Profile {
-  username     String?
-  first_name   String?
-  last_name    String?
-  created_at   DateTime? @default(now()) @db.Timestamptz(6)
-  avatar       String?
-  id           BigInt    @id(map: "User_pkey") @default(autoincrement())
-  auth_user_id String?   @db.Uuid
-  auth_email   String?   @db.VarChar
-  users        users?    @relation(fields: [auth_user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  username       String?
+  first_name     String?
+  last_name      String?
+  created_at     DateTime?        @default(now()) @db.Timestamptz(6)
+  avatar         String?
+  id             BigInt           @id(map: "User_pkey") @default(autoincrement())
+  auth_user_id   String?          @db.Uuid
+  auth_email     String?          @db.VarChar
+  LB_MemoryCards LB_MemoryCards[]
+  users          users?           @relation(fields: [auth_user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@schema("public")
 }
@@ -337,6 +338,20 @@ model ChatRoom {
   name             String?
   subscribed_users String[] @db.Uuid
   owner            String?  @db.Uuid
+
+  @@schema("public")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model LB_MemoryCards {
+  id         BigInt   @id @default(autoincrement())
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  mps        Float    @db.Real
+  score      Float    @db.Real
+  time       String
+  player_id  BigInt
+  Profile    Profile  @relation(fields: [player_id], references: [id], onDelete: Cascade)
 
   @@schema("public")
 }

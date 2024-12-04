@@ -1,42 +1,77 @@
 <script lang="ts">
-  import GradientText from "./GradientText.svelte";
+  import type { LB_MemoryCards, Profile } from "@prisma/client";
 
+export let records: (LB_MemoryCards & { Profile : Profile }) []
 
 </script>
 
 <div class="w-full">
-	<table class="table morningGreen bordered">
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
+	<table class="table richBlack bordered">
 		<thead>
 			<tr>
-				<th>Rank</th>
+				<th class="w-20"><p class="w-full text-center">Rank</p></th>
 				<th>Name</th>
 				<th>Score</th>
-				<th>Date</th>
+				<th>Time</th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr >
-				<th><GradientText classlist="text-yellow-500" text="1"/></th>
-				<td><GradientText classlist="text-yellow-500" text="E-Morrison"/></td>
-				<td><GradientText classlist="text-yellow-500" text="720"/></td>
-				<td><GradientText classlist="text-yellow-500" text="1-12-2024"/></td>
+			<tr class="sunGold [&>*]:!text-xl">
+                <td class="!p-0">
+                    <lord-icon
+                        src="https://cdn.lordicon.com/vttzorhw.json"
+                        trigger="in"
+                        delay="1000"
+                        stroke="bold"
+                        state="in-reveal"
+                        colors="primary:#facc15,secondary:#facc15"
+                        style="width:75px;height:75px"
+                        class="ml-1">
+                    </lord-icon>
+                </td>
+				<td>{(records[0] == undefined) ? '--' : records[0].Profile.username}</td>
+				<td>{(records[0] == undefined) ? '--' : records[0].score}</td>
+				<td>{(records[0] == undefined) ? '--' : records[0].time}</td>
 			</tr>
-			<tr class="indigo">
-                <th>2</th>
-				<td>idev</td>
-				<td>600</td>
-				<td>1-12-2024</td>
+			<tr class="indigo [&>*]:!text-xl">
+                <th class="!p-0">
+                    <lord-icon
+                        src="https://cdn.lordicon.com/aqpxuwsk.json"
+                        trigger="in"
+                        delay="500"
+                        stroke="bold"
+                        state="in-reveal"
+                        colors="primary:#ab38ff,secondary:#ab38ff"
+                        style="width:45px;height:45px"
+                        class="ml-[18px]">
+                        
+                    </lord-icon></th>
+                    <td>{(records[1] == undefined) ? '--' : records[1].Profile.username}</td>
+                    <td>{(records[1] == undefined) ? '--' : records[1].score}</td>
+                    <td>{(records[1] == undefined) ? '--' : records[1].time}</td>
 			</tr>
-			<tr class="oxfordBlue">
-				<th>3</th>
-				<td>Developer</td>
-				<td>600</td>
-				<td>1-12-2024</td>
+			<tr class="morningGreen [&>*]:!text-lg">
+				<th class="!p-0">
+                    <lord-icon
+                        src="https://cdn.lordicon.com/dmjnplby.json"
+                        trigger="in"
+                        delay="0"
+                        stroke="bold"
+                        state="in-reveal"
+                        colors="primary:#55e2da,secondary:#55e2da"
+                        style="width:40px;height:40px"
+                        class="ml-5">
+                    </lord-icon>
+                </th>
+				<td>{(records[2] == undefined) ? '--' : records[2].Profile.username}</td>
+				<td>{(records[2] == undefined) ? '--' : records[2].score}</td>
+				<td>{(records[2] == undefined) ? '--' : records[2].time}</td>
 			</tr>
             
             {#each {length: 7} as _, i}
             <tr class="platinum">
-				<th>{i + 4}</th>
+				<th><p class="w-full text-center">{i + 4}</p></th>
 				<td>Sample Username</td>
 				<td>55{i}</td>
 				<td>1-12-2024</td>
@@ -46,4 +81,3 @@
 	</table>
     
 </div>
-
