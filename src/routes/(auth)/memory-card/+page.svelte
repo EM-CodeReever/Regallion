@@ -1,10 +1,11 @@
 <script lang="ts">
     import MemoryCardBack from '$components/MemoryCardBack.svelte';
-    import { fade, fly } from 'svelte/transition';
+    import { fade, fly, slide } from 'svelte/transition';
     import type { PageData } from './$types';
-    import {fruitEmojiObject} from './util'
-    import { EyeOff, Play, Timer, View } from 'lucide-svelte';
-  import { stringify } from 'postcss';
+    import {fruitEmojiObject, animalEmojiObject, stuffEmojiObject, getRandomRevealTextOption} from './util'
+    import { ChevronDown, EyeOff, Play, Timer, View } from 'lucide-svelte';
+    import { stringify } from 'postcss';
+    import { cubicIn } from 'svelte/easing';
     export let data: PageData;
     let {userProfile} = data
     let clickHistory = <any>[];
@@ -17,6 +18,8 @@
     let revealAvailable = false;
     let endLoading = false;
     let highScoreChecker = false;
+    const emojiSets = [fruitEmojiObject, animalEmojiObject, stuffEmojiObject]
+    let chosenEmojiSet = 0
     let time = {
         minutes: 0,
         seconds: 0
@@ -26,7 +29,6 @@
     let revealID: any;
 
     function timer(){
-
         timerId = setInterval(()=>{
             time.seconds++
             if(time.seconds === 60){
@@ -48,7 +50,19 @@
         return shuffledArray;
     }
     
-    let randomFruitEmojiObject = shuffleArray(fruitEmojiObject)
+    let randomizedEmojiArray = shuffleArray(emojiSets[chosenEmojiSet])
+    randomizedEmojiArray.forEach((item)=>{
+        item.hidden = true
+        item.matched = false
+    })
+
+    function changeChosenEmojiSet(x:number){
+        randomizedEmojiArray = shuffleArray(emojiSets[x])
+        randomizedEmojiArray.forEach((item)=>{
+            item.hidden = true
+            item.matched = false
+        })
+    }
 
     function displayCardsForThreeSeconds(){
         display = true
@@ -71,13 +85,13 @@
             minutes: 0,
             seconds: 0
         }
-        randomFruitEmojiObject = shuffleArray(fruitEmojiObject)
-        randomFruitEmojiObject.forEach((fruit)=>{
-            fruit.hidden = true
-            fruit.matched = false
+        randomizedEmojiArray = shuffleArray(emojiSets[chosenEmojiSet])
+        randomizedEmojiArray.forEach((item)=>{
+            item.hidden = true
+            item.matched = false
         })
-
     }
+
     function scoreCalculation(){
         let score = 0
 
@@ -112,11 +126,14 @@
 </script>
 
 <svelte:head>
-    <title>Memory Cards</title>
+  <title>Memory Cards</title>
+  {#each emojiSets as set}
+    {#each set as item}
+        <link rel="preload" href={item.emoji} as="image" />
+    {/each}
+  {/each}
 </svelte:head>
 <section class="w-full h-fit flex select-none">
-
-        
         {#if start && !showEndModal}
         <div class="flex flex-col w-full h-full space-y-3 items-center">
             <!-- game inofrmation -->
@@ -160,27 +177,27 @@
                     class="absolute right-[calc(50%-25px)] bottom-[calc(50%-25px)]">
                 </lord-icon>
                 {:else if display}
-                {#each randomFruitEmojiObject as fruit}
-                <div class="w-full text-3xl h-full bg-gray-900 rounded-md cursor-pointer hover:bg-gray-700 hover:border-gray-200 hover:border-2 flex justify-center items-center" in:fade|global={{duration:300}}>
-                    <p>{fruit.emoji}</p>
-                </div>
-                {/each}
+                    {#each randomizedEmojiArray as item}
+                    <div class="w-full text-3xl h-full bg-gray-900 rounded-md cursor-pointer hover:bg-gray-700 hover:border-gray-200 hover:border-2 flex justify-center items-center" in:fade|global={{duration:300}}>
+                        <img src={item.emoji} alt="">
+                    </div>
+                    {/each}
                 {:else}
-                {#each randomFruitEmojiObject as fruit}
+                {#each randomizedEmojiArray as item}
                 <!-- svelte-ignore a11y-click-events-have-key-events -->
                 <!-- svelte-ignore a11y-no-static-element-interactions -->
                 <div in:fade|global={{duration:1000}} class="w-full text-3xl h-full bg-gray-900 rounded-md cursor-pointer hover:bg-gray-700 hover:border-gray-200 hover:border-2 flex justify-center items-center" on:click={async()=>{
-                    if(fruit.matched === false){
-                        fruit.hidden = !fruit.hidden
-                        console.log(fruit)
-                        clickHistory.push(fruit)
+                    if(item.matched === false){
+                        item.hidden = !item.hidden
+                        console.log(item)
+                        clickHistory.push(item)
                         if(clickHistory.length === 2){
                             if(clickHistory[0].emoji === clickHistory[1].emoji && clickHistory[0].id !== clickHistory[1].id){
                                 console.log('match')
                                 matchedCounter++
-                                randomFruitEmojiObject.forEach((fruit)=>{
-                                    if(fruit.emoji === clickHistory[0].emoji){
-                                        fruit.matched = true
+                                randomizedEmojiArray.forEach((item)=>{
+                                    if(item.emoji === clickHistory[0].emoji){
+                                        item.matched = true
                                     }
                                 })
                                 clickHistory = []
@@ -188,9 +205,9 @@
                                 console.log('no match')
                                 clickHistory = []
                             }
-                            randomFruitEmojiObject.forEach((fruit)=>{
-                                if(fruit.hidden === false && fruit.matched === false){
-                                    fruit.hidden = true
+                            randomizedEmojiArray.forEach((item)=>{
+                                if(item.hidden === false && item.matched === false){
+                                    item.hidden = true
                                 }
                             })
                             moveCounter++
@@ -219,8 +236,8 @@
                         }
                     }
                 }}>
-                    {#if fruit.hidden === false}
-                    <p>{fruit.emoji}</p>
+                    {#if item.hidden === false}
+                     <img src={item.emoji} alt="">
                     {:else}
                     <MemoryCardBack />
                     {/if}
@@ -228,7 +245,9 @@
                 {/each}
             {/if}
             </div>
-            
+            {#if display}
+            <p transition:slide={{duration:300,easing:cubicIn,axis:"y"}}>{getRandomRevealTextOption()}</p>
+            {/if}
         </div>
         {:else if !showEndModal && !start}
         <div class="flex flex-col space-y-6 items-center justify-center mx-8 lg:mx-0 w-full h-[32rem]">
@@ -243,18 +262,49 @@
             </lord-icon>
             <h1 class="text-3xl font-bold text-center">Memory Cards</h1>
             <p class="text-center text-sm max-w-md">How good is your memory? Let's find out! <br> Click on the cards to reveal the emoji, if two identical emojis are clicked in a row then you've found a match!. Match all the cards to win the game.</p>
-            <button class="btn morningGreen solid lg" on:click={()=>{
-                start = true;
-                displayCardsForThreeSeconds()
-                setTimeout(()=>{
-                    timer()
-                }, 3000)
-                }}>Start Game
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />
-                  </svg>
-                  
-            </button>
+            <div class="flex space-x-2 items-center">
+                <button class="btn morningGreen solid !h-[48px]" on:click={()=>{
+                    start = true;
+                    displayCardsForThreeSeconds()
+                    setTimeout(()=>{
+                        timer()
+                    }, 3000)
+                    }}>Start Game
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />
+                      </svg>
+                      
+                </button>
+                <div class="dropdown morningGreen">
+                    <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+                    <!-- svelte-ignore a11y-label-has-associated-control -->
+                    <label class="btn richBlack light !h-[48px]" tabindex="0">
+                        {#each emojiSets as set,index}
+                            {#if chosenEmojiSet == index}
+                                <img class="-ml-1 h-6 w-6" src={randomizedEmojiArray[0].emoji} alt=""> 
+                            {/if}
+                        {/each}
+                        |
+                        <ChevronDown class="mt-1 -mr-1"/>
+                    </label>
+                    <div class="menu bottom-right">
+                     {#each emojiSets as set,index}
+                        {#if index == 0}
+                        <!-- svelte-ignore a11y-missing-attribute -->
+                        <a class="item text-sm" on:click={()=>{changeChosenEmojiSet(0)}}>Fruits</a>
+                        {:else if index == 1}
+                        <!-- svelte-ignore a11y-missing-attribute -->
+                        <a class="item text-sm" on:click={()=>{changeChosenEmojiSet(1)}}>Food & Drink</a>
+                        {:else if index == 2}
+                        <!-- svelte-ignore a11y-missing-attribute -->
+                        <a class="item text-sm" on:click={()=>{changeChosenEmojiSet(2)}}>Random Stuff</a>
+                        {/if}
+                     {/each}
+                     
+                    </div>
+                  </div>
+            </div>
+            
         </div>
         {:else if showEndModal}
         <div class="flex h-[32rem] w-full justify-center items-center">

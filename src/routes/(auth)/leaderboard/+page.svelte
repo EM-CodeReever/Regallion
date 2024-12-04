@@ -7,9 +7,13 @@
 
 </script>
 
+<svelte:head>
+    <title>Leaderboard</title>
+</svelte:head>
+
 <section class="w-full h-full flex flex-col space-y-5">
     <div class="flex flex-col items-center space-y-3 lg:flex-row justify-between">
-        <h1 class="text-3xl text-center lg:text-left lg:text-5xl">Top 10 LeaderBoard</h1>
+        <h1 class="text-3xl text-center lg:text-left lg:text-5xl">Top 10 Standings</h1>
         <div class="flex items-center space-x-3">
             <button class="btn light compact morningGreen xs"><ArrowBigLeft/></button>
             <div>
