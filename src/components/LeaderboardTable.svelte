@@ -72,9 +72,9 @@ export let records: (LB_MemoryCards & { Profile : Profile }) []
             {#each {length: 7} as _, i}
             <tr class="platinum">
 				<th><p class="w-full text-center">{i + 4}</p></th>
-				<td>Sample Username</td>
-				<td>55{i}</td>
-				<td>1-12-2024</td>
+				<td>{(records[i + 3] == undefined) ? '--' : records[i + 3].Profile.username}</td>
+				<td>{(records[i + 3] == undefined) ? '--' : records[i + 3].score}</td>
+				<td>{(records[i + 3] == undefined) ? '--' : records[i + 3].time}</td>
 			</tr>
             {/each}
 		</tbody>

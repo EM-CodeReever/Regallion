@@ -14,38 +14,47 @@ export const POST = async ({request}) => {
     try{
     let mc_response = await request.json() as MC_Response;
     let lb_count = await prisma.lB_MemoryCards.count()
-    console.log("Point 1: " + lb_count);
-    
+    let isHighScore = false
         if(lb_count == 0 || lb_count < 10){
-            console.log("point 2");
-            
             let lb_record = await prisma.lB_MemoryCards.create({
                 data:{
                     player_id: mc_response.player,
                     mps: parseFloat(mc_response.mps),
-                    score: parseInt(mc_response.score),
+                    score: parseFloat(mc_response.score),
                     time: mc_response.time,
                 }
             })
-            return json({success:true})
+            isHighScore = true;
+            return json({success:true,isHighScore});
         }else if(lb_count == 10){
             let all_records = await prisma.lB_MemoryCards.findMany({});
-            let potential_delete_id
             let isHigher:boolean = false
             all_records.forEach(({score})=>{
-                if(parseInt(mc_response.score) > score){
+                if(parseFloat(mc_response.score) > score){
                     isHigher = true
                 }
             })
             if (isHigher) {
                 console.log("HIGH SCORE!");
-                
+                let sortedBySmallestFirst = all_records.sort((a,b)=> a.score - b.score)
+                await prisma.lB_MemoryCards.delete({
+                    where:{
+                        id:sortedBySmallestFirst[0].id
+                    }
+                })
+                await prisma.lB_MemoryCards.create({
+                    data:{
+                        player_id: mc_response.player,
+                        mps: parseFloat(mc_response.mps),
+                        score: parseFloat(mc_response.score),
+                        time: mc_response.time,
+                    }
+                })
+                isHighScore = true;
             }else{
                 console.log("NOT HIGH ENOUGH!");
-                
             }
-            console.log("point 3");
-            return json({success: true});
+            return json({success: true, isHighScore});
         }
     }catch(e){
         console.log(e);

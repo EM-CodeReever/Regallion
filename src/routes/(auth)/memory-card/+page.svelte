@@ -15,6 +15,8 @@
     let matchedCounter = 0;
     let showEndModal = false;
     let revealAvailable = false;
+    let endLoading = false;
+    let highScoreChecker = false;
     let time = {
         minutes: 0,
         seconds: 0
@@ -115,7 +117,7 @@
 <section class="w-full h-fit flex select-none">
 
         
-        {#if start}
+        {#if start && !showEndModal}
         <div class="flex flex-col w-full h-full space-y-3 items-center">
             <!-- game inofrmation -->
             <div class="w-full sm:w-[30rem] grid grid-cols-3">
@@ -145,8 +147,19 @@
                 </span>
             </div>
             <!-- memory card grid box -->
-            <div class="aspect-square w-full sm:w-[30rem] bg-[#8d99ae] rounded-md grid grid-cols-6 grid-rows-6 gap-1 lg:gap-3 p-3">
-                {#if display}
+            <div class="aspect-square w-full sm:w-[30rem] ground-glass rounded-md grid grid-cols-6 grid-rows-6 gap-1 lg:gap-3 p-3 relative">
+                {#if endLoading}
+                <script src="https://cdn.lordicon.com/lordicon.js"></script>
+                <lord-icon
+                    src="https://cdn.lordicon.com/jxhgzthg.json"
+                    trigger="loop"
+                    stroke="bold"
+                    state="loop-cycle"
+                    colors="primary:#ffffff,secondary:#ffffff"
+                    style="width:50px;height:50px"
+                    class="absolute right-[calc(50%-25px)] bottom-[calc(50%-25px)]">
+                </lord-icon>
+                {:else if display}
                 {#each randomFruitEmojiObject as fruit}
                 <div class="w-full text-3xl h-full bg-gray-900 rounded-md cursor-pointer hover:bg-gray-700 hover:border-gray-200 hover:border-2 flex justify-center items-center" in:fade|global={{duration:300}}>
                     <p>{fruit.emoji}</p>
@@ -182,10 +195,10 @@
                             })
                             moveCounter++
                             if (matchedCounter === 18){
+                                endLoading = true
                                 clearInterval(timerId)
                                 clearInterval(revealID)
-                                // here for post ocde
-                                await fetch("/memory-card",{
+                                let request = await fetch("/memory-card",{
                                     method: "POST",
                                     body: JSON.stringify({
                                         player: Number(userProfile?.id),
@@ -194,6 +207,13 @@
                                         mps: calculateMPS().toFixed(2)
                                     })
                                 })
+                                let res = await request.json();
+                                if(res.isHighScore == true){
+                                    highScoreChecker = true;
+                                }else{
+                                    highScoreChecker = false;
+                                }
+                                endLoading = false
                                 showEndModal = true
                             }
                         }
@@ -210,7 +230,7 @@
             </div>
             
         </div>
-        {:else}
+        {:else if !showEndModal && !start}
         <div class="flex flex-col space-y-6 items-center justify-center mx-8 lg:mx-0 w-full h-[32rem]">
             <script src="https://cdn.lordicon.com/lordicon.js"></script>
             <lord-icon
@@ -222,7 +242,7 @@
                 style="width:250px;height:250px">
             </lord-icon>
             <h1 class="text-3xl font-bold text-center">Memory Cards</h1>
-            <p class="text-center text-sm">How good is your memory? Let's find out! <br> Click on the cards to reveal the emoji, if two identical emojis are clicked in a row then you've found a match!. Match all the cards to win the game.</p>
+            <p class="text-center text-sm max-w-md">How good is your memory? Let's find out! <br> Click on the cards to reveal the emoji, if two identical emojis are clicked in a row then you've found a match!. Match all the cards to win the game.</p>
             <button class="btn morningGreen solid lg" on:click={()=>{
                 start = true;
                 displayCardsForThreeSeconds()
@@ -236,56 +256,45 @@
                   
             </button>
         </div>
+        {:else if showEndModal}
+        <div class="flex h-[32rem] w-full justify-center items-center">
+            <div class="flex flex-col h-full space-y-8 items-center justify-center rounded-sm w-full max-w-md" in:fly={{duration:300, y:150,opacity:0}}>
+                <h2 class="text-5xl text-center font-semibold">Board Complete</h2>
+                {#if highScoreChecker}
+                <div class="flex max-w-xs text-center">
+                    <p>Check the
+                    <span class="animate-pulse w-fit font-bold from-[#6366F1] via-[#D946EF] to-[#FB7185] bg-gradient-to-r bg-clip-text text-transparent">LeaderBoard</span>
+                    your name might be up there! 🎉</p>
+                </div>
+                {/if}
+                <div class=" w-full h-[16rem] aspect-square grid grid-cols-2 gap-3 text-white">
+                <div class="col-span-1   rounded-md shadow-sm flex flex-col justify-center items-center">
+                    <Timer size="40" />
+                    <p class="text-3xl">{time.minutes < 10 ? '0' + time.minutes : time.minutes}:{time.seconds < 10 ? '0' + time.seconds : time.seconds}</p>
+                </div>
+                <div class="col-span-1  rounded-md flex flex-col justify-center items-center">
+                    <p class="text-2xl font-semibold">Moves</p>
+                    <p class="text-4xl">{moveCounter}</p>
+                </div>
+                <div class="col-span-1  rounded-md flex flex-col justify-center items-center">
+                    <div class="text-3xl flex flex-col font-semibold text-center [&>*]:m-0"><p>MPS</p> <p class="text-xs">[matches per second]</p></div>
+                    <p class="text-4xl">{calculateMPS().toFixed(2)}</p>
+                </div>
+                <div class="col-span-1  rounded-md flex flex-col justify-center items-center">
+                    <p class="text-3xl font-semibold text-center">Score</p>
+                    <p class="text-4xl">{scoreCalculation().toFixed(2)}</p>
+                </div>
+                </div>
+                <div class="flex w-full justify-center">
+                <button class="btn light morningGreen w-full max-w-xs" on:click={()=>{
+                    showEndModal = false
+                    endGame()
+                    start = false
+                    }}>Play Again
+                    <Play size="20" />
+                    </button>
+                </div>
+            </div>
+        </div>
         {/if}
 </section>
-
-<div>
-    <!-- remove `modal-overlay` element will make modal opened without overlay -->
-    <label class="modal-overlay"></label>
-    <!-- show class here will make modal visible -->
-    {#if showEndModal}
-    <div class="modal show flex flex-col bg-oxfordBlue-400 space-y-8 items-center w-full max-w-sm" transition:fly={{duration:300, y:150,opacity:0}}>
-      <!-- <button class="absolute right-4 top-3">✕</button> -->
-      <h2 class="text-5xl text-center font-semibold">Board Complete</h2>
-      <div class=" w-[18rem] aspect-square grid grid-cols-2 gap-4 text-black">
-        <div class="col-span-1 aspect-square bg-morningGreen-800 rounded-xl flex flex-col justify-center items-center">
-            <Timer size="60" />
-            <p class="text-3xl">{time.minutes < 10 ? '0' + time.minutes : time.minutes}:{time.seconds < 10 ? '0' + time.seconds : time.seconds}</p>
-        </div>
-        <div class="col-span-1 aspect-square bg-morningGreen-800 rounded-xl flex flex-col justify-center items-center">
-            <p class="text-3xl font-semibold">Moves</p>
-            <p class="text-4xl">{moveCounter}</p>
-        </div>
-        <div class="col-span-1 aspect-square bg-morningGreen-800 rounded-xl flex flex-col justify-center items-center">
-            <div class="text-3xl flex flex-col font-semibold text-center [&>*]:m-0"><p>MPS</p> <p class="text-xs">[matches per second]</p></div>
-            <p class="text-4xl">{calculateMPS().toFixed(2)}</p>
-        </div>
-        <div class="col-span-1 aspect-square bg-morningGreen-800 rounded-xl flex flex-col justify-center items-center">
-            <p class="text-3xl font-semibold text-center">Score</p>
-            <p class="text-4xl">{scoreCalculation().toFixed(2)}</p>
-        </div>
-        <!-- <div class="flex justify-between">
-            <p>Time</p>
-            <p>{time.minutes < 10 ? '0' + time.minutes : time.minutes}:{time.seconds < 10 ? '0' + time.seconds : time.seconds}</p>
-        </div>
-        <div class="flex justify-between">
-            <p>Moves</p>
-            <p>{moveCounter}</p>
-        </div>
-        <div class="flex justify-between text-xl" >
-            <p >Score</p>
-            <p>{scoreCalculation()}</p>
-        </div> -->
-      </div>
-      <div class="flex gap-3 w-full">
-        <button class="btn light morningGreen w-full" on:click={()=>{
-            showEndModal = false
-            endGame()
-            start = false
-            }}>Play Again
-            <Play size="20" />
-            </button>
-      </div>
-    </div>
-    {/if}
-  </div>
