@@ -287,16 +287,20 @@
                         |
                         <ChevronDown class="mt-1 -mr-1"/>
                     </label>
-                    <div class="menu bottom-right">
+                    <div class="menu top-right">
                      {#each emojiSets as set,index}
+                        <!-- svelte-ignore a11y-no-static-element-interactions -->
                         {#if index == 0}
                         <!-- svelte-ignore a11y-missing-attribute -->
+                        <!-- svelte-ignore a11y-click-events-have-key-events -->
                         <a class="item text-sm" on:click={()=>{changeChosenEmojiSet(0)}}>Fruits</a>
                         {:else if index == 1}
                         <!-- svelte-ignore a11y-missing-attribute -->
+                        <!-- svelte-ignore a11y-click-events-have-key-events -->
                         <a class="item text-sm" on:click={()=>{changeChosenEmojiSet(1)}}>Food & Drink</a>
                         {:else if index == 2}
                         <!-- svelte-ignore a11y-missing-attribute -->
+                        <!-- svelte-ignore a11y-click-events-have-key-events -->
                         <a class="item text-sm" on:click={()=>{changeChosenEmojiSet(2)}}>Random Stuff</a>
                         {/if}
                      {/each}

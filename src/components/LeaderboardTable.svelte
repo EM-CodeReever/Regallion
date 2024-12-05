@@ -13,7 +13,7 @@ export let records: (LB_MemoryCards & { Profile : Profile }) []
 				<th class="w-20"><p class="w-full text-center">Rank</p></th>
 				<th>Name</th>
 				<th>Score</th>
-				<th>Time</th>
+				<th class="hidden md:flex">Time</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -32,7 +32,7 @@ export let records: (LB_MemoryCards & { Profile : Profile }) []
                 </td>
 				<td>{(records[0] == undefined) ? '--' : records[0].Profile.username}</td>
 				<td>{(records[0] == undefined) ? '--' : records[0].score}</td>
-				<td>{(records[0] == undefined) ? '--' : records[0].time}</td>
+				<td class="hidden md:table-cell">{(records[0] == undefined) ? '--' : records[0].time}</td>
 			</tr>
 			<tr class="indigo [&>*]:!text-xl">
                 <th class="!p-0">
@@ -49,7 +49,7 @@ export let records: (LB_MemoryCards & { Profile : Profile }) []
                     </lord-icon></th>
                     <td>{(records[1] == undefined) ? '--' : records[1].Profile.username}</td>
                     <td>{(records[1] == undefined) ? '--' : records[1].score}</td>
-                    <td>{(records[1] == undefined) ? '--' : records[1].time}</td>
+                    <td class="hidden md:flex">{(records[1] == undefined) ? '--' : records[1].time}</td>
 			</tr>
 			<tr class="morningGreen [&>*]:!text-lg">
 				<th class="!p-0">
@@ -66,7 +66,7 @@ export let records: (LB_MemoryCards & { Profile : Profile }) []
                 </th>
 				<td>{(records[2] == undefined) ? '--' : records[2].Profile.username}</td>
 				<td>{(records[2] == undefined) ? '--' : records[2].score}</td>
-				<td>{(records[2] == undefined) ? '--' : records[2].time}</td>
+				<td class="hidden md:flex">{(records[2] == undefined) ? '--' : records[2].time}</td>
 			</tr>
             
             {#each {length: 7} as _, i}
@@ -74,7 +74,7 @@ export let records: (LB_MemoryCards & { Profile : Profile }) []
 				<th><p class="w-full text-center">{i + 4}</p></th>
 				<td>{(records[i + 3] == undefined) ? '--' : records[i + 3].Profile.username}</td>
 				<td>{(records[i + 3] == undefined) ? '--' : records[i + 3].score}</td>
-				<td>{(records[i + 3] == undefined) ? '--' : records[i + 3].time}</td>
+				<td class="hidden md:flex">{(records[i + 3] == undefined) ? '--' : records[i + 3].time}</td>
 			</tr>
             {/each}
 		</tbody>

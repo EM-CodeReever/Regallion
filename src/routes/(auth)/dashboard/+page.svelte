@@ -32,10 +32,9 @@
     <title>Dashboard</title>
 </svelte:head>
 <Toaster />
+
 <section class="w-full h-fit">
-    
     <RiddleBox/>
-    
 </section>
 
 
