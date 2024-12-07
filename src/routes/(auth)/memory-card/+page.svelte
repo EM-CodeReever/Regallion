@@ -7,7 +7,7 @@
     import { stringify } from 'postcss';
     import { cubicIn } from 'svelte/easing';
     export let data: PageData;
-    let {userProfile} = data
+    let {userProfile, session} = data
     let clickHistory = <any>[];
     let hidden = true;
     let display = false;
@@ -217,11 +217,15 @@
                                 clearInterval(revealID)
                                 let request = await fetch("/memory-card",{
                                     method: "POST",
+                                    headers:{
+                                        'Content-Type': 'application/json',
+                                        Authorization: `Bearer ${session?.access_token}`
+                                    },
                                     body: JSON.stringify({
                                         player: Number(userProfile?.id),
                                         time: (time.minutes < 10 ? '0' + time.minutes : time.minutes) + ":" + (time.seconds < 10 ? '0' + time.seconds : time.seconds),
                                         score: scoreCalculation().toFixed(2),
-                                        mps: calculateMPS().toFixed(2)
+                                        mps: calculateMPS().toFixed(2),
                                     })
                                 })
                                 let res = await request.json();
