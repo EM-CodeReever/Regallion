@@ -4,7 +4,18 @@
     import type { PageData } from './$types';
     import {fruitEmojiObject, animalEmojiObject, stuffEmojiObject, getRandomRevealTextOption} from './util'
     import { ChevronDown, EyeOff, Play, Timer, View } from 'lucide-svelte';
-    import { stringify } from 'postcss';
+    import { Sound } from "svelte-sound";
+    import S_start from "../../../lib/sound/start.mp3";
+    import S_end from "../../../lib/sound/end.mp3";
+    import S_pop from "../../../lib/sound/pop.mp3";
+    import S_pop_match from "../../../lib/sound/pop_match.mp3";
+    import S_error from "../../../lib/sound/error.mp3";
+    import S_reveal_in from "../../../lib/sound/reveal_in.mp3"; 
+    // const start_sound = new Sound(S_start);
+    // const end_sound = new Sound(S_end);
+    const pop_sound = new Sound(S_pop);
+    const error_sound = new Sound(S_error);
+    const pop_match_sound = new Sound(S_pop_match);
     import { cubicIn } from 'svelte/easing';
     export let data: PageData;
     let {userProfile, session} = data
@@ -189,11 +200,13 @@
                 <div in:fade|global={{duration:1000}} class="w-full text-3xl h-full bg-gray-900 rounded-md cursor-pointer hover:bg-gray-700 hover:border-gray-200 hover:border-2 flex justify-center items-center" on:click={async()=>{
                     if(item.matched === false){
                         item.hidden = !item.hidden
-                        console.log(item)
                         clickHistory.push(item)
+                        if(clickHistory.length === 1){
+                            pop_sound.play();
+                        }
                         if(clickHistory.length === 2){
                             if(clickHistory[0].emoji === clickHistory[1].emoji && clickHistory[0].id !== clickHistory[1].id){
-                                console.log('match')
+                                pop_match_sound.play();
                                 matchedCounter++
                                 randomizedEmojiArray.forEach((item)=>{
                                     if(item.emoji === clickHistory[0].emoji){
@@ -202,7 +215,7 @@
                                 })
                                 clickHistory = []
                             }else{
-                                console.log('no match')
+                                error_sound.play();
                                 clickHistory = []
                             }
                             randomizedEmojiArray.forEach((item)=>{
@@ -267,7 +280,9 @@
             <h1 class="text-3xl font-bold text-center">Memory Cards</h1>
             <p class="text-center text-sm max-w-md">How good is your memory? Let's find out! <br> Click on the cards to reveal the emoji, if two identical emojis are clicked in a row then you've found a match!. Match all the cards to win the game.</p>
             <div class="flex space-x-2 items-center">
-                <button class="btn morningGreen solid !h-[48px]" on:click={()=>{
+                <button class="btn morningGreen solid !h-[48px]"
+                 on:click={()=>{
+                    //potentailly add a start sound here
                     start = true;
                     displayCardsForThreeSeconds()
                     setTimeout(()=>{
@@ -315,6 +330,7 @@
             
         </div>
         {:else if showEndModal}
+        <!-- {end_sound.play() } -->
         <div class="flex h-[32rem] w-full justify-center items-center">
             <div class="flex flex-col h-full space-y-8 items-center justify-center rounded-sm w-full max-w-md" in:fly={{duration:300, y:150,opacity:0}}>
                 <h2 class="text-5xl text-center font-semibold">Board Complete</h2>
@@ -355,4 +371,7 @@
             </div>
         </div>
         {/if}
+        <!-- <button class="btn light morningGreen" use:start_sound={{src: start_sound, events: ["click"]}}>
+            Click Me!!
+        </button> -->
 </section>
