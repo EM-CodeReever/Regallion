@@ -2,9 +2,6 @@
 	"name": "regallion",
 	"version": "0.0.1",
 	"private": true,
-	"engines": {
-		"node": "22.x"
-	},
 	"scripts": {
 		"dev": "vite dev --host",
 		"build": "prisma generate && vite build",
@@ -13,7 +10,7 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
 	},
 	"devDependencies": {
-		"@sveltejs/adapter-vercel": "6.3.3",
+		"@sveltejs/adapter-auto": "^2.1.1",
 		"@sveltejs/kit": "^1.30.4",
 		"autoprefixer": "^10.5.0",
 		"partykit": "0.0.110",
@@ -32,7 +29,7 @@
 		"@prisma/client": "^6.19.3",
 		"@sira-ui/tailwind": "^0.11.8",
 		"@splidejs/svelte-splide": "^0.2.9",
-		"@supabase/auth-helpers-sveltekit": "^0.10.7",
+		"@supabase/auth-helpers-sveltekit": "^0.10.3",
 		"@supabase/supabase-js": "^2.106.2",
 		"@types/nodemailer": "^6.4.23",
 		"lucide-svelte": "^0.439.0",
